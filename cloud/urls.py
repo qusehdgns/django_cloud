@@ -20,4 +20,8 @@ import myapp.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', myapp.views.test, name='test'),
+    path('makefolder/', myapp.views.makefolder, name='makefolder'),
+    path('makefolderaction/', myapp.views.makefolderaction, name='makefolderaction'),
+    path('listfolder/', myapp.views.listfolder, name='listfolder'),
+    path('deletefolder', myapp.views.deletefolder, name='deletefolder'),
 ]

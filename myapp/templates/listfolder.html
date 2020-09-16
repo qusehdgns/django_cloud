@@ -1,0 +1,57 @@
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<head>
+    <title>List Folder</title>
+</head>
+
+<body>
+    <h1>폴더 리스트</h1>
+    {% if list %}
+    <table>
+        <thead>
+            <td></td>
+            <td><h3>파일명</h3></td>
+        </thead>
+        <tbody>
+            {% for data in list %}
+            <tr>
+                <td><h5><input type='checkbox' name='select_list' value='{{data}}'></h5></td>
+                <td><h5>{{data}}</h5></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type='button' id='delete' value='delete'>
+    {% else %}
+    <h3>해당 디렉토리가 비워져있습니다.</h3>
+    {% endif %}
+</body>
+
+<script>
+    $('#delete').click(function () {
+        var array = new Array();
+
+        $("input:checkbox[name='select_list']:checked").each(function () {
+            array.push($(this).val());
+        })
+
+        if(array == ""){
+            alert("항목을 체크해주세요");
+            return;
+        }
+
+        $.ajax({
+            url: '/deletefolder',
+            type: "GET",
+            data: { 'list' : JSON.stringify(array) },
+            success: function (result) {
+                alert(result + "개의 디렉토리 삭제를 수행하였습니다.");
+                location.reload();
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    })
+</script>
