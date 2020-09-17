@@ -15,13 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-import myapp.views
+from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', myapp.views.test, name='test'),
-    path('makefolder/', myapp.views.makefolder, name='makefolder'),
-    path('makefolderaction/', myapp.views.makefolderaction, name='makefolderaction'),
-    path('listfolder/', myapp.views.listfolder, name='listfolder'),
-    path('deletefolder', myapp.views.deletefolder, name='deletefolder'),
+    path('', views.test, name='test'),
+    path('makefolder/', views.makefolder, name='makefolder'),
+    path('makefolderaction/', views.makefolderaction, name='makefolderaction'),
+    path('listfolder/', views.listfolder, name='listfolder'),
+    path('deletefolder/', views.deletefolder, name='deletefolder'),
+    path('fileupload/', views.fileupload, name='fileupload'),
+    path('upload_files', views.upload_files, name='upload_files'),
 ]

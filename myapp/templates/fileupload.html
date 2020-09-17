@@ -1,0 +1,38 @@
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<head>
+    <title>File Upload</title>
+</head>
+
+<body>
+    <input multiple="multiple"  type="file" id="file_upload"/>
+    <input type='button' id='submit' value='submit'/>
+</body>
+
+<script>
+    $('#submit').click(function(){
+        var files = $('#file_upload')[0].files;
+
+        var size = files.length;
+        
+        var formData = new FormData();
+        formData.append('size', size);
+        for(var i = 0; i < files.length; i++){
+            formData.append('file' + i, files[i]);
+        }
+
+        $.ajax({
+            url:"/upload_files",
+            processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+            contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+            data: formData,  //위에서 선언한 fromdata
+            type: 'POST',
+            success: function (result) {
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    })
+</script>

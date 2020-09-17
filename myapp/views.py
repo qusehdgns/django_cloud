@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+# POST 500
+from django.views.decorators.csrf import csrf_exempt
+
 # directory 관련
 import os
 
 # json
 import json
+
+from werkzeug.utils import secure_filename
 
 # Create your views here.
 def test(request):
@@ -101,3 +106,33 @@ def deletefolder(request):
     os.chdir(position)
 
     return HttpResponse(len(folder_list))
+
+# fileupload 실행 함수
+def fileupload(request):
+    return render(request, 'fileupload.html')
+
+# upload_files 함수
+@csrf_exempt
+def upload_files(request):
+    # 초기 디렉터리 저장
+    position = os.getcwd()
+
+    # 상위 디렉터리 이동
+    os.chdir("..")
+
+    # data 디렉터리 이동
+    os.chdir("./data")
+    
+    size = int(request.POST['size'])
+
+    files = []
+
+    for i in range(size):
+        files.append(request.FILES['file'+str(i)])
+    
+    print(files)
+
+    # 초기 디렉터리로 이동
+    os.chdir(position)
+
+    return HttpResponse("success")
