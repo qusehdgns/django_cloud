@@ -9,6 +9,8 @@
     <h3>폴더 이름을 적으시오.</h3>
     <input type='text' id='folder_name'>
     <input type='button' value='submit' id='submit'>
+    <p>
+    <input type='button' value='home' id='home'>
 </body>
 
 <script>
@@ -40,5 +42,9 @@
                 alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
         })
+    })
+
+    $('#home').click(function(){
+        location.href = '/';
     })
 </script>

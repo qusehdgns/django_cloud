@@ -23,9 +23,11 @@
         </tbody>
     </table>
     <input type='button' id='delete' value='delete'>
+    <p>
     {% else %}
     <h3>해당 디렉토리가 비워져있습니다.</h3>
     {% endif %}
+    <input type='button' value='home' id='home'>
 </body>
 
 <script>
@@ -53,5 +55,9 @@
                 alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
         });
+    })
+
+    $('#home').click(function(){
+        location.href = '/';
     })
 </script>
