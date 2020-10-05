@@ -6,11 +6,6 @@
 <body>
     <div>
         <h1>Login</h1>
-<<<<<<< Updated upstream
-
-        <form action="">
-            
-=======
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
             ID :
@@ -23,7 +18,6 @@
             <br>
             <input type="button" value="Sign in" onclick='location.href = "/sign_in"'>
             <input type="submit" value="Login">
->>>>>>> Stashed changes
         </form>
     </div>
 </body>
