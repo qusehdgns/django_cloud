@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>{% block title %}{% endblock %}</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 
 <style>
@@ -16,10 +17,44 @@
 
 <body>
     <div id = "side_bar">
-        <h1>Index Bar</h1>
+        <div id="info" onclick="location.href='/profile';">
+            <h3 id="userid"></h3>
+            <h3 id="username"></h3>
+            <h4><a href="{% url 'logout' %}">Logout</a></h4>
+        </div>
+        <p>
+        <h4 id="ps">Personal Storage</h4>
+        <h3><a id="ps_name" href="{% url 'personal_storage' %}"></a></h3>
+        <h4 id="ts_list">Team Storage</h4>
     </div>
     <div id = "contents">
         {% block content %}
         {% endblock %}
     </div>
 </body>
+
+<script>
+    // 초기 사용자 id 및 이름 가져오기
+    $.ajax({
+        url : "{% url 'index' %}",
+        type : 'GET',
+        success : function(result){
+            $('#userid').text(result.userid);
+            $('#username').text(result.username);
+            $('#ps_name').text(result.userid);
+        },
+        error: function (request, status, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+
+    // personal storage 문구 클릭 액션
+    $('#ps').click(function(){
+        location.href="{% url 'personal_storage' %}";
+    });
+
+    // team storage list 문구 클릭 액션
+    $('#ts_list').click(function(){
+        location.href="{% url 'team_storage_list' %}";
+    });
+</script>

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
+from django.http import JsonResponse
+
+import json
 
 from main.models import User
 
@@ -17,8 +20,12 @@ def login(request):
 
 def index(request):
     userid = request.session['userid']
+
+    result = User.objects.get(pk = userid)
+
+    data = { "userid" : result.user_id, "username" : result.user_name }
     
-    return render(request, 'Index.html')
+    return JsonResponse(data)
 
 def profile(request):
     return render(request, 'Profile.html')
