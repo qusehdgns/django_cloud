@@ -27,7 +27,10 @@ urlpatterns = [
     path('movetots', views.movetots, name='movetots'),
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     path('movetoresetpw', views.movetoresetpw, name='movetoresetpw'),
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

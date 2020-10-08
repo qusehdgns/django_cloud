@@ -36,6 +36,7 @@ def index(request):
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     # User 테이블에서 Primary key가 userid인 레코드 호출
     # sql : select * from user where primary key = 변수userid;
     user_result = User.objects.get(pk = userid)
@@ -68,6 +69,8 @@ def index(request):
 
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     user_result = User.objects.get(pk = userid)
 
     user_data = { "userid" : user_result.user_id, "username" : user_result.user_name }
@@ -79,6 +82,9 @@ def index(request):
     for temp in ts_result:
         ts_data.append(temp['team_storage'])
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     data = { "user" : user_data, "storage" : ts_data }
     
@@ -119,11 +125,15 @@ def movetots(request):
     
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     return redirect('team_storage')
 
 def movetoresetpw(request):
     request.session.pop('userid')
     return redirect('find_id_reset_pw')
+=======
+    return redirect('team_storage')
+>>>>>>> Stashed changes
 =======
     return redirect('team_storage')
 >>>>>>> Stashed changes
