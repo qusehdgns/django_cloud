@@ -14,7 +14,7 @@
         <input type="checkbox" id="use_authority" value="Use_Authority"> Use Authority
     </div>
     <div>
-        <select disabled name="select_authority_level">
+        <select disabled id="select_authority_level">
             <option value="">권한선택</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -27,7 +27,7 @@
         <input type="checkbox" id="use_notice" value="Use_Notice"> Use Notice
     </div>
     <div>
-        <input type="text" placeholder="Description(Optional)" id="description" />
+        <input type="text" placeholder="Description(Optional)" id="description" disabled/>
     </div>
     <div>
         <input type="button" value="Create" id="btn_create">
@@ -35,23 +35,24 @@
 </body>
 
 <script>
+
+    // Use Authority 체크 시 권한선택 리스트 활성화
     $("#use_authority").change(function () {
         if ($("#use_authority").is(":checked")) {
-            alert("체크박스 체크했음!");
-            $(".box button").attr("disabled", true);
-            $("#chk").on('click', function () {
-                var chk = $('input:checkbox[id="chk"]').is(":checked");
-                if (chk == true) {
-                    $(".box button").removeAttr('disabled');
-                    $(".box").removeClass("on");
-                } else {
-                    $(".box button").attr("disabled", true);
-                    $(".box").addClass("on");
-                }
-            });
+            $("#select_authority_level").removeAttr('disabled');
         } else {
-            alert("체크박스 체크 해제!");
+            $("#select_authority_level").attr("disabled", true);
         }
     });
+
+    $("#use_notice").change(function () {
+        if ($("#use_notice").is(":checked")) {
+            $("#description").removeAttr('disabled');
+        } else {
+            $("#description").attr("disabled", true);
+        }
+    });
+
+
 </script>
 {% endblock %}
