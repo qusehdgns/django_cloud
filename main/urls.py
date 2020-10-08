@@ -24,4 +24,5 @@ urlpatterns = [
     path('sign_in', views.sign_in, name="sign_in"),
     path('find_id_reset_pw', views.find_id_reset_pw, name="find_id_reset_pw"),
     path('logout', views.logout, name='logout'),
+    path('movetots', views.movetots, name='movetots'),
 ]

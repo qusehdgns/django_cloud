@@ -26,6 +26,7 @@
         <h4 id="ps">Personal Storage</h4>
         <h3><a id="ps_name" href="{% url 'personal_storage' %}"></a></h3>
         <h4 id="ts_list">Team Storage</h4>
+        <div id="storagelist"></div>
     </div>
     <div id = "contents">
         {% block content %}
@@ -39,9 +40,14 @@
         url : "{% url 'index' %}",
         type : 'GET',
         success : function(result){
-            $('#userid').text(result.userid);
-            $('#username').text(result.username);
-            $('#ps_name').text(result.userid);
+            $('#userid').text(result.user.userid);
+            $('#username').text(result.user.username);
+            $('#ps_name').text(result.user.userid);
+            
+            for(let i in result.storage){
+                let temp = "<h3><a href='/movetots?name=" + result.storage[i] + "'>" + result.storage[i] + "</a></h3>";
+                $('#storagelist').append(temp);
+            }
         },
         error: function (request, status, error) {
             alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
