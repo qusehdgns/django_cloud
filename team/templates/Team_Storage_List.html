@@ -3,5 +3,14 @@
 {% block title %}Team Storage List Page{% endblock %}
 
 {% block content %}
-<h1>Team Storage List Page</h1>
+<input type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
+<p/>
+<h1>Team Storage List</h1>
+{% if data %}
+    {% for list in data %}
+    <h3><a href='/movetots?name={{list}}'>{{list}}</a></h3>
+    {% endfor %}
+{% else %}
+<h3>참여한 Team Storage가 없습니다</h3>
+{% endif %}
 {% endblock %}

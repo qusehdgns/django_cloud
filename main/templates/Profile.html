@@ -6,28 +6,67 @@
 
 {% block content %}
 <h1>Profile Page</h1>
+
 <body>
-    <style>
-        .left-box {
-          background: rgb(206, 199, 199);
-          float: left;
-          width: 30%;
-        }
-        .right-box {
-          background: rgb(206, 199, 199);
-          float: right;
-          width: 50%;
-        }
-        </style>
-    <div id="emoticon" class='left-box'style="border:2px solid black;">
-        emoticon
+  <style>
+    .left-box {
+      float: left;
+      width: 30%;
+    }
+
+    .right-box {
+      float: right;
+      width: 50%;
+    }
+  </style>
+
+  <div class='left-box'>
+    <div id="emoticon" style="border:2px solid black;">
+      <h2>Emoticon Image</h2>
     </div>
-    <div id="changevalue" class='right-box'>
-        <input type="text" placeholder="ID" value="" id="_id"><p>
-        <input type="text" placeholder="Name" value="" id="_name"><p>
-        <input type="text" placeholder="Phone" value="" id="_phone"><p>
-        <input type="text" placeholder="Reset PW" value="" id="_ResetPW"><p>
-        <input type="button"value="Change" id="_change">
-    </div>
+    <p></p>
+    <input type="button" value="Select Emoticon" id="selectemo">
+  </div>
+  
+  <div id="value" class='right-box'>
+    <p>
+    <h4>아이디 : {{userid}}</h4>
+    </p>
+    <p>
+    <h4>이름 : {{username}}</h4>
+    </p>
+    <p>
+    <h4>전화번호 : {{userphone}}</h4>
+    </p>
+    <input type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
+    <input type="button" value="Change" id="change">
+  </div>
+  <div class='right-box' id="changevalue">
+    <p>
+    <h4>아이디 : {{userid}}</h4>
+    </p>
+    <p>이름 : <input type="text" value="{{username}}" id="username"></p>
+    <p>전화번호 : <input type="text" value="{{userphone}}" id="userphone"></p>
+    <input type="button" value="확인" id="accept">
+    <input type="button" value="취소" id="cancel">
+  </div>
 </body>
+<script>
+  $('#changevalue').hide();
+  $('#selectemo').hide();
+
+  $('#change').click(function(){
+    $('#value').hide();
+
+    $('#changevalue').show();
+    $('#selectemo').show();
+  });
+
+  $('#cancel').click(function(){
+    $('#changevalue').hide();
+    $('#selectemo').hide();
+
+    $('#value').show();
+  });
+</script>
 {% endblock %}
