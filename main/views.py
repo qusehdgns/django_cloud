@@ -5,7 +5,7 @@ from django.http import JsonResponse
 
 import json
 
-from main.models import User
+from main.models import User, StorageList
 
 # Create your views here.
 def login(request):
@@ -21,9 +21,18 @@ def login(request):
 def index(request):
     userid = request.session['userid']
 
-    result = User.objects.get(pk = userid)
+    user_result = User.objects.get(pk = userid)
 
-    data = { "userid" : result.user_id, "username" : result.user_name }
+    user_data = { "userid" : user_result.user_id, "username" : user_result.user_name }
+
+    ts_result = StorageList.objects.filter(user_id = userid).values("team_storage")
+
+    ts_data = []
+
+    for temp in ts_result:
+        ts_data.append(temp['team_storage'])
+
+    data = { "user" : user_data, "storage" : ts_data }
     
     return JsonResponse(data)
 
@@ -45,3 +54,11 @@ def find_id_reset_pw(request):
 def logout(request):
     request.session.pop('userid')
     return redirect('login')
+
+def movetots(request):
+
+    storage_name = request.GET['name']
+
+    request.session['ts_name'] = storage_name
+    
+    return redirect('team_storage')
