@@ -8,6 +8,9 @@ data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
 # 웹 서버 경로
 web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 
+# 초기 디렉터리 저장
+position = os.getcwd()
+
 # http://localhost:8000/personal/
 # 개인 저장 공간 페이지 실행 함수
 def personal_storage(request):
@@ -15,7 +18,7 @@ def personal_storage(request):
     userid = request.session['userid']
 
     # data 내부 personal 저장 공간으로 이동
-    os.chdir(data_location + "/personal")
+    os.chdir("../data/personal")
 
     # 사용자 personal 디렉토리 이동
     os.chdir("./" + userid)
@@ -24,7 +27,7 @@ def personal_storage(request):
     file_list = os.listdir("./")
 
     # 웹 서버 경로로 이동
-    os.chdir(web_location)
+    os.chdir(position)
 
     # Personal_Storage.html 반환 시 사용자id, 사용자 저장공간 내부 파일 리스트 반환
     return render(request, 'Personal_Storage.html', { 'userid' : userid, 'data' : file_list })

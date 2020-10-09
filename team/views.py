@@ -11,6 +11,9 @@ data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
 # 웹 서버 경로
 web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 
+# 초기 디렉터리 저장
+position = os.getcwd()
+
 # http://localhost:8000/team/
 # TeamStorage 페이지 호출 함수
 def team_storage(request):
@@ -18,7 +21,7 @@ def team_storage(request):
     ts_name = request.session['ts_name']
 
     # data 내부 team 저장 공간으로 이동
-    os.chdir(data_location + "/team")
+    os.chdir("../data/team")
 
     # 선택 team storage 디렉토리 이동
     os.chdir("./" + ts_name)
@@ -27,7 +30,7 @@ def team_storage(request):
     file_list = os.listdir("./")
 
     # 웹 서버 경로로 이동
-    os.chdir(web_location)
+    os.chdir(position)
 
     # Team_Storage.html 반환 시 TeamStroage이름, TeamStorage 내부 파일 리스트 반환
     return render(request, "Team_Storage.html", { 'name' : ts_name, 'data' : file_list })

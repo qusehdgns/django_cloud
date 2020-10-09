@@ -19,20 +19,36 @@ data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
 # 웹 서버 경로
 web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 
+# 초기 디렉터리 저장
+position = os.getcwd()
+
 # http://localhost:8000/
 # 초반 메인 Login 페이지 호출 및 로그인 수행 함수
 def login(request):
 
     # 상위 폴더 이동
-    os.chdir("C:/Users/quseh/Desktop/workspace/django/Capstone")
+    os.chdir("..")
 
     # data 디렉토리 없을 시 실행
     if not os.path.exists("data"):
         # data 디렉토리 생성
         os.makedirs("data")
     
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # personal 디렉토리 없을 시 실행
+    if not os.path.exists("personal"):
+        # personal 디렉토리 생성
+        os.makedirs("personal")
+
+    # team 디렉토리 없을 시 실행
+    if not os.path.exists("team"):
+        # team 디렉토리 생성
+        os.makedirs("team")
+    
     # 웹 서버 디렉토리로 이동
-    os.chdir(web_location)
+    os.chdir(position)
 
     # Post 형식 데이터가 들어오는지 확인
     if request.method == "POST":
@@ -122,17 +138,14 @@ def sign_in(request):
         # insert into user values(data['userid'], data['userpw'], data['username'], data['userphone']);
         User.objects.create(user_id = data['userid'], user_pw = data['userpw'], user_name = data['username'], user_phone = data['userphone'])
 
-        # data 저장 공간으로 이동
-        os.chdir(data_location)
-
         # data 내부 personal 저장 공간으로 이동
-        os.chdir("./personal")
+        os.chdir("../data/personal")
 
         # 개인 이름 저장 공간 생성
         os.makedirs(data['userid'])
 
         # 웹 서버 경로로 이동
-        os.chdir(web_location)
+        os.chdir(position)
 
         # urls.py에 path 중 이름 login 호출
         return redirect('login')
