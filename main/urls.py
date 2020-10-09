@@ -26,4 +26,5 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('movetots', views.movetots, name='movetots'),
     path('movetoresetpw', views.movetoresetpw, name='movetoresetpw'),
+    path('movetotsmaster', views.movetotsmaster, name='movetotsmaster'),
 ]

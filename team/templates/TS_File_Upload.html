@@ -3,5 +3,42 @@
 {% block title %}TS File Upload Page{% endblock %}
 
 {% block content %}
-<h1>TS File Upload Page</h1>
+<h1>TS File Upload</h1>
+<p><input id='file' type='file' onchange="changetable();" multiple></p>
+<div>
+    <table>
+        <thead>
+            <th scope="col">NO</th>
+            <th scope="col">FILE NAME</th>
+            <th scope="col">ADD MEMO</th>
+            <th scope="col">AUTHORITY</th>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+</div>
+<p/>
+<input type="button" value="Upload Files" onclick="">
+
+<script>
+    function changetable() {
+        $('#tbody').empty();
+
+        var file = $('#file')[0].files;
+
+        for (var i = 0; i < file.length; i++) {
+            var tbody = document.all["tbody"].insertRow();
+            var cell0 = tbody.insertCell(0);
+            var cell1 = tbody.insertCell(1);
+            var cell2 = tbody.insertCell(2);
+            var cell3 = tbody.insertCell(3);
+
+            cell0.innerHTML = "<td></td>";
+            cell1.innerHTML = "<td>" + file[i].name + "</td>";
+            cell2.innerHTML = "<td><input type='text' id='" + i + "'></td>";
+            cell3.innerHTML = "<select id='select_authority_level'><option value=''>권한선택</option><option value='1'>1</option>"
+            + "<option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>"
+        }
+    }
+</script>
 {% endblock %}

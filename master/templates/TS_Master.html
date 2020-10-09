@@ -3,5 +3,86 @@
 {% block title %}TS Master Page{% endblock %}
 
 {% block content %}
-<h1>TS Master Page</h1>
+<style>
+    .userlist {
+        margin: auto;
+        width: 100%;
+        height: 40%;
+    }
+
+    .left-box {
+        float: left;
+        width: 30%;
+    }
+
+    .right-box {
+        float: right;
+        width: 50%;
+    }
+
+    .notice-list {
+        width: 100%;
+        height: 30%;
+    }
+
+    .button {
+        float: right;
+    }
+</style>
+
+<body>
+    <h1>{{ts_name}} Master({{userid}})</h1>
+    <div class="userlist">
+        <div class="left-box">
+            <table>
+                <thead>
+                    <th></th>
+                    <th scope="col">USER</th>
+                    <th scope="col">AUTH</th>
+                </thead>
+                <tbody>
+                    {% if data %}
+                    {% for list in data %}
+                    <tr>
+                        <td><input type="radio" name="users" value="list.userid"></td>
+                        <td>{{list.userid}}</td>
+                        <td>{{list.auth}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="right-box">
+            <input type="button" value="Invite"><p/>
+            <input type="button" value="Ban"><p/>
+            <input type="button" value="Change Auth"><p/>
+        </div>
+    </div>
+    <div class="notice-list">
+        <table>
+            <thead>
+                <th scope="col">NOTICE</th>
+                <th scope="col">WRITER</th>
+            </thead>
+            <tbody>
+                {% if notice %}
+                {% for list in data %}
+                <tr>
+                    <td>공지사항</td>
+                    <td>writer</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="*">공지사항이 없습니다.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="button">
+        <input type="button" value="Create Notice" onclick="location.href='/master/ts_notice_upload'">
+    </div>
+</body>
 {% endblock %}
