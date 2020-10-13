@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 import json
 
@@ -9,9 +10,11 @@ import os
 
 # 데이터 베이스 연동 기능
 # main App의 models.py 내부 class 선언
-from main.models import User, StorageList
+from main.models import User, StorageList, PSInfo, setdir
 # master App의 models.py 내부 class 선언
 from master.models import TeamStorage
+
+from main.forms import PSInfoForm
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -21,6 +24,8 @@ web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 
 # 초기 디렉터리 저장
 position = os.getcwd()
+
+dirpath = str()
 
 # http://localhost:8000/
 # 초반 메인 Login 페이지 호출 및 로그인 수행 함수
@@ -196,3 +201,17 @@ def movetotsmaster(request):
 
     # urls.py에 path 중 이름 ts_master 호출
     return redirect('ts_master')
+
+# File Upload 관련 함수
+@csrf_exempt
+def personal_file_upload(request):
+
+    userid = request.session['userid']
+
+    setdir("personal/" + userid)
+
+    form = PSInfoForm(request.POST, request.FILES)
+    
+    form.save()
+
+    return HttpResponse("success")

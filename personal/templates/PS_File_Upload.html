@@ -16,8 +16,8 @@
         </tbody>
     </table>
 </div>
-<p/>
-<input type="button" value="Upload Files" onclick="">
+<p />
+<input type="button" value="Upload Files" onclick="file_upload();">
 
 <script>
     function changetable() {
@@ -35,6 +35,39 @@
             cell1.innerHTML = "<td>" + file[i].name + "</td>";
             cell2.innerHTML = "<td><input type='text' id='" + i + "'></td>";
         }
+    }
+
+    function file_upload() {
+        var file = $('#file')[0].files;
+
+        var files = Array.prototype.slice.call(file);
+
+        for (var i in files) {
+            var memo = $('#' + i).val();
+            var formData = new FormData();
+            formData.append("name", files[i].name)
+            formData.append("file", files[i]);
+            formData.append("memo", memo)
+
+            $.ajax({
+                url: "{% url 'personal_file_upload' %}",
+                data: formData,  //위에서 선언한 fromdata
+                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                type: 'POST',
+                async: false,   // 순차적 진행
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+        }
+
+
+
+
     }
 </script>
 {% endblock %}
