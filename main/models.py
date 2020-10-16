@@ -29,9 +29,9 @@ class StorageList(models.Model):
         db_table = 'storagelists'
 
 class PSInfo(models.Model):
-    name = models.CharField(max_length=100)
+    filename = models.CharField(max_length=100)
     file = models.FileField(upload_to=user_directory_path)
-    memo = models.TextField(null = True)
+    descript = models.TextField(null = True)
 
     class Meta:
         db_table = 'PersonalStorageInfo'

@@ -13,7 +13,7 @@ class TeamStorageAdmin(admin.ModelAdmin):
     list_display = ('storage_name', 'description', 'authority', 'master_id')
 
 class PersonalStorageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'file', 'memo')
+    list_display = ('filename', 'file', 'descript')
 
 # 클래스를 어드민 사이트에 등록한다.
 admin.site.register(User, UserAdmin)

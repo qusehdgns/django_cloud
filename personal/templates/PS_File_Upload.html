@@ -43,11 +43,11 @@
         var files = Array.prototype.slice.call(file);
 
         for (var i in files) {
-            var memo = $('#' + i).val();
+            var descript = $('#' + i).val();
             var formData = new FormData();
-            formData.append("name", files[i].name)
+            formData.append("filename", files[i].name)
             formData.append("file", files[i]);
-            formData.append("memo", memo)
+            formData.append("descript", descript)
 
             $.ajax({
                 url: "{% url 'personal_file_upload' %}",

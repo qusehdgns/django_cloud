@@ -5,4 +5,4 @@ from main.models import PSInfo
 class PSInfoForm(forms.ModelForm):
     class Meta:
         model = PSInfo
-        fields = ('name', 'file', 'memo')
+        fields = ('filename', 'file', 'descript')
