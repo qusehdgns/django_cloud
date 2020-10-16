@@ -206,12 +206,65 @@ def movetotsmaster(request):
 @csrf_exempt
 def personal_file_upload(request):
 
-    userid = request.session['userid']
+    dirpath = request.session['dirpath']
 
-    setdir("personal/" + userid)
+    if request.session.has_key('dir'):
+        dirpath = dirpath + "/" + request.session['dir']
+
+    setdir(dirpath)
 
     form = PSInfoForm(request.POST, request.FILES)
     
     form.save()
 
     return HttpResponse("success")
+
+def addfolder(request):
+
+    folder_name = request.GET['folder_name']
+
+    descript = request.GET['descript']
+
+    if descript == "":
+        descript = None
+
+    dirpath = request.session['dirpath']
+
+    if request.session.has_key('dir'):
+        dirpath = dirpath + "/" + request.session['dir']
+
+    os.chdir("../data/" + dirpath)
+
+    os.makedirs(folder_name)
+
+    PSInfo.objects.create(filename = folder_name, file = dirpath + "/" + folder_name, descript = descript)
+
+    os.chdir(position)
+
+    return HttpResponse("폴더를 생성하였습니다.")
+
+def uptofolder(request):
+
+    dirpath = request.session["dirpath"]
+
+    dir_root = dirpath.split("/")
+
+    if len(dir_root) > 2:
+        value = dir_root[len(dir_root)-1]
+
+        for i in range(len(dir_root) - 2):
+            dir_root[0] = dir_root[0] +"/" + dir_root[i + 1]
+
+        request.session["dirpath"] = dir_root[0]
+
+    else:
+        value = "top"
+
+    return HttpResponse(value)
+
+def movefolder(request):
+
+    if request.session.has_key('dir'):
+        request.session['dirpath'] = request.session['dirpath'] + "/" + request.session["dir"]
+    
+    return redirect("/personal/?dir=" + request.GET['dir'])

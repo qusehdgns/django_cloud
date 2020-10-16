@@ -42,6 +42,8 @@
 
         var files = Array.prototype.slice.call(file);
 
+        var count = 0;
+
         for (var i in files) {
             var descript = $('#' + i).val();
             var formData = new FormData();
@@ -57,12 +59,15 @@
                 type: 'POST',
                 async: false,   // 순차적 진행
                 success: function (result) {
-                    alert(result);
+                    count++;
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
             });
+
+            alert(count + "개의 파일이 업로드 되었습니다.");
+            location.href = "{{url}}";
         }
 
 

@@ -28,5 +28,8 @@ urlpatterns = [
     path('movetoresetpw', views.movetoresetpw, name='movetoresetpw'),
     path('movetotsmaster', views.movetotsmaster, name='movetotsmaster'),
     path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
+    path('addfolder', views.addfolder, name='addfolder'),
+    path('uptofolder', views.uptofolder, name='uptofolder'),
+    path('movefolder', views.movefolder, name='movefolder'),
 ]
 

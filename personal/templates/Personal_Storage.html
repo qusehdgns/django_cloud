@@ -15,9 +15,12 @@
     }
 </style>
 
-<body>   
+<body>
     <h1>{{userid}}'s Personal Storage</h1>
     <div id="list" class="directory-list">
+        {% if folder != "top" %}
+        <input type="button" value="상위 폴더로 이동" onclick="uptofolder();">
+        {% endif %}
         <table>
             <thead>
                 <th scope="col">FILES</th>
@@ -27,8 +30,13 @@
                 {% if data %}
                 {% for list in data %}
                 <tr>
-                    <td>{{list}}</td>
-                    <td>memo</td>
+                    <td>{% if "." in list.filename %}
+                        {{list.filename}}
+                        {% else %}
+                        <a href="/movefolder?dir={{list.filename}}">{{list.filename}}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{list.descript|default:""}}</td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -38,11 +46,53 @@
                 {% endif %}
             </tbody>
         </table>
-
+        <br />
+        <input type="button" value="Add Folder" onclick="create_folder();">
     </div>
     <div id="upload" class="button">
-        <input type="button" value="Upload" onclick="location.href='/personal/ps_file_upload'">
+        <input type="button" value="Upload" onclick="location.href='/personal/ps_file_upload?url='+location.href;">
         <input type="button" value="Download">
     </div>
 </body>
+<script>
+    function create_folder() {
+        var folder_name = prompt("폴더 이름을 입력해주세요.", "폴더 이름");
+        if (folder_name != null) {
+            var descript = prompt("추가할 메모를 적어주세요.");
+            if (descript == null) {
+                descript = "";
+            }
+            var data = { "folder_name": folder_name, "descript": descript };
+            $.ajax({
+                url: "{% url 'addfolder' %}",
+                type: 'GET',
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+        }
+    }
+
+    function uptofolder(){
+        $.ajax({
+            url: "{% url 'uptofolder' %}",
+            type: 'GET',
+            success: function (result) {
+                if(result == "top"){
+                    location.href = "{% url 'personal_storage' %}";
+                } else {
+                    location.href = "/personal/?dir=" + result;
+                }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+</script>
 {% endblock %}
