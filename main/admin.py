@@ -1,6 +1,7 @@
 from django.contrib import admin
-from main.models import User, StorageList, PSInfo
+from main.models import User, StorageList
 from master.models import TeamStorage
+from personal.models import PSInfo
 
 # 출력할 ResourceAdmin 클래스를 만든다
 class UserAdmin(admin.ModelAdmin):

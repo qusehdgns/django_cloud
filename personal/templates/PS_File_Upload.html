@@ -42,7 +42,8 @@
 
         var files = Array.prototype.slice.call(file);
 
-        var count = 0;
+        var s_count = 0;
+        var f_count = 0;
 
         for (var i in files) {
             var descript = $('#' + i).val();
@@ -59,20 +60,19 @@
                 type: 'POST',
                 async: false,   // 순차적 진행
                 success: function (result) {
-                    count++;
+                    if (result == "success") {
+                        s_count++;
+                    } else {
+                        f_count++;
+                    }
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
             });
-
-            alert(count + "개의 파일이 업로드 되었습니다.");
-            location.href = "{{url}}";
         }
-
-
-
-
+        alert(s_count + "개의 파일 업로드 성공\n" + f_count + "개의 파일 업로드 실패");
+        location.href = "{{url}}";
     }
 </script>
 {% endblock %}

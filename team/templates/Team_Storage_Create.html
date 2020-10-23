@@ -7,11 +7,11 @@
 <body>
     <h1>Team Storage Create Page</h1>
     <div>
-        <input type="text" placeholder="Team Storage Name" id="team_storage_name" />
-        <input type="button" value="Name Check" id="name_check">
+        <input type="text" placeholder="Team Storage Name" id="team_storage_name" onchange="change_val();">
+        <input type="button" value="Name Check" id="name_check" onclick="name_check();">
     </div>
     <div>
-        <input type="checkbox" id="use_authority" value="Use_Authority"> Use Authority
+        <input type="checkbox" id="use_authority"> 마스터 제외 하위 계급
     </div>
     <div>
         <select disabled id="select_authority_level">
@@ -20,22 +20,54 @@
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
-            <option value="5">5</option>
         </select>
     </div>
     <div>
         <input type="checkbox" id="use_notice" value="Use_Notice"> Use Notice
     </div>
     <div>
-        <input type="text" placeholder="Description(Optional)" id="description" disabled/>
+        <input type="text" placeholder="Description(Optional)" id="description" disabled />
     </div>
     <div>
-        <input type="button" value="Create" id="btn_create">
+        <input type="button" value="Create" id="btn_create" onclick="create_ts();">
     </div>
 </body>
 
 <script>
+    var checked = false;
 
+    function change_val(){
+        checked = false;
+    }
+
+    function name_check(){
+        var ts_name = $('#team_storage_name').val();
+
+        if (ts_name != "") {
+            $.ajax({
+                url: "{% url 'tsnamecheck' %}",
+                type: "GET",
+                data: { "ts_name": ts_name },
+                success: function (result) {
+                    if (result == "true") {
+                        alert("사용 가능한 스토리지 이름 입니다.");
+                        checked = true;
+                    } else {
+                        alert("이미 존재하는 스토리지 이름 입니다.\n(" + ts_name + ")");
+                        $('#team_storage_name').val("");
+                        $('#team_storage_name').focus();
+                        checked = false;
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+        } else {
+            alert("사용할 스토리지 이름을 입력해주세요.");
+            $('#team_storage_name').focus();
+        }
+    }
     // Use Authority 체크 시 권한선택 리스트 활성화
     $("#use_authority").change(function () {
         if ($("#use_authority").is(":checked")) {
@@ -53,6 +85,49 @@
         }
     });
 
+    function create_ts() {
+        if (checked) {
+            var ts_name = $('#team_storage_name').val();
+            var ts_auth = 0;
+            var ts_descript = "";
+
+            var show_auth = "사용 안함";
+            var show_descript = "사용 안함";
+
+            if ($("#use_authority").is(":checked")) {
+                ts_auth = $('#select_authority_level option:selected').val();
+                if(ts_auth == ""){
+                    alert("권한을 선택해주세요.");
+                    $('#select_authority_level').focus();
+                    return;
+                }
+                show_auth = ts_auth;
+            }
+            if ($("#use_notice").is(":checked")) {
+                ts_descript = $('#description').val();
+                show_descript = ts_descript;
+            }
+
+            if (confirm("팀 스토리지 이름 : " + ts_name
+                + "\n하위 계급 단계 : " + show_auth + "\n스토리지 설명 : " + show_descript)) {
+                var data = { "ts_name" : ts_name, "ts_auth" : ts_auth, "ts_descript" : ts_descript }
+                $.ajax({
+                    url: "{% url 'createteamstorage' %}",
+                    type: "GET",
+                    data: data,
+                    success: function () {
+                        alert(ts_name + " 스토리지가 생성되었습니다.");
+                        location.href = "{% url 'team_storage_list' %}";
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                });
+            }
+        } else {
+            alert("이름 확인을 해주세요.");
+        }
+    }
 
 </script>
-{% endblock %}
+{% endblock %}  

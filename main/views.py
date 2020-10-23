@@ -10,11 +10,13 @@ import os
 
 # 데이터 베이스 연동 기능
 # main App의 models.py 내부 class 선언
-from main.models import User, StorageList, PSInfo, setdir
+from main.models import User, StorageList
 # master App의 models.py 내부 class 선언
 from master.models import TeamStorage
+# personal App의 models.py 내부 class 선언
+from personal.models import  PSInfo, setdir
 
-from main.forms import PSInfoForm
+from personal.forms import PSInfoForm
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -158,6 +160,13 @@ def sign_in(request):
     # Post 형식 데이터가 없을 시 Sign_in.html 반환
     return render(request, 'Sign_in.html')
 
+def idcheck(request):
+
+    if User.objects.filter(user_id = request.GET["userid"]).exists() == True :
+        return HttpResponse("false")
+
+    return HttpResponse("true")
+
 # http://localhost:8000/find_id_reset_pw
 # 아이디 찾기 및 비밀번호 재설정 페이지 호출 함수
 def find_id_reset_pw(request):
@@ -214,10 +223,13 @@ def personal_file_upload(request):
     setdir(dirpath)
 
     form = PSInfoForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return HttpResponse("success")
+    else:
+        print(form.errors)
     
-    form.save()
-
-    return HttpResponse("success")
+    return HttpResponse("fail")
 
 def addfolder(request):
 

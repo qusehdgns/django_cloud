@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 import os
 
 # main App의 models.py 내부 class 선언
-from main.models import StorageList
+from main.models import User, StorageList
+# master App의 models.py 내부 class 선언
+from master.models import TeamStorage
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -64,5 +67,41 @@ def team_storage_create(request):
 # http://localhost:8000/team/ts_file_upload
 # TeamStorage 파일 업로드 페이지 호출 함수
 def ts_file_upload(request):
+
+    url = request.GET['url']
+
     # TS_File_Upload.html 반환
-    return render(request, "TS_File_Upload.html")
+    return render(request, "TS_File_Upload.html",{ "url" : url })
+
+def tsnamecheck(request):
+
+    if TeamStorage.objects.filter(storage_name = request.GET["ts_name"]).exists() == True :
+        return HttpResponse("false")
+
+    return HttpResponse("true")
+
+def createteamstorage(request):
+
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    user_id = User.objects.get(pk = userid)
+
+    data = request.GET
+
+    TeamStorage.objects.create(storage_name=data["ts_name"], description=data["ts_descript"], authority=data["ts_auth"], master_id=user_id)
+
+    ts_name = TeamStorage.objects.get(pk = data["ts_name"])
+
+    StorageList.objects.create(user_id=user_id, team_storage=ts_name, personal_auth=0)
+
+    # data 내부 team 저장 공간으로 이동
+    os.chdir("../data/team")
+
+    # 스토리지 이름 저장 공간 생성
+    os.makedirs(data["ts_name"])
+
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    return HttpResponse()

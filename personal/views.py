@@ -3,8 +3,8 @@ from django.shortcuts import render
 import os
 
 # 데이터 베이스 연동 기능
-# main App의 models.py 내부 class 선언
-from main.models import PSInfo
+# personal App의 models.py 내부 class 선언
+from personal.models import  PSInfo
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -62,5 +62,6 @@ def personal_storage(request):
 def ps_file_upload(request):
 
     url = request.GET['url']
+
     # PS_File_Upload.html 반환
     return render(request, 'PS_File_Upload.html',{ "url" : url })

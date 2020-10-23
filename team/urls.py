@@ -21,4 +21,6 @@ urlpatterns = [
     path('team_storage_list', views.team_storage_list, name="team_storage_list"),
     path('team_storage_create', views.team_storage_create, name="team_storage_create"),
     path('ts_file_upload', views.ts_file_upload, name="ts_file_upload"),
+    path('tsnamecheck', views.tsnamecheck, name="tsnamecheck"),
+    path('createteamstorage', views.createteamstorage, name="createteamstorage"),
 ]

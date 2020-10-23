@@ -1,8 +1,8 @@
 from django import forms
 
-from main.models import PSInfo
+from personal.models import PSInfo
 
 class PSInfoForm(forms.ModelForm):
     class Meta:
         model = PSInfo
-        fields = ('filename', 'file', 'descript')
+        fields = ['filename', 'file', 'descript']
