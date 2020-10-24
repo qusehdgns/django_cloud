@@ -1,3 +1,4 @@
+# 웹 url 호출 시 html 및 템플릿 변수 전송
 from django.shortcuts import render
 
 # main App의 models.py 내부 class 선언

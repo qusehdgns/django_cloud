@@ -17,6 +17,8 @@ from django.urls import path
 from master import views
 
 urlpatterns = [
+    # Team Storage Master 관리 페이지
     path('', views.ts_master, name="ts_master"),
+    # Team Storage 공지사항 페이지ㄴ
     path('ts_notice_upload', views.ts_notice_upload, name="ts_notice_upload"),
 ]

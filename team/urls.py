@@ -17,10 +17,16 @@ from django.urls import path
 from team import views
 
 urlpatterns = [
+    # Team Storage
     path('', views.team_storage, name="team_storage"),
+    # Team Storage list 페이지
     path('team_storage_list', views.team_storage_list, name="team_storage_list"),
+    # Team Storage 생성 페이지
     path('team_storage_create', views.team_storage_create, name="team_storage_create"),
+    # Team Storage 파일 업로드 페이지
     path('ts_file_upload', views.ts_file_upload, name="ts_file_upload"),
+    # Team Storage 생성 시 Team Storage 이름 확인
     path('tsnamecheck', views.tsnamecheck, name="tsnamecheck"),
+    # Team Storage 생성
     path('createteamstorage', views.createteamstorage, name="createteamstorage"),
 ]
