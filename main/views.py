@@ -1,11 +1,17 @@
+# 웹 url 호출 시 html 및 템플릿 변수 전송
 from django.shortcuts import render
+# 웹 url 호출 시 다른 url로 이동
 from django.shortcuts import redirect
+# 웹에 문자열 리턴
 from django.http import HttpResponse
+# Json 형식의 데이터 리턴
 from django.http import JsonResponse
+# Post 통신 시 필요한 암호화를 우회
 from django.views.decorators.csrf import csrf_exempt
 
+# Json 형식 사용
 import json
-
+# 파일 과련 함수 사용
 import os
 
 # 데이터 베이스 연동 기능
@@ -16,6 +22,7 @@ from master.models import TeamStorage
 # personal App의 models.py 내부 class 선언
 from personal.models import  PSInfo, setdir
 
+# personal App에 forms.py 내부 PSInfoForm
 from personal.forms import PSInfoForm
 
 # data 디렉토리 경로
@@ -26,8 +33,6 @@ web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 
 # 초기 디렉터리 저장
 position = os.getcwd()
-
-dirpath = str()
 
 # http://localhost:8000/
 # 초반 메인 Login 페이지 호출 및 로그인 수행 함수
@@ -160,11 +165,14 @@ def sign_in(request):
     # Post 형식 데이터가 없을 시 Sign_in.html 반환
     return render(request, 'Sign_in.html')
 
+# 사용자 회원가입 시 사용자 id 중복 확인 함수
 def idcheck(request):
-
+    # 사용자가 사용할 ID가 User 데이터베이스에 존재하는지 확인
     if User.objects.filter(user_id = request.GET["userid"]).exists() == True :
+        # 존재할 시 'false' 리턴
         return HttpResponse("false")
 
+    # 사용 가능할 시 'true' 리턴
     return HttpResponse("true")
 
 # http://localhost:8000/find_id_reset_pw
@@ -214,69 +222,103 @@ def movetotsmaster(request):
 # File Upload 관련 함수
 @csrf_exempt
 def personal_file_upload(request):
-
+    # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
     dirpath = request.session['dirpath']
 
+    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
     if request.session.has_key('dir'):
+        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
         dirpath = dirpath + "/" + request.session['dir']
-
+    
+    # Personal App에 models.py에 존재하는 데이터베이스 디렉토리 경로 설정 함수
     setdir(dirpath)
 
+    # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
     form = PSInfoForm(request.POST, request.FILES)
+
+    # form 형식 유효성(validation) 확인
     if form.is_valid():
+        # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
         form.save()
+        # 저장 성공 시 'success' 리턴
         return HttpResponse("success")
     else:
+        # validation(유효성) 오류 발생 시 해당 항목 console에 출력
         print(form.errors)
     
+    # 유효성 검사 실패 시 'fail' 리턴
     return HttpResponse("fail")
 
+# 디렉토리 내부에 폴더 생성 시 실행 함수
 def addfolder(request):
-
+    # 사용자가 요청한 GET 방식 내부 folder 이름을 folder_name 변수에 저장
     folder_name = request.GET['folder_name']
 
+    # 폴더에 저장할 descript(주석 및 설명)을 GET 방식 내부에서 받아 descript 변수에 저장
     descript = request.GET['descript']
 
+    # descript 공백 확인
     if descript == "":
+        # 공백일 경우 None 값으로 변환
         descript = None
 
+    # 세션에서 현재 디렉토리 경로 정보를 dirpath 변수에 저장
     dirpath = request.session['dirpath']
 
+    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
     if request.session.has_key('dir'):
+        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
         dirpath = dirpath + "/" + request.session['dir']
 
+    # 현재 접속 디렉토리를 ../data/ + dirpath 경로로 이동
     os.chdir("../data/" + dirpath)
 
+    # 해당 경로에 folder_name 값의 폴더 생성
     os.makedirs(folder_name)
 
+    # PSInfo에 폴더 이름, 폴더 경로, 해당 폴더 설명을 생성
     PSInfo.objects.create(filename = folder_name, file = dirpath + "/" + folder_name, descript = descript)
 
+    # 초기 웹 서버 디렉토리로 이동
     os.chdir(position)
 
+    # 생성 완료문(String) 리턴
     return HttpResponse("폴더를 생성하였습니다.")
 
+# 상위 폴더로 이동할 때 발생하는 세션 변경 함수
 def uptofolder(request):
+    # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
+    dirpath = request.session['dirpath']
 
-    dirpath = request.session["dirpath"]
-
+    # 디렉토리 경로의 폴더 명들을 쪼개서 dir_root에 list 형식으로 저장
     dir_root = dirpath.split("/")
 
+    # dir_root의 크기가 2보다 큰지 확인(사용자 최상위 폴더 식별)
     if len(dir_root) > 2:
+        # 상위 폴더 이름을 value 변수에 저장
         value = dir_root[len(dir_root)-1]
 
+        # dir_root[0] 변수에 나머지 경로들 통합하여 저장
         for i in range(len(dir_root) - 2):
             dir_root[0] = dir_root[0] +"/" + dir_root[i + 1]
 
+        # dirpath 세션에 변환한 디렉토리 경로 저장
         request.session["dirpath"] = dir_root[0]
 
+    # 최상위 폴더 일 경우
     else:
+        # 최상위라 인식할 수 있는 top 문자열 value 변수에 저장
         value = "top"
 
+    # value 정보를 리턴
     return HttpResponse(value)
 
+# 내부 폴더 이동 시 세션값 설정
 def movefolder(request):
-
+    # 세션에 dir 세션이 존재하는 지 확인
     if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
         request.session['dirpath'] = request.session['dirpath'] + "/" + request.session["dir"]
     
+    # 웹 url을 /personal/?dir= + dir 경로로 전환
     return redirect("/personal/?dir=" + request.GET['dir'])

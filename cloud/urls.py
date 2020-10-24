@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    # admin
     path('admin/', admin.site.urls),
 
     # Main
@@ -33,4 +34,6 @@ urlpatterns = [
 
     # Team
     path('team/', include("team.urls")),
+
+    # 파일 처리 경로 설정
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
