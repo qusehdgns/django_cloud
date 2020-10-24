@@ -9,7 +9,7 @@ class TeamStorage(models.Model):
     description = models.CharField(max_length=250)
     
     # Storage 마스터 제외 하위 계급
-    authority = models.IntegerField(default = 0)
+    authority = models.IntegerField(default = 1)
     
     # Master id
     master_id = models.ForeignKey("main.User", on_delete=models.CASCADE)

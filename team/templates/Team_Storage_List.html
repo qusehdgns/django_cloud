@@ -8,7 +8,11 @@
 <h1>Team Storage List</h1>
 {% if data %}
     {% for list in data %}
-    <h3><a href='/movetots?name={{list}}'>{{list}}</a></h3>
+    {% if list.master %}
+    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}} [{{list.master}}]</a></h3>
+    {% else %}
+    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
+    {% endif %}
     {% endfor %}
 {% else %}
 <h3>참여한 Team Storage가 없습니다</h3>

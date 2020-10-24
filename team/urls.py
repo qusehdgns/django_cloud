@@ -19,6 +19,10 @@ from team import views
 urlpatterns = [
     # Team Storage
     path('', views.team_storage, name="team_storage"),
+    # Team Storage 폴더 추가
+    path('tsaddfolder', views.tsaddfolder, name='tsaddfolder'),
+    # Team Storage 하위 폴더로 이동
+    path('tsmovefolder', views.tsmovefolder, name='tsmovefolder'),
     # Team Storage list 페이지
     path('team_storage_list', views.team_storage_list, name="team_storage_list"),
     # Team Storage 생성 페이지

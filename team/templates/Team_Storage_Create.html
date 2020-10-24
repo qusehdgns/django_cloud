@@ -16,7 +16,6 @@
     <div>
         <select disabled id="select_authority_level">
             <option value="">권한선택</option>
-            <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
@@ -88,7 +87,7 @@
     function create_ts() {
         if (checked) {
             var ts_name = $('#team_storage_name').val();
-            var ts_auth = 0;
+            var ts_auth = 1;
             var ts_descript = "";
 
             var show_auth = "사용 안함";

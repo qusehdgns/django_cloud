@@ -33,7 +33,7 @@
                     <td>{% if "." in list.filename %}
                         {{list.filename}}
                         {% else %}
-                        <a href="/movefolder?dir={{list.filename}}">{{list.filename}}</a>
+                        <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
                         {% endif %}
                     </td>
                     <td>{{list.descript|default:""}}</td>
@@ -64,7 +64,7 @@
             }
             var data = { "folder_name": folder_name, "descript": descript };
             $.ajax({
-                url: "{% url 'addfolder' %}",
+                url: "{% url 'psaddfolder' %}",
                 type: 'GET',
                 data: data,
                 success: function (result) {

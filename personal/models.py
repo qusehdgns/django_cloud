@@ -27,8 +27,8 @@ class PSInfo(models.Model):
     # 파일 경로 및 파일
     file = models.FileField(upload_to=user_directory_path)
    
-   # 주석 및 메모
-   descript = models.TextField(blank = True, null = True)
+    # 주석 및 메모
+    descript = models.TextField(blank = True, null = True)
 
     class Meta:
         # 데이터베이스 테이블 명 'PersonalStorageInfo'

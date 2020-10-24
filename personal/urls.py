@@ -19,6 +19,10 @@ from personal import views
 urlpatterns = [
     # Personal Storage 페이지
     path('', views.personal_storage, name="personal_storage"),
+    # Personal Storage 폴더 추가
+    path('psaddfolder', views.psaddfolder, name='psaddfolder'),
+    # Personal Storage 하위 폴더로 이동
+    path('psmovefolder', views.psmovefolder, name='psmovefolder'),
     # Personal Storage 파일 업로드 페이지
     path('ps_file_upload', views.ps_file_upload, name="ps_file_upload"),
 ]

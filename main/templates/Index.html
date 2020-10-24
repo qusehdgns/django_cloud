@@ -1,13 +1,14 @@
 {% load static %}
 
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>{% block title %}{% endblock %}</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 
 <style>
-    #side_bar{
+    #side_bar {
         float: left;
         background-color: gainsboro;
         width: 15%;
@@ -16,7 +17,7 @@
 </style>
 
 <body>
-    <div id = "side_bar">
+    <div id="side_bar">
         <div id="info" onclick="location.href='/profile';">
             <h3 id="userid"></h3>
             <h3 id="username"></h3>
@@ -28,7 +29,7 @@
         <h4 id="ts_list">Team Storage</h4>
         <div id="storagelist"></div>
     </div>
-    <div id = "contents">
+    <div id="contents">
         {% block content %}
         {% endblock %}
     </div>
@@ -37,15 +38,19 @@
 <script>
     // 초기 사용자 id 및 이름 가져오기
     $.ajax({
-        url : "{% url 'index' %}",
-        type : 'GET',
-        success : function(result){
+        url: "{% url 'index' %}",
+        type: 'GET',
+        success: function (result) {
             $('#userid').text(result.user.userid);
             $('#username').text(result.user.username);
             $('#ps_name').text(result.user.userid);
-            
-            for(let i in result.storage){
-                let temp = "<h3><a href='/movetots?name=" + result.storage[i] + "'>" + result.storage[i] + "</a></h3>";
+
+            for (var i in result.storage) {
+                if (result.storage[i].master) {
+                    var temp = "<h3><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + " [" + result.storage[i].master + "]</a></h3>";
+                } else {
+                    var temp = "<h3><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + "</a></h3>";
+                }
                 $('#storagelist').append(temp);
             }
         },
@@ -55,12 +60,12 @@
     });
 
     // personal storage 문구 클릭 액션
-    $('#ps').click(function(){
-        location.href="{% url 'personal_storage' %}";
+    $('#ps').click(function () {
+        location.href = "{% url 'personal_storage' %}";
     });
 
     // team storage list 문구 클릭 액션
-    $('#ts_list').click(function(){
-        location.href="{% url 'team_storage_list' %}";
+    $('#ts_list').click(function () {
+        location.href = "{% url 'team_storage_list' %}";
     });
 </script>

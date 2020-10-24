@@ -104,15 +104,27 @@ def index(request):
     # list 선언 ( 배열 )
     ts_data = []
 
-    # select 결과값만 list로 변환
+    # TeamStorage 데이터베이스 teamstorage 변수에 저장
+    teamstorage = TeamStorage.objects;
+
+    # select 결과값만 list로 변환 및 본인 Team Storage 식별
     for temp in ts_result:
-        ts_data.append(temp['team_storage'])
+        # 검색한 Team Storage 이름이 본인이 만든 Team Storage 이름인지 식별
+        if teamstorage.filter(storage_name = temp['team_storage'], master_id = userid).exists() == True:
+            data = { "storage_name" : temp['team_storage'], "master" : "Master" }
+
+        # 검색한 Team Storage가 본인이 만든 것이 아닐 경우
+        else:
+            # Team Storage 이름만 추가
+            data = { "storage_name" : temp['team_storage'] }
+
+        ts_data.append(data)
 
     # user_data, ts_data 통합
-    data = { "user" : user_data, "storage" : ts_data }
+    data_list = { "user" : user_data, "storage" : ts_data }
     
     # Json 형식으로 data 반환
-    return JsonResponse(data)
+    return JsonResponse(data_list)
 
 # http://localhost:8000/profile
 # profile 페이지 실행 함수
@@ -249,42 +261,6 @@ def personal_file_upload(request):
     # 유효성 검사 실패 시 'fail' 리턴
     return HttpResponse("fail")
 
-# 디렉토리 내부에 폴더 생성 시 실행 함수
-def addfolder(request):
-    # 사용자가 요청한 GET 방식 내부 folder 이름을 folder_name 변수에 저장
-    folder_name = request.GET['folder_name']
-
-    # 폴더에 저장할 descript(주석 및 설명)을 GET 방식 내부에서 받아 descript 변수에 저장
-    descript = request.GET['descript']
-
-    # descript 공백 확인
-    if descript == "":
-        # 공백일 경우 None 값으로 변환
-        descript = None
-
-    # 세션에서 현재 디렉토리 경로 정보를 dirpath 변수에 저장
-    dirpath = request.session['dirpath']
-
-    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
-    if request.session.has_key('dir'):
-        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
-        dirpath = dirpath + "/" + request.session['dir']
-
-    # 현재 접속 디렉토리를 ../data/ + dirpath 경로로 이동
-    os.chdir("../data/" + dirpath)
-
-    # 해당 경로에 folder_name 값의 폴더 생성
-    os.makedirs(folder_name)
-
-    # PSInfo에 폴더 이름, 폴더 경로, 해당 폴더 설명을 생성
-    PSInfo.objects.create(filename = folder_name, file = dirpath + "/" + folder_name, descript = descript)
-
-    # 초기 웹 서버 디렉토리로 이동
-    os.chdir(position)
-
-    # 생성 완료문(String) 리턴
-    return HttpResponse("폴더를 생성하였습니다.")
-
 # 상위 폴더로 이동할 때 발생하는 세션 변경 함수
 def uptofolder(request):
     # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
@@ -312,13 +288,3 @@ def uptofolder(request):
 
     # value 정보를 리턴
     return HttpResponse(value)
-
-# 내부 폴더 이동 시 세션값 설정
-def movefolder(request):
-    # 세션에 dir 세션이 존재하는 지 확인
-    if request.session.has_key('dir'):
-        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
-        request.session['dirpath'] = request.session['dirpath'] + "/" + request.session["dir"]
-    
-    # 웹 url을 /personal/?dir= + dir 경로로 전환
-    return redirect("/personal/?dir=" + request.GET['dir'])
