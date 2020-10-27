@@ -1,4 +1,6 @@
 from django.db import models
+# 시스템 시간값 라이브러리
+from django.utils import timezone
 
 # 파일 저장 경로 설정 변수
 dir_path = str()
@@ -37,3 +39,20 @@ class TSInfo(models.Model):
         # 데이터베이스 테이블 명 'TeamStorageInfo'
         db_table = 'TeamStorageInfo'
 
+
+# Team Notice 데이터베이스
+class Notice(models.Model):
+    # Team Storage 이름 (FK)
+    team_storage = models.ForeignKey("master.TeamStorage", on_delete=models.CASCADE)
+
+    # 게시물 작성자 (FK)
+    author = models.ForeignKey("main.User", on_delete=models.CASCADE)
+
+    # 게시물 제목
+    title = models.CharField(max_length=250)
+
+    # 게시물 내용
+    value = models.TextField(blank = False, null = False)
+
+    # 입력 시간
+    input_time = models.DateTimeField(default = timezone.now)

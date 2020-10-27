@@ -33,6 +33,15 @@ def ts_master(request):
 def ts_notice_upload(request):
     # 세션 team storage 이름 호출
     ts_name = request.session['ts_name']
+    
+    # POST 형식 확인
+    if request.POST:
+        # POST 형식 데이터를 data 변수에 저장
+        data = request.POST
+
+        
+
+
 
     # TS_Master.html 반환 시 TeamStorage이름 반환
     return render(request, "TS_Notice_Upload.html", { 'ts_name' : ts_name })

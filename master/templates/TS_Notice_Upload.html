@@ -4,15 +4,15 @@
 
 {% block content %}
 <style>
-    .box{
+    .box {
         width: 70%;
     }
 
-    #title{
+    #title {
         width: 70%;
     }
-    
-    #value{
+
+    #value {
         width: 70%;
         height: 50%;
     }
@@ -21,16 +21,22 @@
         float: right;
     }
 </style>
+
 <body>
     <h1>{{ts_name}} Notice Upload</h1>
     <div class="box">
-        <b>제 목 : </b>
-        <input type="text" id="title" placeholder="제목을 입력하세요."><p/>
-        <b>내 용 : </b><br/>
-        <textarea id="value" placeholder="내용을 입력하세요."></textarea><p/>
-        <div class="button">
-            <input type="button" value="Create Notice">
-        </div>
+        <form method="POST" action="{% url 'ts_notice_upload' %}">
+            {% csrf_token %}
+            <b>제 목 : </b>
+            <input type="text" id="title" name="title" placeholder="제목을 입력하세요.">
+            <p />
+            <b>내 용 : </b><br />
+            <textarea id="value" name="value" placeholder="내용을 입력하세요."></textarea>
+            <p />
+            <div class="button">
+                <input type="submit" value="Create Notice">
+            </div>
+        </form>
     </div>
 </body>
 {% endblock %}
