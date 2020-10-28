@@ -288,3 +288,21 @@ def uptofolder(request):
 
     # value 정보를 리턴
     return HttpResponse(value)
+
+# Profile 수정 함수
+def changeprofile(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # GET 방식을 통한 데이터를 변수 data에 저장
+    data = request.GET
+
+    # User 데이터베이스에서 사용자 레코드 호출
+    user = User.objects.filter(user_id=userid)
+
+    print(data)
+
+    # 데이터베이스 수정
+    user.update(user_name=data['username'], user_phone=data['userphone'])
+
+    return HttpResponse("success")

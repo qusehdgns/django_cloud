@@ -44,7 +44,7 @@ def ts_master(request):
 
     # 추출 결과값을 dict 배열로 변환
     for temp in notice:
-        notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
+        notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time']}
         notice_data.append(notice_temp)
 
     # TS_Master.html 반환 시 TeamStorage이름, 유저ID, TeamStorage 사용자 정보 반환
@@ -94,3 +94,39 @@ def notice_check(request):
 
     # 중복 게시물이 존재하지 않을 경우
     return HttpResponse('true')
+
+# http://localhost:8000/master/ts_notice_update?title=타이틀
+# Team Notice 수정 페이지
+def ts_notice_update(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    # 요청 형식이 POST인 경우
+    if request.method == "POST":
+        # POST 형식 data 변수에 저장
+        data = request.POST
+
+        # Team Notice 데이터베이스에서 사용자 선택 게시물의 레코드 호출
+        notice = Notice.objects.filter(team_storage=ts_name, title=data['title'])
+
+        # 데이터베이스 수정
+        notice.update(value=data['value'], input_time=datetime.datetime.now())
+
+        # ts_master 페이지로 이동
+        return redirect('ts_master')
+    
+    # 요청 형식이 GET인 경우 data 변수에 저장
+    data = request.GET
+
+    # GET 방식 데이터에서 title을 변수 title에 저장
+    title = data['title']
+
+    # Team Notice 데이터베이스에서 사용자 선택 게시물의 레코드 호출
+    notice = Notice.objects.filter(team_storage=ts_name, title=title).values('title', 'value')
+
+    # 레코드 슬라이싱
+    for temp in notice:
+        notice = temp
+    
+    # 기존 게시물 정보와 TS_Notice_Update.html 리턴
+    return render(request, "TS_Notice_Update.html", { 'data' : notice })

@@ -35,7 +35,7 @@
                 {% for list in notice %}
                 <tr>
                     <td><a href="#" onclick="location.href='/team/team_notice?title={{list.title}}&url='+location.href;" >{{list.title}}</a></td>
-                    <td>{{list.input_time}}</td>
+                    <td>{{list.input_time|date:"Y-m-d P"}}</td>
                 </tr>
                 {% endfor %}
                 {% else %}

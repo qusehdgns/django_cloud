@@ -23,4 +23,6 @@ urlpatterns = [
     path('ts_notice_upload', views.ts_notice_upload, name="ts_notice_upload"),
     # Team Notice 공지사항 중복확인
     path('notice_check', views.notice_check, name="notice_check"),
+    # Team Notice 수정 페이지
+    path('ts_notice_update', views.ts_notice_update, name="ts_notice_update"),
 ]

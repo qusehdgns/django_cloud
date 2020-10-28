@@ -15,6 +15,7 @@
     #value {
         width: 70%;
         height: 50%;
+        resize: none;
     }
 
     .button {
@@ -56,6 +57,9 @@
                     alert("중복된 게시글이 있습니다.\n제목을 수정해주세요.");
                     $('#title').focus();
                 }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
         })
     }

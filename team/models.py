@@ -1,6 +1,4 @@
 from django.db import models
-# 시스템 시간값 라이브러리
-import datetime
 
 # 파일 저장 경로 설정 변수
 dir_path = str()

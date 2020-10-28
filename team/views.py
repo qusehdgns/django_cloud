@@ -138,7 +138,7 @@ def team_storage(request):
 
     # 추출 결과값을 dict 배열로 변환
     for temp in notice:
-        notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
+        notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time']}
         notice_data.append(notice_temp)
 
     # Team_Storage.html 반환 시 상위폴더 존재 ㅣ여부, TeamStroage이름, TeamStorage 내부 파일 리스트, 사용자 권한, Team Storage 계급 반환

@@ -41,5 +41,7 @@ urlpatterns = [
     path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
     # 상위 폴더로 이동
     path('uptofolder', views.uptofolder, name='uptofolder'),
+    # 프로필 수정
+    path('changeprofile', views.changeprofile, name='changeprofile'),
 ]
 

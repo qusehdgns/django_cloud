@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block title %}TS Notice Upload Page{% endblock %}
+
+{% block content %}
+<style>
+    .box {
+        width: 70%;
+    }
+
+    #title {
+        width: 70%;
+    }
+
+    #value {
+        width: 70%;
+        height: 50%;
+        resize: none;
+    }
+
+    .button {
+        float: right;
+    }
+</style>
+
+<body>
+    <h1>{{ts_name}} Notice Upload</h1>
+    <div class="box">
+        <form method="POST" action="{% url 'ts_notice_update' %}" id="notice_form">
+            {% csrf_token %}
+            <b>제 목 : </b>
+            <p>{{data.title}}</p>
+            <input type="hidden" name="title" value="{{data.title}}">
+            <p />
+            <b>내 용 : </b><br />
+            <textarea type="text" id="value" name="value">{{data.value}}</textarea>
+            <p />
+            <div class="button">
+                <input type="submit" value="Update Notice">
+            </div>
+        </form>
+    </div>
+</body>
+{% endblock %}
