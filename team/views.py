@@ -14,7 +14,10 @@ from main.models import User, StorageList
 # master App의 models.py 내부 class 선언
 from master.models import TeamStorage
 # team App의 models.py 내부 class 선언
-from team.models import TSInfo
+from team.models import TSInfo, Notice
+
+# 시간 형식 변환
+import datetime
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -125,12 +128,23 @@ def team_storage(request):
                     data_list.append(data)
             
     # 웹 서버 경로로 이동
-    os.chdir(position)
+    os.chdir(position) 
+
+    # 해당 TeamStorage 게시물 정보 추출 후 날짜 순으로 정렬
+    notice = Notice.objects.filter(team_storage = ts_name).values('title', 'input_time').order_by('input_time')
+
+    # list 선언 ( 배열 )
+    notice_data = []
+
+    # 추출 결과값을 dict 배열로 변환
+    for temp in notice:
+        notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
+        notice_data.append(notice_temp)
 
     # Team_Storage.html 반환 시 상위폴더 존재 ㅣ여부, TeamStroage이름, TeamStorage 내부 파일 리스트, 사용자 권한, Team Storage 계급 반환
     return render(request, "Team_Storage.html",
         { 'folder' : pos, 'name' : ts_name, 'data' : data_list, "user_auth" : user_auth, "team_auth" : team_auth,
-        'team_descript' : team_descript })
+        'team_descript' : team_descript, 'notice' : notice_data })
 
 # Team Storage 디렉토리 내부에 폴더 생성 시 실행 함수
 def tsaddfolder(request):
@@ -273,3 +287,27 @@ def createteamstorage(request):
 
     # 웹으로 리턴
     return HttpResponse()
+
+# http://localhost:8000/team/team_notice?title=제목&url=접속 url
+# Team Notice 게시물 확인 페이지 호출 함수
+def team_notice(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    # GET 방식의 데이터 변수 data에 저장
+    data = request.GET
+
+    # 돌아갈 url 저장
+    url = data['url']
+
+    # Team Notice 데이터베이스에서 사용자 선택 게시물 정보 검색
+    notice = Notice.objects.filter(team_storage = ts_name, title = data['title']).values()
+
+    # filter 사용을 위한 슬라이싱
+    for temp in notice:
+        notice = temp
+
+    # 사용할 데이터 dict 형식으로 변환
+    notice_data = { "title" : notice['title'], "value" : notice['value'], "author" : notice['author_id'], "time" : notice['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
+
+    return render(request, "Team_Notice.html", { 'data' : notice_data, 'url' : url })

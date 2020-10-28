@@ -1,6 +1,6 @@
 from django.db import models
 # 시스템 시간값 라이브러리
-from django.utils import timezone
+import datetime
 
 # 파일 저장 경로 설정 변수
 dir_path = str()
@@ -55,4 +55,10 @@ class Notice(models.Model):
     value = models.TextField(blank = False, null = False)
 
     # 입력 시간
-    input_time = models.DateTimeField(default = timezone.now)
+    input_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # 데이터베이스 테이블 명 'TeamNotice'
+        db_table = 'TeamNotice'
+        # 복합 중복 방지 ( 중복 공지 제목 방지 )
+        unique_together = (('team_storage', 'title'),)

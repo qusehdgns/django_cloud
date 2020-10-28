@@ -33,4 +33,6 @@ urlpatterns = [
     path('tsnamecheck', views.tsnamecheck, name="tsnamecheck"),
     # Team Storage 생성
     path('createteamstorage', views.createteamstorage, name="createteamstorage"),
+    # Team Notice 페이지
+    path('team_notice', views.team_notice, name="team_notice"),
 ]

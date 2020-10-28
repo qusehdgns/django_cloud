@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block title %}TS Notice Page{% endblock %}
+
+{% block content %}
+
+<body>
+    <h1>{{ts_name}} Notice Upload</h1>
+    <div class="box">
+        <b>제 목</b>
+        <p>{{data.title}}</p>
+        <b>내 용</b><br />
+        <p>{{data.value}}</p>
+        <h3><pre>작성자 : {{data.author}}   작성일 : {{data.time}}</pre></h3>
+        <div class="button">
+        <input type="button" value="돌아가기" onclick="location.href='{{url}}'">
+        </div>
+    </div>
+</body>
+{% endblock %}

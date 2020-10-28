@@ -25,7 +25,7 @@
 <body>
     <h1>{{ts_name}} Notice Upload</h1>
     <div class="box">
-        <form method="POST" action="{% url 'ts_notice_upload' %}">
+        <form method="POST" action="{% url 'ts_notice_upload' %}" id="notice_form">
             {% csrf_token %}
             <b>제 목 : </b>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요.">
@@ -34,9 +34,30 @@
             <textarea id="value" name="value" placeholder="내용을 입력하세요."></textarea>
             <p />
             <div class="button">
-                <input type="submit" value="Create Notice">
+                <input type="button" value="Create Notice" onclick="create_notice();">
             </div>
         </form>
     </div>
 </body>
+
+<script>
+    function create_notice(){
+        var title = $('#title').val();
+
+        $.ajax({
+            url : "{% url 'notice_check' %}",
+            type : "GET",
+            data : { "title" : title },
+            success : function(result){
+                if(result == "true"){
+                    form = document.getElementById('notice_form');
+                    form.submit();
+                } else {
+                    alert("중복된 게시글이 있습니다.\n제목을 수정해주세요.");
+                    $('#title').focus();
+                }
+            }
+        })
+    }
+</script>
 {% endblock %}

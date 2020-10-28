@@ -63,14 +63,14 @@
         <table>
             <thead>
                 <th scope="col">NOTICE</th>
-                <th scope="col">WRITER</th>
+                <th scope="col">DATE</th>
             </thead>
             <tbody>
                 {% if notice %}
-                {% for list in data %}
+                {% for list in notice %}
                 <tr>
-                    <td>공지사항</td>
-                    <td>writer</td>
+                    <td><a>{{list.title}}</a></td>
+                    <td>{{list.input_time}}</td>
                 </tr>
                 {% endfor %}
                 {% else %}
