@@ -42,7 +42,7 @@ def personal_storage(request):
         # 하위 폴더라는 정보의 'non-top'을 저장
         pos = "non-top"
     
-    # GET 방식 통신이 아닐 경우(사용자 최상위 폴더)
+    # GET 방식 데이터가 없을 경우(사용자 최상위 폴더)
     else:
         # 세션에 dir 세션이 존재할 경우
         if request.session.has_key('dir'):

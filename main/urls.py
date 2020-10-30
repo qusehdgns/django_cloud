@@ -17,7 +17,7 @@ from django.urls import path
 from main import views
 
 urlpatterns = [
-    # Login
+    # Login 페이지
     path('', views.login, name="login"),
     # 죄측 Index 바
     path('index', views.index, name="index"),

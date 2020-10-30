@@ -300,8 +300,6 @@ def changeprofile(request):
     # User 데이터베이스에서 사용자 레코드 호출
     user = User.objects.filter(user_id=userid)
 
-    print(data)
-
     # 데이터베이스 수정
     user.update(user_name=data['username'], user_phone=data['userphone'])
 
