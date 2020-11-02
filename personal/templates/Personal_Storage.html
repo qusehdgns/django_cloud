@@ -31,7 +31,7 @@
                 {% for list in data %}
                 <tr>
                     <td>{% if "." in list.filename %}
-                        {{list.filename}}
+                        <a href="/personal/download?filename={{list.filename}}" download>{{list.filename}}</a>
                         {% else %}
                         <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
                         {% endif %}

@@ -4,6 +4,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# 파일 정보 리턴
+from django.http import FileResponse
+
+from cloud.settings import DATA_DIR
 
 # 파일 과련 함수 사용
 import os
@@ -148,3 +152,22 @@ def ps_file_upload(request):
 
     # 돌아가기 위한 url 정보를 담아 PS_File_Upload.html 반환
     return render(request, 'PS_File_Upload.html',{ "url" : url })
+
+# 파일 다운로드 함수
+def download(request):
+    # GET 방식 데이터 filename 수신
+    filename = request.GET["filename"]
+
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+
+    file_data = PSInfo.objects.get(file = dirpath + "/" + filename)
+
+    file = file_data.file.path
+
+    return FileResponse(open(file, "rb"))
