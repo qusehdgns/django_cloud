@@ -37,8 +37,6 @@ urlpatterns = [
     path('movetoresetpw', views.movetoresetpw, name='movetoresetpw'),
     # master 페이지 이동
     path('movetotsmaster', views.movetotsmaster, name='movetotsmaster'),
-    # personal storage 파일 업로드
-    path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
     # 상위 폴더로 이동
     path('uptofolder', views.uptofolder, name='uptofolder'),
     # 프로필 수정

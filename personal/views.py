@@ -6,15 +6,18 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 # 파일 정보 리턴
 from django.http import FileResponse
-
-from cloud.settings import DATA_DIR
+# Post 통신 시 필요한 암호화를 우회
+from django.views.decorators.csrf import csrf_exempt
 
 # 파일 과련 함수 사용
 import os
 
 # 데이터 베이스 연동 기능
 # personal App의 models.py 내부 class 선언
-from personal.models import  PSInfo
+from personal.models import  PSInfo, setdir
+
+# personal App에 forms.py 내부 PSInfoForm
+from personal.forms import PSInfoForm
 
 # data 디렉토리 경로
 data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
@@ -152,6 +155,36 @@ def ps_file_upload(request):
 
     # 돌아가기 위한 url 정보를 담아 PS_File_Upload.html 반환
     return render(request, 'PS_File_Upload.html',{ "url" : url })
+
+# File Upload 관련 함수
+@csrf_exempt
+def personal_file_upload(request):
+    # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
+    dirpath = request.session['dirpath']
+
+    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
+    if request.session.has_key('dir'):
+        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
+        dirpath = dirpath + "/" + request.session['dir']
+    
+    # Personal App에 models.py에 존재하는 데이터베이스 디렉토리 경로 설정 함수
+    setdir(dirpath)
+
+    # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
+    form = PSInfoForm(request.POST, request.FILES)
+
+    # form 형식 유효성(validation) 확인
+    if form.is_valid():
+        # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
+        form.save()
+        # 저장 성공 시 'success' 리턴
+        return HttpResponse("success")
+    else:
+        # validation(유효성) 오류 발생 시 해당 항목 console에 출력
+        print(form.errors)
+    
+    # 유효성 검사 실패 시 'fail' 리턴
+    return HttpResponse("fail")
 
 # 파일 다운로드 함수
 def download(request):
