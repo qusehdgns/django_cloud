@@ -33,10 +33,8 @@ web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
 # 초기 디렉터리 저장
 position = os.getcwd()
 
-# http://localhost:8000/
-# 초반 메인 Login 페이지 호출 및 로그인 수행 함수
-def login(request):
-
+# 초기 서버 디렉토리 생성 함수
+def create_data_directory():
     # 상위 폴더 이동
     os.chdir("..")
 
@@ -61,6 +59,14 @@ def login(request):
     # 웹 서버 디렉토리로 이동
     os.chdir(position)
 
+    return
+
+# 초기 디렉토리 생성 실행
+create_data_directory()
+
+# http://localhost:8000/
+# 초반 메인 Login 페이지 호출 및 로그인 수행 함수
+def login(request):
     # Post 형식 데이터가 들어오는지 확인
     if request.method == "POST":
         # Post 형식 데이터를 data 변수에 저장

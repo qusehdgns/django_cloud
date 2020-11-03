@@ -27,4 +27,6 @@ urlpatterns = [
     path('ps_file_upload', views.ps_file_upload, name="ps_file_upload"),
     # personal storage 파일 업로드
     path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
+    # Pesonal Storage 파일 삭제
+    path('psdeletefile', views.psdeletefile, name="psdeletefile"),
 ]

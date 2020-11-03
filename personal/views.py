@@ -9,6 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 # 파일 과련 함수 사용
 import os
+# 디렉토리 관련 함수
+import shutil
+# Json 형식 사용
+import json
 
 # 데이터 베이스 연동 기능
 # personal App의 models.py 내부 class 선언
@@ -183,3 +187,50 @@ def personal_file_upload(request):
     
     # 유효성 검사 실패 시 'fail' 리턴
     return HttpResponse("fail")
+
+# 파일 삭제 함수
+@csrf_exempt
+def psdeletefile(request):
+    # POST 방식 데이터 수신
+    data = request.POST['filename']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    filename = json.loads(data)
+
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+    
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # PSInfo 데이터베이스를 호출해서 psinfo 변수에 저장
+    psinfo = PSInfo.objects
+
+    # 파일 및 디렉토리 삭제 함수
+    for temp in filename['array']:
+        # 파일인지 확인
+        if "." in temp:
+            # 파일이면 해당 파일만 삭제
+            os.remove("./" + dirpath + "/" + temp)
+
+            # Personal Storage 데이터베이스 정보 삭제(해당 파일만 삭제)
+            psinfo.filter(file = dirpath + "/" + temp).delete()
+        else:
+            # 디렉토리면 내부까지 전부 삭제
+            shutil.rmtree("./" + dirpath + "/" + temp)
+            # Personal Storage 데이터베이스 정보 삭제(디렉토리 경로 포함 전부 삭제)
+            psinfo.filter(file__startswith = dirpath + "/" + temp).delete()
+
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    # 삭제 완료 의미 "success" 리턴
+    return HttpResponse("success")
