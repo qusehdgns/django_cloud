@@ -4,8 +4,6 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
-# 파일 정보 리턴
-from django.http import FileResponse
 # Post 통신 시 필요한 암호화를 우회
 from django.views.decorators.csrf import csrf_exempt
 
@@ -185,22 +183,3 @@ def personal_file_upload(request):
     
     # 유효성 검사 실패 시 'fail' 리턴
     return HttpResponse("fail")
-
-# 파일 다운로드 함수
-def download(request):
-    # GET 방식 데이터 filename 수신
-    filename = request.GET["filename"]
-
-    # 상위 디렉토리 경로 호출
-    dirpath = request.session['dirpath']
-
-    # 세션에 dir 세션이 존재하는 지 확인
-    if request.session.has_key('dir'):
-        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
-        dirpath = dirpath + "/" + request.session["dir"]
-
-    file_data = PSInfo.objects.get(file = dirpath + "/" + filename)
-
-    file = file_data.file.path
-
-    return FileResponse(open(file, "rb"))

@@ -6,11 +6,15 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 # Json 형식의 데이터 리턴
 from django.http import JsonResponse
+# 파일 정보 리턴
+from django.http import FileResponse
 
 # Json 형식 사용
 import json
-# 파일 과련 함수 사용
+# 파일 관련 함수 사용
 import os
+# zipping 관련 함수 사용
+import zipfile
 
 # 데이터 베이스 연동 기능
 # main App의 models.py 내부 class 선언
@@ -270,3 +274,38 @@ def changeprofile(request):
 
     # 프로필 변경 성공 "success" 리턴
     return HttpResponse("success")
+
+# 파일 다운로드 함수
+def download(request):
+    # GET 방식 데이터 filename 수신
+    filename = request.GET["filename"]
+
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+
+    file_data = PSInfo.objects.get(file = dirpath + "/" + filename)
+
+    file = file_data.file.path
+
+    return FileResponse(open(file, "rb"))
+
+# Zipping 함수
+def zipping(request):
+    ## zip 파일 생성
+    # zip = zipfile.ZipFile("경로","w")
+
+    ## 내부 디렉토리까지 zipping
+    # for root, dirs, files in os.walk("경로"):
+        # for file in files:
+            # zip.write(os.path.join(root, file))
+    
+    ## zip 생성 완료
+    # zip.close()
+
+    # return FileResponse(open("zip 경로", "rb"))
+    return HttpResponse()

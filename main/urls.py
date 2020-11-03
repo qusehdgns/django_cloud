@@ -41,5 +41,9 @@ urlpatterns = [
     path('uptofolder', views.uptofolder, name='uptofolder'),
     # 프로필 수정
     path('changeprofile', views.changeprofile, name='changeprofile'),
+    # 파일 다운로드
+    path('download', views.download, name="download"),
+    # Zipping 함수
+    path('zipping', views.zipping, name="zipping"),
 ]
 

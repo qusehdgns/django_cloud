@@ -27,6 +27,4 @@ urlpatterns = [
     path('ps_file_upload', views.ps_file_upload, name="ps_file_upload"),
     # personal storage 파일 업로드
     path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
-    # Personal Storage 파일 다운로드
-    path('download', views.download, name="download"),
 ]
