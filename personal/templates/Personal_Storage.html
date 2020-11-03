@@ -33,7 +33,7 @@
                 <tr>
                     <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
                     <td>{% if "." in list.filename %}
-                        <a href="/download?filename={{list.filename}}" download>{{list.filename}}</a>
+                        {{list.filename}}
                         {% else %}
                         <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
                         {% endif %}
@@ -54,8 +54,9 @@
     <div id="upload" class="button">
         <input type="button" value="Delete" onclick="delete_files();">
         <input type="button" value="Upload" onclick="location.href='/personal/ps_file_upload?url='+location.href;">
-        <input type="button" value="Download" onclick="">
+        <input type="button" value="Download" onclick="download_files()">
     </div>
+    <a id="file_download" href="" download hidden></a>
 </body>
 <script>
     function create_folder() {
@@ -108,7 +109,7 @@
 
         var formData = new FormData();
 
-        var array = JSON.stringify({ 'array' : filename_array})
+        var array = JSON.stringify({ 'array': filename_array })
 
         formData.append('filename', array);
 
@@ -126,7 +127,56 @@
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
+            });
+        }
+    }
+
+    function download_files() {
+        var check_count = $("input:checkbox[name=check_files]:checked").length;
+
+        if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
+            var file = $("input:checkbox[name=check_files]:checked").val();
+
+            var a = $("#file_download");
+
+            a.attr("href", "/download?filename=" + file);
+
+            a.get(0).click();
+
+            a.attr("href", "");
+        } else {
+            var filename_array = new Array();
+
+            // check 항목 받아옴
+            $("input:checkbox[name=check_files]:checked").each(function () {
+                filename_array.push($(this).val());
             })
+
+            var formData = new FormData();
+
+            var array = JSON.stringify({ 'array': filename_array })
+
+            formData.append('filename', array);
+
+            $.ajax({
+                url: "{% url 'zipping' %}",
+                data: formData,  //위에서 선언한 fromdata
+                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                type: 'POST',
+                success: function (result) {
+                    var a = $("#file_download");
+
+                    a.attr("href", "/zipdownload?path=" + result);
+
+                    a.get(0).click();
+
+                    a.attr("href", "");
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
         }
     }
 </script>

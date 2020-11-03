@@ -45,5 +45,7 @@ urlpatterns = [
     path('download', views.download, name="download"),
     # Zipping
     path('zipping', views.zipping, name="zipping"),
+    # zip down
+    path('zipdownload', views.zipdownload, name="zipdownload"),
 ]
 

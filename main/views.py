@@ -8,6 +8,10 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 # 파일 정보 리턴
 from django.http import FileResponse
+# Post 통신 시 필요한 암호화를 우회
+from django.views.decorators.csrf import csrf_exempt
+# 데이터 저장 경로 확인(데이터 경로)
+from cloud.settings import DATA_DIR
 
 # Json 형식 사용
 import json
@@ -24,13 +28,7 @@ from master.models import TeamStorage
 # personal App의 models.py 내부 class 선언
 from personal.models import  PSInfo
 
-# data 디렉토리 경로
-data_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/data"
-
-# 웹 서버 경로
-web_location = "C:/Users/quseh/Desktop/workspace/django/Capstone/cloud"
-
-# 초기 디렉터리 저장
+# 초기 디렉터리 저장(웹 서버 경로)
 position = os.getcwd()
 
 # 초기 서버 디렉토리 생성 함수
@@ -55,6 +53,11 @@ def create_data_directory():
     if not os.path.exists("team"):
         # team 디렉토리 생성
         os.makedirs("team")
+    
+    # zip 디렉토리 없을 시 실행
+    if not os.path.exists("zip"):
+        # team 디렉토리 생성
+        os.makedirs("zip")
     
     # 웹 서버 디렉토리로 이동
     os.chdir(position)
@@ -301,17 +304,57 @@ def download(request):
     return FileResponse(open(file, "rb"))
 
 # Zipping 함수
+@csrf_exempt
 def zipping(request):
-    ## zip 파일 생성
-    # zip = zipfile.ZipFile("경로","w")
+    # 세션에서 userid 호출
+    userid = request.session['userid']
 
-    ## 내부 디렉토리까지 zipping
-    # for root, dirs, files in os.walk("경로"):
-        # for file in files:
-            # zip.write(os.path.join(root, file))
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']    
+
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # POST 방식 데이터 수신
+    data = request.POST['filename']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    filename = json.loads(data)
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+
+    # zip 파일 생성
+    zip_file = zipfile.ZipFile("./zip/" + userid + ".zip","w")
+
+    os.chdir("./" + dirpath)
+
+    # 파일 및 디렉토리 내부 압축
+    for temp in filename['array']:
+        # 파일인지 확인
+        if "." in temp:
+            zip_file.write("./" + temp)
+        else:
+            # 내부 디렉토리까지 zipping
+            for root, dirs, files in os.walk("./" + temp):
+                for file in files:
+                    zip_file.write(os.path.join(root, file))
     
-    ## zip 생성 완료
-    # zip.close()
+    # zip 생성 완료
+    zip_file.close()
 
-    # return FileResponse(open("zip 경로", "rb"))
-    return HttpResponse()
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    # zip 파일 경로 리턴
+    return HttpResponse(DATA_DIR.replace("\\","/") + "/data/zip/" + userid + ".zip")
+
+# zip 파일 다운로드 함수
+def zipdownload(request):
+
+    return FileResponse(open(request.GET["path"], "rb"))
