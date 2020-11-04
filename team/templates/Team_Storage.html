@@ -52,7 +52,7 @@
         {% endif %}
         <table>
             <thead>
-                <th></th>
+                <th><input type="checkbox" id="check_all"></th>
                 <th scope="col">FILES</th>
                 <th scope="col">MEMO</th>
             </thead>
@@ -232,5 +232,14 @@
             });
         }
     }
+
+    $('#check_all').click(function(){
+        var checkbox = $('input[name=check_files]');
+        if($('#check_all').prop("checked")){
+            checkbox.prop("checked", true);
+        } else {
+            checkbox.prop("checked", false);
+        }
+    })
 </script>
 {% endblock %}

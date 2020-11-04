@@ -4,6 +4,11 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# Post 통신 시 필요한 암호화를 우회
+from django.views.decorators.csrf import csrf_exempt
+
+# Json 형식 사용
+import json
 
 # main App의 models.py 내부 class 선언
 from main.models import User, StorageList
@@ -130,3 +135,28 @@ def ts_notice_update(request):
     
     # 기존 게시물 정보와 TS_Notice_Update.html 리턴
     return render(request, "TS_Notice_Update.html", { 'data' : notice })
+
+    # 파일 삭제 함수
+@csrf_exempt
+def noticedelete(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    # POST 방식 데이터 수신
+    data = request.POST['title']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    title = json.loads(data)
+
+    # Notice 데이터베이스를 호출해서 notice 변수에 저장
+    notice = Notice.objects
+
+    # TeamStorage 데이터베이스에서 선택 TeamStorage 정보 레코드 추출
+    teamstorage = TeamStorage.objects.get(pk = ts_name)
+
+    # 데이터베이스 삭제
+    for temp in title['array']:
+        notice.filter(team_storage = teamstorage, title = temp).delete();
+
+    # 삭제 완료 의미 "success" 리턴
+    return HttpResponse("success")

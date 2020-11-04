@@ -25,4 +25,6 @@ urlpatterns = [
     path('notice_check', views.notice_check, name="notice_check"),
     # Team Notice 수정 페이지
     path('ts_notice_update', views.ts_notice_update, name="ts_notice_update"),
+    # Notice 삭제 함수
+    path('noticedelete', views.noticedelete, name="noticedelete"),
 ]

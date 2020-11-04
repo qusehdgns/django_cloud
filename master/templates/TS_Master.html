@@ -62,6 +62,7 @@
     <div class="notice-list">
         <table>
             <thead>
+                <th><input type="checkbox" id="check_all"></th>
                 <th scope="col">NOTICE</th>
                 <th scope="col">DATE</th>
             </thead>
@@ -69,6 +70,7 @@
                 {% if notice %}
                 {% for list in notice %}
                 <tr>
+                    <td><input type="checkbox" name="check_notice" value="{{list.title}}"></td>
                     <td><a href="#" onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a></td>
                     <td>{{list.input_time|date:"Y-m-d P"}}</td>
                 </tr>
@@ -83,6 +85,50 @@
     </div>
     <div class="button">
         <input type="button" value="Create Notice" onclick="location.href='/master/ts_notice_upload'">
+        <input type="button" value="Delete" onclick="delete_notice();"
     </div>
 </body>
+
+<script>
+    $('#check_all').click(function(){
+        var checkbox = $('input[name=check_notice]');
+        if($('#check_all').prop("checked")){
+            checkbox.prop("checked", true);
+        } else {
+            checkbox.prop("checked", false);
+        }
+    })
+
+    function delete_notice() {
+        var notice_array = new Array();
+
+        // check 항목 받아옴
+        $("input:checkbox[name=check_notice]:checked").each(function () {
+            notice_array.push($(this).val());
+        })
+
+        var formData = new FormData();
+
+        var array = JSON.stringify({ 'array': notice_array })
+
+        formData.append('title', array);
+
+        if (confirm("정말 삭제하시겠습니까?")) {
+            $.ajax({
+                url: "{% url 'noticedelete' %}",
+                data: formData,  //위에서 선언한 fromdata
+                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                type: 'POST',
+                success: function (result) {
+                    alert("삭제가 완료되었습니다.");
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+        }
+    }
+</script>
 {% endblock %}
