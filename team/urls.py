@@ -29,6 +29,10 @@ urlpatterns = [
     path('team_storage_create', views.team_storage_create, name="team_storage_create"),
     # Team Storage 파일 업로드 페이지
     path('ts_file_upload', views.ts_file_upload, name="ts_file_upload"),
+    # personal storage 파일 업로드
+    path('team_file_upload', views.team_file_upload, name='team_file_upload'),
+    # Pesonal Storage 파일 삭제
+    path('tsdeletefile', views.tsdeletefile, name="tsdeletefile"),
     # Team Storage 생성 시 Team Storage 이름 확인
     path('tsnamecheck', views.tsnamecheck, name="tsnamecheck"),
     # Team Storage 생성

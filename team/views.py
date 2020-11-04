@@ -4,9 +4,15 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# Post 통신 시 필요한 암호화를 우회
+from django.views.decorators.csrf import csrf_exempt
 
 # 파일 과련 함수 사용
 import os
+# 디렉토리 관련 함수
+import shutil
+# Json 형식 사용
+import json
 
 # 데이터 베이스 연동 기능
 # main App의 models.py 내부 class 선언
@@ -14,7 +20,10 @@ from main.models import User, StorageList
 # master App의 models.py 내부 class 선언
 from master.models import TeamStorage
 # team App의 models.py 내부 class 선언
-from team.models import TSInfo, Notice
+from team.models import TSInfo, Notice, setdir
+
+# team App에 forms.py 내부 TSInfoForm
+from team.forms import TSInfoForm
 
 # 시간 형식 변환
 import datetime
@@ -235,12 +244,97 @@ def team_storage_create(request):
 # http://localhost:8000/team/ts_file_upload
 # TeamStorage 파일 업로드 페이지 호출 함수
 def ts_file_upload(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
 
     # 업로드 완료 후 기존 경로로 돌아가기 위한 url을 GET 방식을 받아 url 변수에 저장
     url = request.GET['url']
 
+    # TeamStorage 데이터베이스에서 선택 TeamStorage 정보 레코드 추출
+    team = TeamStorage.objects.get(pk = ts_name)
+
+    # 호출 레코드 내부에서 TeamStorage 권한 추출
+    team_auth = team.authority
+
     # 돌아가기 위한 url 정보를 담아 TS_File_Upload.html 반환
-    return render(request, "TS_File_Upload.html",{ "url" : url })
+    return render(request, "TS_File_Upload.html",{ "url" : url, "team_auth" : team_auth, "range" : range(1, team_auth+1) })
+
+# File Upload 관련 함수
+@csrf_exempt
+def team_file_upload(request):
+    # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
+    dirpath = request.session['dirpath']
+
+    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
+    if request.session.has_key('dir'):
+        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
+        dirpath = dirpath + "/" + request.session['dir']
+    
+    # Team App에 models.py에 존재하는 데이터베이스 디렉토리 경로 설정 함수
+    setdir(dirpath)
+
+    # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
+    form = TSInfoForm(request.POST, request.FILES)
+
+    # form 형식 유효성(validation) 확인
+    if form.is_valid():
+        # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
+        form.save()
+        # 저장 성공 시 'success' 리턴
+        return HttpResponse("success")
+    else:
+        # validation(유효성) 오류 발생 시 해당 항목 console에 출력
+        print(form.errors)
+    
+    # 유효성 검사 실패 시 'fail' 리턴
+    return HttpResponse("fail")
+
+# 파일 삭제 함수
+@csrf_exempt
+def tsdeletefile(request):
+    # POST 방식 데이터 수신
+    data = request.POST['filename']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    filename = json.loads(data)
+
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+    
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # PSInfo 데이터베이스를 호출해서 psinfo 변수에 저장
+    tsinfo = TSInfo.objects
+
+    # 파일 및 디렉토리 삭제 함수
+    for temp in filename['array']:
+        # 파일인지 확인
+        if "." in temp:
+            # 파일이면 해당 파일만 삭제
+            os.remove("./" + dirpath + "/" + temp)
+
+            # Personal Storage 데이터베이스 정보 삭제(해당 파일만 삭제)
+            tsinfo.filter(file = dirpath + "/" + temp).delete()
+        else:
+            # 디렉토리면 내부까지 전부 삭제
+            shutil.rmtree("./" + dirpath + "/" + temp)
+            # Personal Storage 데이터베이스 정보 삭제(디렉토리 경로 포함 전부 삭제)
+            tsinfo.filter(file__startswith = dirpath + "/" + temp).delete()
+
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    # 삭제 완료 의미 "success" 리턴
+    return HttpResponse("success")
 
 # Team Storage 생성 시 Team Storage 이름 확인 함수
 def tsnamecheck(request):

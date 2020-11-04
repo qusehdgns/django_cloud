@@ -27,6 +27,8 @@ from main.models import User, StorageList
 from master.models import TeamStorage
 # personal App의 models.py 내부 class 선언
 from personal.models import  PSInfo
+# team App의 models.py 내부 class 선언
+from team.models import  TSInfo
 
 # 초기 디렉터리 저장(웹 서버 경로)
 position = os.getcwd()
@@ -297,10 +299,18 @@ def download(request):
         # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
         dirpath = dirpath + "/" + request.session["dir"]
 
-    file_data = PSInfo.objects.get(file = dirpath + "/" + filename)
+    # dirpath 시작 경로로 personal과 team을 구분
+    if(dirpath.startswith("personal")):
+        # personal일 경우 psinfo에 접근
+        file_data = PSInfo.objects.get(file = dirpath + "/" + filename)
+    else:
+        # team일 경우 tsinfo에 접근
+        file_data = TSInfo.objects.get(file = dirpath + "/" + filename)
 
+    # 해당 파일 경로를 변수 file에 저장
     file = file_data.file.path
 
+    # file을 통해 파일 정보 리턴
     return FileResponse(open(file, "rb"))
 
 # Zipping 함수
