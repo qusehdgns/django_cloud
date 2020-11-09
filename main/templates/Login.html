@@ -14,6 +14,7 @@
             <script src="http://code.jquery.com/jquery-latest.js"></script>
         </head>
 
+<<<<<<< Updated upstream
         <body class="text-center">
             <form class="form-login" method="POST" action="{% url 'login' %}">
                 <h1 class="h3 mb-3 font-weight-normal">Login</h1>
@@ -32,3 +33,28 @@
 
             </form>
         </body>
+=======
+<body>
+    <div>
+        <h1>Login</h1>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            ID :
+            <input name="userid" type="text" placeholder="ID">
+            <br>
+            PW : 
+            <input name="userpw" type="password" placeholder="PW">
+            <br>
+            <a href="{% url 'find_id_reset_pw' %}">Find ID / Reset PW</a>
+            <br>
+            <input type="button" value="Sign in" onclick='location.href = "/sign_in"'>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+<script>
+    if ("{{result}}" == "fail"){
+        alert("Login Fail");
+    }
+</script>
+>>>>>>> Stashed changes

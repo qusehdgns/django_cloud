@@ -11,22 +11,23 @@
         <form method="POST" action="{% url 'sign_in' %}" id="user_form">
             {% csrf_token %}
             ID :
-            <input id="userid" name="userid" type="text" onchange="change_val();">
+            <input id="userid" name="userid" type="text" onchange="change_val();" placeholder="ID">
             <input type="button" value="ID Check" onclick="id_check();">
             <br>
             PW :
-            <input id="userpw" name="userpw" type="password">
+            <input id="userpw" name="userpw" type="password" placeholder="Password">
             <br>
             PW Again :
-            <input id="userpw_again" name="userpw_again" type="password">
+            <input id="userpw_again" name="userpw_again" type="password" placeholder="Password Again">
             <br>
             Name :
-            <input id="username" name="username" type="text">
+            <input id="username" name="username" type="text" placeholder="Name">
             <br>
             Phone :
-            <input id="userphone" name="userphone" type="text">
+            <input id="userphone" name="userphone" type="text" maxlength="13" placeholder="Phone number">
             <br>
             <input type="button" value="Sign in" onclick="sign_in();">
+            <input type="button" value="Go to Login" onclick="location.href = '/';"
         </form>
     </div>
 </body>
@@ -87,6 +88,9 @@
             } else if (userphone == "") {
                 alert("전화번호를 입력해주세요.");
                 $('#userphone').focus();
+            } else if (userphone.length < 12 ){
+                alert("전화번호를 확인해주세요.");
+                $('#userphone').focus();
             } else {
                 if (userpw != userpw_again) {
                     alert("비밀번호가 일치하지 않습니다.");
@@ -103,4 +107,42 @@
             alert("ID 확인을 해주세요.");
         }
     }
+
+    var autoHypenPhone = function (str) {
+        str = str.replace(/[^0-9]/g, '');
+        var tmp = '';
+        if (str.length < 4) {
+            return str;
+        } else if (str.length < 7) {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3);
+            return tmp;
+        } else if (str.length < 11) {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3, 3);
+            tmp += '-';
+            tmp += str.substr(6);
+            return tmp;
+        } else {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3, 4);
+            tmp += '-';
+            tmp += str.substr(7);
+            return tmp;
+        }
+
+        return str;
+    }
+
+
+    var userphone = document.getElementById('userphone');
+
+    userphone.onkeyup = function () {
+        console.log(this.value);
+        this.value = autoHypenPhone(this.value);
+    }
+
 </script>

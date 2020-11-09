@@ -85,12 +85,11 @@ def login(request):
             # urls.py에 path 중 이름 personal_storage 호출
             return redirect('personal_storage')
         else:
-            # 반환 html 문자열
-            html = "<h1>로그인 실패</h1><input type='button' value='로그인 화면으로 이동' onclick='move();'></input>"
-            html += "<script>function move(){location.href='/';}</script>"
-            
+            # 반환 result 문자열
+            result = "fail"
+
             # 문자열 자체를 반환
-            return HttpResponse(html)
+            return render(request, 'Login.html', { "result" : result })
 
     # Post 형식 데이터가 없을 시 Login.html 반환
     return render(request, 'Login.html')

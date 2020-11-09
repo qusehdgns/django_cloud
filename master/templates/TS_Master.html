@@ -54,7 +54,7 @@
             </table>
         </div>
         <div class="right-box">
-            <input type="button" value="Invite"><p/>
+            <input type="button" value="Invite" onclick="invite_action();"><p/>
             <input type="button" value="Ban"><p/>
             <input type="button" value="Change Auth"><p/>
         </div>
@@ -85,7 +85,11 @@
     </div>
     <div class="button">
         <input type="button" value="Create Notice" onclick="location.href='/master/ts_notice_upload'">
-        <input type="button" value="Delete" onclick="delete_notice();"
+        <input type="button" value="Delete" onclick="delete_notice();">
+    </div>
+    <div id="invite_dialog" title="Invite User" style="display: none;">
+        <b>초대할 사용자 아이디를 입력하세요.</b>
+        <input type="text" id="userid" placeholder="User ID" onchange="find_user();">
     </div>
 </body>
 
@@ -129,6 +133,20 @@
                 }
             });
         }
+    }
+
+    function invite_action(){
+        $('#invite_dialog').dialog({
+            modal : true,
+            buttons : {
+                "invite" : function(){
+                    alert("초대 코드");
+                },
+                "close" : function(){
+                    $(this).dialog('close');
+                }
+            }
+        })
     }
 </script>
 {% endblock %}
