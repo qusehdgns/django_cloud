@@ -57,29 +57,84 @@
         <input type="button" value="Download" onclick="download_files()">
     </div>
     <a id="file_download" href="" download hidden></a>
+    <div id="folder_dialog" title="Invite User" style="display: none;">
+        <b>폴더 이름을 입력하세요.</b>
+        <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
+        <p />
+        <b>Descript</b>
+        <input type="text" id="descript" placeholder="Descript">
+        <table id="folder_list">
+        </table>
+    </div>
 </body>
 <script>
     function create_folder() {
-        var folder_name = prompt("폴더 이름을 입력해주세요.", "폴더 이름");
-        if (folder_name != null) {
-            var descript = prompt("추가할 메모를 적어주세요.");
-            if (descript == null) {
-                descript = "";
-            }
-            var data = { "folder_name": folder_name, "descript": descript };
-            $.ajax({
-                url: "{% url 'psaddfolder' %}",
-                type: 'GET',
-                data: data,
-                success: function (result) {
-                    alert(result);
-                    location.reload();
+        find_folder();
+        $('#folder_dialog').dialog({
+            modal: true,
+            buttons: {
+                "Add folder": function () {
+                    var folder = $('#folder').val();
+                    if (folder != "") {
+                        if ($('input[value="' + folder + '"]').length == 0) {
+                            var descript = $('#descript').val();
+                            var data = { "folder_name": folder, "descript": descript };
+                            $.ajax({
+                                url: "{% url 'psaddfolder' %}",
+                                type: 'GET',
+                                data: data,
+                                success: function (result) {
+                                    alert(result);
+                                    location.reload();
+                                },
+                                error: function (request, status, error) {
+                                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                }
+                            });
+                        } else {
+                            alert("동일한 이름의 폴더가 있습니다.")
+                        }
+                    } else {
+                        alert("폴더명을 적어주세요.");
+                    }
                 },
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                "close": function () {
+                    $('#folder').val("");
+                    $(this).dialog('close');
                 }
-            });
-        }
+            },
+            close: function () {
+                $('#folder').val("");
+            }
+        })
+    }
+
+    function find_folder() {
+        var folder = $('#folder').val();
+
+        $.ajax({
+            url: "{% url 'folderlist' %}",
+            type: "GET",
+            data: { "folder": folder },
+            success: function (result) {
+                $('#folder_list').empty();
+
+                for (var i in result.folderlist) {
+                    var table = document.all["folder_list"].insertRow();
+                    var cell = table.insertCell();
+
+                    cell.innerHTML = "<td><span onclick='change_folder(this);' style='cursor:hand'><input type='hidden' value='" + result.folderlist[i] + "'>" + result.folderlist[i] + "</span></td>";
+                }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    function change_folder(folder) {
+        $('#folder').val($(folder).text());
+        find_folder();
     }
 
     function uptofolder() {
@@ -180,9 +235,9 @@
         }
     }
 
-    $('#check_all').click(function(){
+    $('#check_all').click(function () {
         var checkbox = $('input[name=check_files]');
-        if($('#check_all').prop("checked")){
+        if ($('#check_all').prop("checked")) {
             checkbox.prop("checked", true);
         } else {
             checkbox.prop("checked", false);

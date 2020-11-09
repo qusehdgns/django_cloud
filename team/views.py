@@ -153,7 +153,7 @@ def team_storage(request):
     # Team_Storage.html 반환 시 상위폴더 존재 ㅣ여부, TeamStroage이름, TeamStorage 내부 파일 리스트, 사용자 권한, Team Storage 계급 반환
     return render(request, "Team_Storage.html",
         { 'folder' : pos, 'name' : ts_name, 'data' : data_list, "user_auth" : user_auth, "team_auth" : team_auth,
-        'team_descript' : team_descript, 'notice' : notice_data })
+        'team_descript' : team_descript, 'notice' : notice_data, "range" : range(1, team_auth+1) })
 
 # Team Storage 디렉토리 내부에 폴더 생성 시 실행 함수
 def tsaddfolder(request):
@@ -163,7 +163,7 @@ def tsaddfolder(request):
     # 폴더에 저장할 descript(주석 및 설명)을 GET 방식 내부에서 받아 descript 변수에 저장
     descript = request.GET['descript']
 
-    auth = int(request.GET['auth'])
+    auth = request.GET['auth']
 
     # descript 공백 확인
     if descript == "":

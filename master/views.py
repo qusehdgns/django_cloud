@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# Json 형식의 데이터 리턴
+from django.http import JsonResponse
 # Post 통신 시 필요한 암호화를 우회
 from django.views.decorators.csrf import csrf_exempt
 
@@ -31,7 +33,7 @@ def ts_master(request):
 
     # StorageList 내부에서 선택 teamstorage의 사용자 ID, 권한 호출
     # sql : select user_id, personal_auth from storagelist where team_storage = 변수ts_name;
-    user_result = StorageList.objects.filter(team_storage = ts_name).values("user_id", "personal_auth")
+    user_result = StorageList.objects.filter(team_storage = ts_name).values("user_id", "personal_auth").order_by('personal_auth')
 
     # list 선언 ( 배열 )
     user_data = []
@@ -52,8 +54,10 @@ def ts_master(request):
         notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time']}
         notice_data.append(notice_temp)
 
+    team_auth = TeamStorage.objects.get(pk = ts_name).authority
+
     # TS_Master.html 반환 시 TeamStorage이름, 유저ID, TeamStorage 사용자 정보 반환
-    return render(request, "TS_Master.html", { 'ts_name' : ts_name, 'userid' : userid, 'data' : user_data, 'notice' : notice_data })
+    return render(request, "TS_Master.html", { 'ts_name' : ts_name, 'userid' : userid, 'data' : user_data, 'notice' : notice_data, "team_auth" : team_auth, "range" : range(1, team_auth+1) })
 
 # http://localhost:8000/master/ts_notice_upload
 # 공지사항 작성 페이지 호출
@@ -160,3 +164,98 @@ def noticedelete(request):
 
     # 삭제 완료 의미 "success" 리턴
     return HttpResponse("success")
+
+def userlist(request):
+
+    user = request.GET['user']
+
+    print(user)
+
+    user_list = User.objects.filter(user_id__startswith = user).values('user_id')
+
+    user_data = []
+
+    for temp in user_list:
+        user_data.append(temp['user_id'])
+
+    data = { "userlist" : user_data }
+
+    return JsonResponse(data)
+
+
+def invite(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    userid = request.GET['userid']
+
+    user = User.objects.get(pk = userid)
+
+    team_storage = TeamStorage.objects.get(pk = ts_name)
+
+    storagelist = StorageList.objects
+
+    if storagelist.filter(user_id = user, team_storage = team_storage).exists() == True:
+        return HttpResponse("fail")
+    
+    storagelist.create(user_id = user, team_storage = team_storage, personal_auth = team_storage.authority)
+
+    return HttpResponse("success")
+
+
+def ban(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    userid = request.GET['user']
+
+    user = User.objects.get(pk = userid)
+
+    team_storage = TeamStorage.objects.get(pk = ts_name)
+
+    StorageList.objects.filter(user_id = user, team_storage = team_storage).delete()
+
+    return HttpResponse("퇴출이 완료되었습니다.")
+
+
+def change_auth(request):
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    userid = request.GET['user']
+
+    user = User.objects.get(pk = userid)
+
+    team_storage = TeamStorage.objects.get(pk = ts_name)
+
+    storagelist = StorageList.objects.filter(user_id = user, team_storage = team_storage)
+
+    storagelist.update(personal_auth = request.GET['auth'])
+
+    return HttpResponse("권한을 변경하였습니다.")
+
+
+def givemaster(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    userid = User.objects.get(pk = userid)
+
+    team_storage = TeamStorage.objects.get(pk = ts_name)
+
+    storagelist = StorageList.objects
+
+    storagelist.filter(user_id = userid, team_storage = team_storage).update(personal_auth = 1)
+    
+    user = request.GET['user']
+
+    user = User.objects.get(pk = user)
+
+    storagelist.filter(user_id = user, team_storage = team_storage).update(personal_auth = 0)
+
+    TeamStorage.objects.filter(pk = ts_name).update(master_id = user)
+
+    return HttpResponse("권한 이동이 성공하였습니다.")

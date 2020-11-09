@@ -43,6 +43,7 @@
             </p>
             <input type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
             <input type="button" value="Change" id="change">
+            <input type="button" value="Delete User" onclick="delete_user();">
         </div>
         <div class='right-box' id="changevalue">
             <p>
@@ -104,7 +105,7 @@
                 type: "GET",
                 data: { 'username': username, 'userphone': userphone },
                 success: function (result) {
-                    if(result == 'success'){
+                    if (result == 'success') {
                         alert("수정 완료 되었습니다.");
                         location.reload();
                     }
@@ -113,6 +114,31 @@
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
             })
+        }
+    }
+
+    function delete_user() {
+        if (confirm("정말 탈퇴하시겠습니까?")) {
+            var quest = prompt("Delete를 입력해주세요.")
+            if (quest == "Delete") {
+                $.ajax({
+                    url: "{% url 'deleteuser' %}",
+                    type: "GET",
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("탈퇴가 완료되었습니다.");
+                            location.href = "{% url 'logout' %}";
+                        } else {
+                            alert("마스터로 존재하는 팀스토리지가 있습니다.\n마스터를 넘겨주세요.");
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                })
+            } else {
+                alert("올바르게 입력해주세요.");
+            }
         }
     }
 </script>

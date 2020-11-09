@@ -19,6 +19,8 @@ import json
 import os
 # zipping 관련 함수 사용
 import zipfile
+# 디렉토리 관련 함수
+import shutil
 
 # 데이터 베이스 연동 기능
 # main App의 models.py 내부 class 선언
@@ -367,3 +369,58 @@ def zipping(request):
 def zipdownload(request):
 
     return FileResponse(open(request.GET["path"], "rb"))
+
+
+def folderlist(request):
+    # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
+    dirpath = request.session['dirpath']
+
+    # 세션에 현재 디렉토리 정보(dir)가 세션에 존재하는지 확인
+    if request.session.has_key('dir'):
+        # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
+        dirpath = dirpath + "/" + request.session['dir']
+
+    folder = request.GET['folder']
+
+    # dirpath 시작 경로로 personal과 team을 구분
+    if(dirpath.startswith("personal")):
+        folder_list = PSInfo.objects.filter(file__startswith = dirpath + "/" + folder).exclude(filename__contains = ".").order_by('filename').values('filename')
+    else:
+        folder_list = TSInfo.objects.filter(file__startswith = dirpath + "/" + folder).exclude(filename__contains = ".").order_by('filename').values('filename')
+    
+    folder_data = []
+
+    for temp in folder_list:
+        folder_data.append(temp['filename'])
+
+    data = { "folderlist" : folder_data }
+
+    return JsonResponse(data)
+
+
+def deleteuser(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    if TeamStorage.objects.filter(master_id = userid).exists() == True:
+        return HttpResponse("fail")
+
+    user = User.objects.get(pk = userid)
+    
+    PSInfo.objects.filter(file__startswith = "personal/" + userid).delete()
+
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # 디렉토리 내부까지 전부 삭제
+    shutil.rmtree("./personal/" + userid)
+    
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    User.objects.filter(user_id = userid).delete()
+
+    return HttpResponse("success")

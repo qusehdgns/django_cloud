@@ -47,5 +47,9 @@ urlpatterns = [
     path('zipping', views.zipping, name="zipping"),
     # zip down
     path('zipdownload', views.zipdownload, name="zipdownload"),
+    # Folder list 함수
+    path('folderlist', views.folderlist, name="folderlist"),
+    # 회원 탈퇴 함수
+    path('deleteuser', views.deleteuser, name="deleteuser"),
 ]
 

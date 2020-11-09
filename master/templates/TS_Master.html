@@ -43,20 +43,35 @@
                 <tbody>
                     {% if data %}
                     {% for list in data %}
+                    {% if list.userid == userid %}
                     <tr>
-                        <td><input type="radio" name="users" value="list.userid"></td>
+                        <td></td>
                         <td>{{list.userid}}</td>
                         <td>{{list.auth}}</td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td><input type="radio" name="users" value="{{list.userid}}"></td>
+                        <td><input type="hidden" id="{{list.userid}}" value="{{list.auth}}">{{list.userid}}</td>
+                        <td>{{list.auth}}</td>
+                    </tr>
+                    {% endif %}
                     {% endfor %}
                     {% endif %}
                 </tbody>
             </table>
         </div>
         <div class="right-box">
-            <input type="button" value="Invite" onclick="invite_action();"><p/>
-            <input type="button" value="Ban"><p/>
-            <input type="button" value="Change Auth"><p/>
+            <input type="button" value="Invite" onclick="invite_action();">
+            <p />
+            <input type="button" value="Ban" onclick="ban_action();">
+            <p />
+            {% if team_auth != 1 %}
+            <input type="button" value="Change Auth" onclick="change_auth();">
+            <p />
+            {% endif %}
+            <input type="button" value="Give Master" onclick="give_master();">
+            <p />
         </div>
     </div>
     <div class="notice-list">
@@ -71,7 +86,9 @@
                 {% for list in notice %}
                 <tr>
                     <td><input type="checkbox" name="check_notice" value="{{list.title}}"></td>
-                    <td><a href="#" onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a></td>
+                    <td><a href="#"
+                            onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a>
+                    </td>
                     <td>{{list.input_time|date:"Y-m-d P"}}</td>
                 </tr>
                 {% endfor %}
@@ -89,14 +106,24 @@
     </div>
     <div id="invite_dialog" title="Invite User" style="display: none;">
         <b>초대할 사용자 아이디를 입력하세요.</b>
-        <input type="text" id="userid" placeholder="User ID" onchange="find_user();">
+        <input type="text" id="user" placeholder="User ID" onkeyup="find_user();" autocomplete="off">
+        <table id="user_list">
+        </table>
+    </div>
+    <div id="auth_dialog" title="Change Authority" style="display: none;">
+        <b id="select_user"></b>
+        <b>의 권한을 선택해주세요.</b>
+        <p />
+        {% for temp in range %}
+        <span><input type="radio" name="auth" value="{{temp}}">{{temp}}</span>
+        {% endfor %}
     </div>
 </body>
 
 <script>
-    $('#check_all').click(function(){
+    $('#check_all').click(function () {
         var checkbox = $('input[name=check_notice]');
-        if($('#check_all').prop("checked")){
+        if ($('#check_all').prop("checked")) {
             checkbox.prop("checked", true);
         } else {
             checkbox.prop("checked", false);
@@ -135,18 +162,189 @@
         }
     }
 
-    function invite_action(){
+    function invite_action() {
+        find_user();
         $('#invite_dialog').dialog({
-            modal : true,
-            buttons : {
-                "invite" : function(){
-                    alert("초대 코드");
+            modal: true,
+            buttons: {
+                "invite": function () {
+                    $.ajax({
+                        url: "{% url 'invite' %}",
+                        type: "GET",
+                        data: { "userid": $('#user').val() },
+                        success: function (result) {
+                            if (result == "success") {
+                                alert("초대 완료되었습니다.");
+                                location.reload();
+                            } else {
+                                alert("이미 초대되어있습니다.");
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                        }
+                    })
                 },
-                "close" : function(){
+                "close": function () {
+                    $('#user').val("");
                     $(this).dialog('close');
                 }
+            },
+            close: function () {
+                $('#user').val("");
             }
         })
+    }
+
+    function find_user() {
+        var user = $('#user').val();
+
+        $.ajax({
+            url: "{% url 'userlist' %}",
+            type: "GET",
+            data: { "user": user },
+            success: function (result) {
+                $('#user_list').empty();
+
+                for (var i in result.userlist) {
+                    var table = document.all["user_list"].insertRow();
+                    var cell = table.insertCell();
+
+                    cell.innerHTML = "<td><span onclick='change_user(this);' style='cursor:hand'>" + result.userlist[i] + "</span></td>";
+                }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    function change_user(user) {
+        $('#user').val($(user).text());
+        find_user();
+    }
+
+    function ban_action() {
+        var user = $('input[name="users"]:checked').val();
+
+        if (user == undefined) {
+            alert("사용자를 선택해주세요.");
+            return;
+        }
+        if (confirm("정말 " + user + "을(를) 퇴출시키시겠습니까?")) {
+            $.ajax({
+                url: "{% url 'ban' %}",
+                type: "GET",
+                data: { "user": user },
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
+        }
+    }
+
+    $("input[name='users']").click(function () {
+        var value = $(this).data('storedValue');
+        if (value) {
+            $(this).prop('checked', !value);
+            $(this).data('storedValue', !value);
+        }
+        else {
+            $(this).data('storedValue', true);
+            $("input[name='users']:not(:checked)").data("storedValue", false);
+        }
+    });
+
+    $("input[name='users']").change(function () {
+        checking();
+    })
+
+    function checking() {
+        var user = $('input[name="users"]:checked').val();
+        var auth = $('#' + user).val();
+        $("input[name='auth']").prop("checked", false);
+        $("input[name='auth']").data("storedValue", false);
+        $("input:radio[name ='auth']:input[value='" + auth + "']").prop("checked", true);
+        $("input:radio[name ='auth']:input[value='" + auth + "']").data("storedValue", true);
+    }
+
+    function change_auth() {
+        var user = $('input[name="users"]:checked').val();
+
+        if (user == undefined) {
+            alert("사용자를 선택해주세요.");
+        } else {
+            $('#select_user').text(user);
+
+            $('#auth_dialog').dialog({
+                modal: true,
+                buttons: {
+                    "change": function () {
+                        var auth = $('input[name="auth"]:checked').val();
+
+                        if (auth != undefined) {
+                            var personal_auth = $('#' + user).val();
+                            if (auth != personal_auth) {
+                                $.ajax({
+                                    url: "{% url 'change_auth' %}",
+                                    type: "GET",
+                                    data: { "user": user, "auth": auth },
+                                    success: function (result) {
+                                        alert(result);
+                                        location.reload();
+                                    },
+                                    error: function (request, status, error) {
+                                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                    }
+                                })
+                            } else {
+                                alert("현재 상태와 동일한 권한입니다.");
+                            }
+                        } else {
+                            alert("권한을 선택해주세요.");
+                        }
+                    },
+                    "close": function () {
+                        $(this).dialog('close');
+                        $('input[name="auth"]:checked').prop('checked', false);
+                        $('input[name="auth"]:checked').data('storedValue', false);
+                        checking();
+                    }
+                },
+                close: function () {
+                    $('input[name="auth"]:checked').prop('checked', false);
+                    $('input[name="auth"]:checked').data('storedValue', false);
+                    checking();
+                }
+            })
+        }
+    }
+
+    function give_master() {
+        var user = $('input[name="users"]:checked').val();
+
+        if (user == undefined) {
+            alert("사용자를 선택해주세요.");
+        } else {
+            if (confirm("정말 마스터 권한을 넘기시겠습니까?")) {
+                $.ajax({
+                    url: "{% url 'givemaster' %}",
+                    type: "GET",
+                    data: { "user": user },
+                    success: function (result) {
+                        alert(result);
+                        location.href = "{% url 'profile' %}";
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                })
+            }
+        }
     }
 </script>
 {% endblock %}

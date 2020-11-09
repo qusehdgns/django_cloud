@@ -27,4 +27,14 @@ urlpatterns = [
     path('ts_notice_update', views.ts_notice_update, name="ts_notice_update"),
     # Notice 삭제 함수
     path('noticedelete', views.noticedelete, name="noticedelete"),
+    # Master invite User 탐색
+    path('userlist', views.userlist, name="userlist"),
+    # invite 함수
+    path('invite', views.invite, name="invite"),
+    # ban 함수
+    path('ban', views.ban, name="ban"),
+    # change authority 함수
+    path('change_auth', views.change_auth, name="change_auth"),
+    # 마스터 권한 이동
+    path('givemaster', views.givemaster, name="givemaster"),
 ]
