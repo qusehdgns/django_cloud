@@ -24,11 +24,11 @@
     <h1>{{userid}}'s Profile</h1>
     <div class='profile'>
         <div class='left-box'>
-            <div id="emoticon" style="border:2px solid black;">
-                <h2>Emoticon Image</h2>
+            <div>
+                <img src="/static/img/{{useremo}}.jpg">
             </div>
             <p></p>
-            <input type="button" value="Select Emoticon" id="selectemo">
+            <input type="button" value="Select Emoticon" id="selectemo" onclick="select_emoticon();">
         </div>
 
         <div id="value" class='right-box'>
@@ -76,7 +76,16 @@
             </tbody>
         </table>
     </div>
+    <div id="emo_dialog" title="Change Emoticon" style="display: none;">
+        <h4>Select Emoticon</h4>
+        <span><input type="radio" name="choose_emo" value="dog"><img src="/static/img/dog.jpg"></span>
+        <span><input type="radio" name="choose_emo" value="cat"><img src="/static/img/cat.jpg"></span>
+        <span><input type="radio" name="choose_emo" value="bear"><img src="/static/img/bear.jpg"></span>
+        <span><input type="radio" name="choose_emo" value="peach"><img src="/static/img/peach.jpg"></span>
+        <span><input type="radio" name="choose_emo" value="rabbit"><img src="/static/img/rabbit.jpg"></span>
+    </div>
 </body>
+
 <script>
     $('#changevalue').hide();
     $('#selectemo').hide();
@@ -140,6 +149,39 @@
                 alert("올바르게 입력해주세요.");
             }
         }
+    }
+
+    function select_emoticon(){
+        $("input:radio[name ='choose_emo']:input[value='{{useremo}}']").prop("checked", true);
+        $('#emo_dialog').dialog({
+            width: 'auto',
+            modal: true,
+            buttons: {
+                "Change": function () {
+                    var emo = $('input[name="choose_emo"]:checked').val();
+
+                    if(emo == "{{useremo}}"){
+                        alert("현재와 동일한 이모티콘입니다.");
+                    }else{
+                        $.ajax({
+                                    url: "{% url 'changeemo' %}",
+                                    type: "GET",
+                                    data: { "emo" : emo },
+                                    success: function (result) {
+                                        alert(result);
+                                        location.reload();
+                                    },
+                                    error: function (request, status, error) {
+                                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                    }
+                                })
+                    }
+                },
+                "close": function () {
+                    $(this).dialog('close');
+                }
+            }
+        })
     }
 </script>
 {% endblock %}

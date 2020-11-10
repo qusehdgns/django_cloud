@@ -106,7 +106,7 @@ def index(request):
     user_result = User.objects.get(pk = userid)
 
     # 사용자 id, 사용자 name 추출 후 dict형식 변환
-    user_data = { "userid" : user_result.user_id, "username" : user_result.user_name }
+    user_data = { "userid" : user_result.user_id, "username" : user_result.user_name, "useremo" : user_result.user_emo }
 
     # StorageList 테이블에서 변수userid가 참여한 TeamStorage 이름 추출
     # sql : select team_storage from storagelist where user_id = 변수userid;
@@ -159,7 +159,7 @@ def profile(request):
         ts_master_data.append(temp['storage_name'])
 
     # Profile.html 반환 시 유저id, 유저이름, 유저전화번호와 자신이 생성한 TeamStorage List 반환
-    return render(request, 'Profile.html', { "userid" : user_result.user_id, "username" : user_result.user_name, "userphone" : user_result.user_phone, 'data' : ts_master_data })
+    return render(request, 'Profile.html', { "userid" : user_result.user_id, "username" : user_result.user_name, "userphone" : user_result.user_phone, "useremo" : user_result.user_emo, 'data' : ts_master_data })
 
 # http://localhost:8000/sign_in
 # Sign in 페이지 실행 함수 및 회원가입 수행 함수
@@ -201,6 +201,13 @@ def idcheck(request):
 # http://localhost:8000/find_id_reset_pw
 # 아이디 찾기 및 비밀번호 재설정 페이지 호출 함수
 def find_id_reset_pw(request):
+    # 세션에서 check값이 존재하는지 확인
+    if request.session.has_key('check'):
+        # 세션에 존재하는 check 삭제
+        request.session.pop('check')
+
+        return render(request, 'Find_ID_Reset_PW.html', { "check" : "know" })
+
     # Find_ID_Reset_PW.html 반환
     return render(request, 'Find_ID_Reset_PW.html')
 
@@ -225,6 +232,9 @@ def movetots(request):
 
 # 비밀번호 재설정 페이지 이동 함수
 def movetoresetpw(request):
+    # 로그인한 사용자의 비밀번호 재설정인지 판단하는 세션값
+    request.session['check'] = "know"
+
     # 세션에 존재하는 userid 삭제
     request.session.pop('userid')
 
@@ -424,3 +434,59 @@ def deleteuser(request):
     User.objects.filter(user_id = userid).delete()
 
     return HttpResponse("success")
+
+
+def findid(request):
+
+    name = request.GET['name']
+
+    phone = request.GET['phone']
+
+    if User.objects.filter(user_name = name, user_phone = phone).exists() == True:
+        value = User.objects.get(user_name = name, user_phone = phone)
+
+        findid = value.user_id
+
+        b = ""
+
+        for i in range(3,len(findid)):
+            b += '*'
+
+        result = findid[:3] + b
+
+        return HttpResponse(result)
+    
+    return HttpResponse("fail")
+
+
+def checkuser(request):
+
+    user_id = request.GET['id']
+
+    phone = request.GET['phone']
+
+    if User.objects.filter(user_id = user_id, user_phone = phone).exists() == True:
+        return HttpResponse("exist")
+
+    return HttpResponse("fail")
+
+
+def resetpw(request):
+
+    user_id = request.GET['id']
+
+    pw = request.GET['pw']
+
+    User.objects.filter(user_id = user_id).update(user_pw = pw)
+
+    return HttpResponse()
+
+def changeemo(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    emo = request.GET['emo']
+
+    User.objects.filter(user_id = userid).update(user_emo = emo)
+
+    return HttpResponse("이모티콘 변경이 완료되었습니다.")

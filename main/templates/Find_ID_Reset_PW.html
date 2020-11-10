@@ -1,47 +1,222 @@
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Find ID Reset PW Page</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel=stylesheet href=//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
-    <div>
-        <input type="button" value="Find ID" id="findid">
-        <input type="button" value="Reset PW" id="resetpw">
+    <input type="button" value="Find ID" id="findid">
+    <input type="button" value="Reset PW" id="resetpw">
+    <br>
+    <div id="find_id">
+        <h3>Find ID</h3>
+        Name :
+        <input type="text" id="f_name" placeholder="Name">
         <br>
-        <div id="find_id">
-            <h3>Find ID</h3>
-            Name :
-            <input type="text" id="f_name" placeholder="Name">
-            <br>
-            Phone :
-            <input type="text" id="f_phone" placeholder="Phone">
-            <br>
-            <input type="button" id="f_submint" value="submit">
-        </div>
-        <div id="reset_pw">
-            <h3>Reset PW</h3>
-            ID :
-            <input type="text" id="r_id" placeholder="ID">
-            <br>
-            Phone :
-            <input type="text" id="r_phone" placeholder="Phone">
-            <br>
-            <input type="button" id="r_submint" value="submit">
-        </div>
+        Phone :
+        <input type="text" id="f_phone" placeholder="Phone" maxlength="13">
+        <br>
+        <input type="button" id="f_submint" value="submit" onclick="find_id();">
+        <input type="button" value="Go to Login" onclick="location.href = '/'">
+    </div>
+    <div id="reset_pw">
+        <h3>Reset PW</h3>
+        ID :
+        <input type="text" id="r_id" placeholder="ID">
+        <br>
+        Phone :
+        <input type="text" id="r_phone" placeholder="Phone" maxlength="13">
+        <br>
+        <input type="button" id="r_submint" value="submit" onclick="checkuser();">
+        <input type="button" value="Go to Login" onclick="location.href = '/'">
+    </div>
+    <div id="findid_dialog" title="Your ID" style="display: none;">
+        <h3 id="id_result"></h3>
+    </div>
+    <div id="resetpw_dialog" title="Reset Password" style="display: none;">
+        <b>재설정 비민번호</b>
+        <input type="password" id="pw" placeholder="Password">
+        <p />
+        <b>비민번호 재입력</b>
+        <input type="password" id="pw_again" placeholder="Password Again">
     </div>
 </body>
 
 <script>
-    $('#reset_pw').hide();
+    if("{{check}}" == "know"){
+        $('#find_id').hide();
+    } else {
+        $('#reset_pw').hide();
+    }
 
-    $('#findid').click(function(){
+    $('#findid').click(function () {
         $('#reset_pw').hide();
         $('#find_id').show();
+        $('#r_id').val("");
+        $('#r_phone').val("");
     })
 
-    $('#resetpw').click(function(){
+    $('#resetpw').click(function () {
         $('#find_id').hide();
         $('#reset_pw').show();
+        $('#f_name').val("");
+        $('#f_phone').val("");
     })
+
+    function find_id() {
+        var name = $('#f_name').val();
+        var phone = $('#f_phone').val();
+        if (name == "") {
+            alert("이름을 입력해주세요.");
+            $('#f_name').focus();
+        } else if (phone == "") {
+            alert("전화번호를 입력해주세요.");
+            $('#f_phone').focus();
+        } else {
+            $.ajax({
+                url: "{% url 'findid' %}",
+                type: "GET",
+                data: { "name": name, "phone": phone },
+                success: function (result) {
+                    if (result == "fail") {
+                        alert("해당 사용자가 존재하지 않습니다.");
+                    } else {
+                        $('#id_result').text(result);
+                        findid_action();
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
+        }
+    }
+
+    function findid_action() {
+        $('#findid_dialog').dialog({
+            modal: true,
+            close: function () {
+                $('#id_result').text("");
+                $('#find_id').hide();
+                $('#reset_pw').show();
+                $('#f_name').val("");
+                $('#f_phone').val("");
+            }
+        })
+    }
+
+    function checkuser() {
+        var id = $('#r_id').val();
+        var phone = $('#r_phone').val();
+        if (id == "") {
+            alert("아이디를 입력해주세요.");
+            $('#r_id').focus();
+        } else if (phone == "") {
+            alert("전화번호를 입력해주세요.");
+            $('#r_phone').focus();
+        } else {
+            $.ajax({
+                url: "{% url 'checkuser' %}",
+                type: "GET",
+                data: { "id": id, "phone": phone },
+                success: function (result) {
+                    if (result == "exist") {
+                        reset_pw(id);
+                    } else {
+                        alert("해당 사용자가 존재하지 않습니다.")
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
+        }
+    }
+
+    function reset_pw(id) {
+        $('#resetpw_dialog').dialog({
+            modal: true,
+            buttons: {
+                "Reset PW": function () {
+                    var pw = $('#pw').val();
+                    var pw_again = $('#pw_again').val();
+
+                    if (pw == "") {
+                        alert("비밀번호를 입력해주세요.");
+                        $('#pw').focus();
+                    } else if (pw_again == "") {
+                        alert("비밀번호를 한번 더 입력해주세요.");
+                        $('#pw_again').focus();
+                    } else if (pw != pw_again) {
+                        alert("비밀번호 입력이 동일하지 않습니다.\n다시 입력해주세요.");
+                        $('#pw_again').focus();
+                    } else {
+                        $.ajax({
+                            url: "{% url 'resetpw' %}",
+                            type: "GET",
+                            data: { "id" : id, "pw": pw },
+                            success: function () {
+                                alert("비밀번호가 재설정 되었습니다.");
+                                location.href = "{% url 'login' %}"
+                            },
+                            error: function (request, status, error) {
+                                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                            }
+                        })
+                    }
+                },
+                "close": function () {
+                    $('#user').val("");
+                    $(this).dialog('close');
+                }
+            },
+            close: function () {
+                $('#user').val("");
+            }
+        })
+    }
+
+    var autoHypenPhone = function (str) {
+        str = str.replace(/[^0-9]/g, '');
+        var tmp = '';
+        if (str.length < 4) {
+            return str;
+        } else if (str.length < 7) {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3);
+            return tmp;
+        } else if (str.length < 11) {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3, 3);
+            tmp += '-';
+            tmp += str.substr(6);
+            return tmp;
+        } else {
+            tmp += str.substr(0, 3);
+            tmp += '-';
+            tmp += str.substr(3, 4);
+            tmp += '-';
+            tmp += str.substr(7);
+            return tmp;
+        }
+
+        return str;
+    }
+
+
+    var f_phone = document.getElementById('f_phone');
+    var r_phone = document.getElementById('r_phone');
+
+    f_phone.onkeyup = function () {
+        this.value = autoHypenPhone(this.value);
+    }
+
+    r_phone.onkeyup = function () {
+        this.value = autoHypenPhone(this.value);
+    }
 </script>

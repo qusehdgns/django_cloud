@@ -51,5 +51,13 @@ urlpatterns = [
     path('folderlist', views.folderlist, name="folderlist"),
     # 회원 탈퇴 함수
     path('deleteuser', views.deleteuser, name="deleteuser"),
+    # 아이디 찾기 함수
+    path('findid', views.findid, name="findid"),
+    # 사용자 검색 함수
+    path('checkuser', views.checkuser, name="checkuser"),
+    # 비밀번호 재설정 함수
+    path('resetpw', views.resetpw, name="resetpw"),
+    # 이모티콘 변경 함수
+    path('changeemo', views.changeemo, name="changeemo"),
 ]
 

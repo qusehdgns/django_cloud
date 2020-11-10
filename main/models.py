@@ -14,6 +14,9 @@ class User(models.Model):
     # 사용자 전화번호
     user_phone = models.CharField(max_length=50)
 
+    # 사용자 이모티콘
+    user_emo = models.CharField(max_length=50, default = "dog")
+
     class Meta:
         # 데이터베이스 테이블 명 'users'
         db_table = 'users'

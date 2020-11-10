@@ -20,15 +20,16 @@
 
 <body>
     <div id="side_bar">
-        <div id="info" onclick="location.href='/profile';">
+        <div id="info" onclick="location.href='/profile';" style="cursor: hand;">
+            <img id="emo" src="">
             <h3 id="userid"></h3>
             <h3 id="username"></h3>
             <h4><a href="{% url 'logout' %}">Logout</a></h4>
         </div>
         <p>
-        <h4 id="ps">Personal Storage</h4>
+        <h4 id="ps" style="cursor: hand;">Personal Storage</h4>
         <h3><a id="ps_name" href="{% url 'personal_storage' %}"></a></h3>
-        <h4 id="ts_list">Team Storage</h4>
+        <h4 id="ts_list" style="cursor: hand;">Team Storage</h4>
         <div id="storagelist"></div>
     </div>
     <div id="contents">
@@ -43,6 +44,7 @@
         url: "{% url 'index' %}",
         type: 'GET',
         success: function (result) {
+            $('#emo').attr("src", "/static/img/" + result.user.useremo + ".jpg");
             $('#userid').text(result.user.userid);
             $('#username').text(result.user.username);
             $('#ps_name').text(result.user.userid);
