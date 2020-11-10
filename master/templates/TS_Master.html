@@ -72,6 +72,7 @@
             {% endif %}
             <input type="button" value="Give Master" onclick="give_master();">
             <p />
+            <input type="button" value="Destory Team Storage" onclick="destroy_ts();">
         </div>
     </div>
     <div class="notice-list">
@@ -344,6 +345,22 @@
                     }
                 })
             }
+        }
+    }
+
+    function destroy_ts(){
+        if(confirm("정말 {{ts_name}} Team Storage를 삭제하시겠습니까?")){
+            $.ajax({
+                    url: "{% url 'destoryts' %}",
+                    type: "GET",
+                    success: function (result) {
+                        alert(result);
+                        location.href = "{% url 'profile' %}";
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                })
         }
     }
 </script>

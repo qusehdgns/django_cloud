@@ -378,6 +378,7 @@ def zipping(request):
 # zip 파일 다운로드 함수
 def zipdownload(request):
 
+    # zip 파일 경로를 통해 파일 리턴
     return FileResponse(open(request.GET["path"], "rb"))
 
 
@@ -389,15 +390,19 @@ def folderlist(request):
     if request.session.has_key('dir'):
         # 존재할 시 dirpath 정보 값을 기존 정보와 dir 세션 정보 통합
         dirpath = dirpath + "/" + request.session['dir']
-
+    
+    # GET 통신 데이터 folder를 변수 folder에 대입
     folder = request.GET['folder']
 
     # dirpath 시작 경로로 personal과 team을 구분
     if(dirpath.startswith("personal")):
+        # Personal Storage 사용자 선택 경로 폴더명들 저장
         folder_list = PSInfo.objects.filter(file__startswith = dirpath + "/" + folder).exclude(filename__contains = ".").order_by('filename').values('filename')
     else:
+        # Team Storage 사용자 선택 경로 폴더명들 저장
         folder_list = TSInfo.objects.filter(file__startswith = dirpath + "/" + folder).exclude(filename__contains = ".").order_by('filename').values('filename')
     
+    # folder_data list 형식 변수 선언
     folder_data = []
 
     for temp in folder_list:

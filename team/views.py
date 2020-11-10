@@ -205,7 +205,6 @@ def tsmovefolder(request):
 
 # http://localhost:8000/team/team_storage_list
 def team_storage_list(request):
-
     # 세션에서 userid 호출
     userid = request.session['userid']
 
@@ -405,3 +404,28 @@ def team_notice(request):
     notice_data = { "title" : notice['title'], "value" : notice['value'], "author" : notice['author_id'], "time" : notice['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
 
     return render(request, "Team_Notice.html", { 'data' : notice_data, 'url' : url })
+
+
+@csrf_exempt
+def tsexit(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # POST 방식 데이터 수신
+    data = request.POST['tsname']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    tsname = json.loads(data)
+
+    storagelist = StorageList.objects
+
+    user = User.objects.get(pk = userid)
+
+    # Team Storage 탈퇴 함수
+    for temp in tsname['array']:
+
+        teamstorage = TeamStorage.objects.get(pk=temp)
+
+        storagelist.filter(user_id = user, team_storage = teamstorage).delete()
+
+    return HttpResponse("success")

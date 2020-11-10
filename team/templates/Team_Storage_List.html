@@ -3,18 +3,83 @@
 {% block title %}Team Storage List Page{% endblock %}
 
 {% block content %}
-<input type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
-<p/>
-<h1>Team Storage List</h1>
-{% if data %}
-    {% for list in data %}
-    {% if list.master %}
-    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}} [{{list.master}}]</a></h3>
+
+<body>
+    <input type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
+    <p />
+    <h1>Team Storage List</h1>
+    {% if data %}
+    <table>
+        <thead>
+            <th><input type="checkbox" id="check_all" onclick="check_all();"></th>
+            <th><b>Storage</b></th>
+        </thead>
+        <tbody>
+            {% for list in data %}
+            <tr>
+                {% if list.master %}
+                <td></td>
+                <td>
+                    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}} [{{list.master}}]</a></h3>
+                </td>
+                {% else %}
+                <td><input type='checkbox' name='ts_check' value='{{list.storage_name}}'></td>
+                <td>
+                    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="button" value="Exit Team Storage" onclick="exit_ts();">
     {% else %}
-    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
+    <h3>참여한 Team Storage가 없습니다</h3>
     {% endif %}
-    {% endfor %}
-{% else %}
-<h3>참여한 Team Storage가 없습니다</h3>
-{% endif %}
+</body>
+
+
+<script>
+    function check_all() {
+        var checkbox = $('input[name=ts_check]');
+        if ($('#check_all').prop("checked")) {
+            checkbox.prop("checked", true);
+        } else {
+            checkbox.prop("checked", false);
+        }
+    }
+
+    function exit_ts() {
+        var ts_array = new Array();
+
+        // check 항목 받아옴
+        $("input:checkbox[name=ts_check]:checked").each(function () {
+            ts_array.push($(this).val());
+        })
+
+        var formData = new FormData();
+
+        var array = JSON.stringify({ 'array': ts_array })
+
+        formData.append('tsname', array);
+
+        if (confirm("정말 탈퇴하시겠습니까?")) {
+            $.ajax({
+                url: "{% url 'tsexit' %}",
+                data: formData,  //위에서 선언한 fromdata
+                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                type: 'POST',
+                success: function (result) {
+                    alert("탈퇴가 완료되었습니다.");
+                    location.reload();
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+        }
+    }
+</script>
+
 {% endblock %}

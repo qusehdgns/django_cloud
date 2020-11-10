@@ -39,4 +39,6 @@ urlpatterns = [
     path('createteamstorage', views.createteamstorage, name="createteamstorage"),
     # Team Notice 페이지
     path('team_notice', views.team_notice, name="team_notice"),
+    # Team Storage 탈퇴 함수
+    path('tsexit', views.tsexit, name="tsexit"),
 ]

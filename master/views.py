@@ -11,16 +11,23 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Json 형식 사용
 import json
+# 파일 과련 함수 사용
+import os
+# 디렉토리 관련 함수
+import shutil
 
 # main App의 models.py 내부 class 선언
 from main.models import User, StorageList
 # master App의 models.py 내부 class 선언
 from master.models import TeamStorage
 # team App의 models.py 내부 class 선언
-from team.models import Notice
+from team.models import TSInfo, Notice
 
 # 시간 형식 변환
 import datetime
+
+# 초기 디렉터리 저장
+position = os.getcwd()
 
 # http://localhost:8000/master/
 # TeamStorage Master 페이지 이동 함수
@@ -259,3 +266,31 @@ def givemaster(request):
     TeamStorage.objects.filter(pk = ts_name).update(master_id = user)
 
     return HttpResponse("권한 이동이 성공하였습니다.")
+
+
+def destoryts(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    user = User.objects.get(pk = userid)
+
+    TSInfo.objects.filter(file__startswith = "team/" + ts_name).delete()
+
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # 디렉토리 내부까지 전부 삭제
+    shutil.rmtree("./team/" + ts_name)
+    
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    TeamStorage.objects.filter(storage_name = ts_name, master_id = user).delete()
+
+    return HttpResponse(ts_name + " Team Storage가 삭제되었습니다.")

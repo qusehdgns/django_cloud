@@ -37,4 +37,6 @@ urlpatterns = [
     path('change_auth', views.change_auth, name="change_auth"),
     # 마스터 권한 이동
     path('givemaster', views.givemaster, name="givemaster"),
+    # Team Storage 삭제 함수
+    path('destoryts', views.destoryts, name="destoryts"),
 ]
