@@ -3,27 +3,50 @@
 {% block title %}TS File Upload Page{% endblock %}
 
 {% block content %}
-<h1>TS File Upload</h1>
-<p><input id='file' type='file' onchange="changetable();" multiple></p>
-<div id="file_list">
-    <table>
-        <thead>
-            <th scope="col">NO</th>
-            <th scope="col">FILE NAME</th>
-            <th scope="col">ADD MEMO</th>
-            {% if team_auth != 1 %}
-            <th scope="col">AUTHORITY</th>
-            {% endif %}
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-    </table>
-</div>
-<p />
-<input type="button" value="Upload Files" onclick="file_upload();">
-<input type="button" value="Cancel" onclick="location.href = '{{url}}';">
+
+<body>
+    <h1>TS File Upload</h1>
+    <p><input id='file' type='file' onchange="changetable();" multiple></p>
+    <div id="file_list">
+        <table>
+            <thead>
+                <th scope="col">NO</th>
+                <th scope="col">FILE NAME</th>
+                <th scope="col">ADD MEMO</th>
+                {% if team_auth != 1 %}
+                <th scope="col">AUTHORITY</th>
+                {% endif %}
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+    <p />
+    <input type="button" value="Upload Files" onclick="file_check();">
+    <input type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+    <div id="filecolor_dialog" style="display: none;">
+        <h1>파일 확인 중...</h1>
+    </div>
+    <div id="filecheck_dialog" style="display: none;">
+        <h1>파일 중복 검사 중...</h1>
+    </div>
+    <div id="fileupload_dialog" style="display: none;">
+        <h1>파일 업로드 중...</h1>
+    </div>
+</body>
+
 
 <script>
+    function deleteLine(obj) {
+        var tr = $(obj).parent().parent();
+        var index = $(obj).parent().parent().parent().children().index(tr);
+        tr.remove();
+        files.splice(index, 1);
+        console.log(files);
+    }
+
+    var files = undefined;
+
     var count = 0;
 
     function changetable() {
@@ -38,13 +61,15 @@
             var cell1 = tbody.insertCell(1);
             var cell2 = tbody.insertCell(2);
 
+            var temp = file[i].name.replace(".", "").replaceAll(" ", "_");
+
             cell0.innerHTML = "<td></td>";
-            cell1.innerHTML = "<td>" + file[i].name + "</td>";
-            cell2.innerHTML = "<td><input type='text' id='" + i + "'></td>";
+            cell1.innerHTML = "<td><span id='" + temp + "' style=''>" + file[i].name + "</span></td>";
+            cell2.innerHTML = "<td><input type='text'></td>";
 
             if ("{{team_auth}}" != "1") {
                 var cell3 = tbody.insertCell(3);
-                cell3.innerHTML = "<select id='select_auth" + i + "'><option value='{{team_auth}}'>권한선택</option>"
+                cell3.innerHTML = "<select><option value='{{team_auth}}'>권한선택</option>"
                     + "{% for i in range %}<option value='{{i}}'>{{i}}</option>{% endfor %}"
                     + "</select>";
             } else {
@@ -53,22 +78,152 @@
                     count = 1;
                 }
             }
+
+            var cell = tbody.insertCell()
+
+            cell.innerHTML = "<td><input type='button' onclick='deleteLine(this);' value = 'Delete'></td>";
         }
+
+        var file = $('#file')[0].files;
+
+        files = Array.prototype.slice.call(file);
+
+        file_color();
+    }
+
+    function file_color() {
+        var filenameform = new FormData();
+
+        var filenames = new Array();
+
+        $("#filecolor_dialog").dialog({
+            modal: true,
+            width: 'auto',
+            closeOnEscape: false,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            }
+        });
+
+        for (var i in files) {
+            filenames.push(files[i].name);
+        }
+
+        var array = JSON.stringify({ 'array': filenames });
+
+        filenameform.append('filenames', array);
+
+        $.ajax({
+            url: "{% url 'tsfilecheck' %}",
+            data: filenameform,  //위에서 선언한 fromdata
+            processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+            contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+            type: 'POST',
+            async: false,   // 순차적 진행
+            success: function (result) {
+                $('#filecolor_dialog').dialog('close');
+                for (var i in result.orange) {
+                    var temp = result.orange[i].replace(".", "").replaceAll(" ", "_");
+                    $('#' + temp).css("color", "orange");
+                }
+                for (var i in result.red) {
+                    var temp = result.red[i].replace(".", "").replaceAll(" ", "_");
+                    $('#' + temp).css("color", "red");
+                }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+    }
+
+    function file_check() {
+        var filenameform = new FormData();
+
+        var filenames = new Array();
+
+        $("#filecheck_dialog").dialog({
+            modal: true,
+            width: 'auto',
+            closeOnEscape: false,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            }
+        });
+
+        for (var i in files) {
+            filenames.push(files[i].name);
+        }
+
+        var array = JSON.stringify({ 'array': filenames });
+
+        filenameform.append('filenames', array);
+
+        $.ajax({
+            url: "{% url 'tsfilecheck' %}",
+            data: filenameform,  //위에서 선언한 fromdata
+            processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+            contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+            type: 'POST',
+            async: false,   // 순차적 진행
+            success: function (result) {
+                $('#filecheck_dialog').dialog('close');
+                var show_orange = result.orange[0];
+                for (var i = 1; i < result.orange.length; i++) {
+                    show_orange = show_orange + ", " + result.orange[i];
+                }
+                var show_red = result.red[0];
+                for (var i = 1; i < result.red.length; i++) {
+                    show_red = show_red + ", " + result.red[i];
+                }
+                if (result.red.length == files.length) {
+                    alert("업로드 가능한 파일이 없습니다.\n파일 이름을 바꾼 후 다시 시도해주세요.");
+                } else if (result.red.length != 0) {
+                    if (result.orange.length != 0) {
+                        if (confirm(show_red + "는 업로드 불가,\n" + show_orange + "는 중복 파일입니다.\n덮어쓰기 하시겠습니까?")) {
+                            file_upload();
+                        }
+                    } else {
+                        if (confirm(show_red + "는 업로드 불가합니다.\n계속 하시겠습니까?")) {
+                            file_upload();
+                        }
+                    }
+                } else {
+                    if (result.orange.length != 0) {
+                        if (confirm(show_orange + "가 중복 파일입니다.\n덮어쓰기 하시겠습니까?")) {
+                            file_upload();
+                        }
+                    } else {
+                        file_upload();
+                    }
+                }
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
     }
 
     function file_upload() {
-        var file = $('#file')[0].files;
-
-        var files = Array.prototype.slice.call(file);
-
         var s_count = 0;
         var f_count = 0;
 
+        $("#fileupload_dialog").dialog({
+            modal: true,
+            width: 'auto',
+            closeOnEscape: false,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            }
+        });
+
         for (var i in files) {
-            var descript = $('#' + i).val();
+            var temp = files[i].name.replace(".", "").replaceAll(" ", "_");
+
+            var descript = $('#' + temp).parent().parent().children().eq(2).children().val();
             var ts_auth;
-            if(count == 0){
-                ts_auth = $('#select_auth' + i + ' option:selected').val();
+            if (count == 0) {
+                ts_auth = $('#' + temp).parent().parent().children().eq(3).children().find('option:selected').val();
             } else {
                 ts_auth = $('#select_auth').val();
             }
@@ -77,7 +232,7 @@
             formData.append("file", files[i]);
             formData.append("descript", descript);
             formData.append("access_auth", ts_auth);
-            
+
 
             $.ajax({
                 url: "{% url 'team_file_upload' %}",
@@ -98,6 +253,8 @@
                 }
             });
         }
+
+        $('#fileupload_dialog').dialog('close');
         alert(s_count + "개의 파일 업로드 성공\n" + f_count + "개의 파일 업로드 실패");
         location.href = "{{url}}";
     }

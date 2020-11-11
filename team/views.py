@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# Json 형식의 데이터 리턴
+from django.http import JsonResponse
 # Post 통신 시 필요한 암호화를 우회
 from django.views.decorators.csrf import csrf_exempt
 
@@ -261,6 +263,12 @@ def ts_file_upload(request):
 # File Upload 관련 함수
 @csrf_exempt
 def team_file_upload(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
     # 세션에 존재하는 디렉토리 경로를 불러와 dirpath 변수에 저장    
     dirpath = request.session['dirpath']
 
@@ -272,21 +280,77 @@ def team_file_upload(request):
     # Team App에 models.py에 존재하는 데이터베이스 디렉토리 경로 설정 함수
     setdir(dirpath)
 
-    # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
-    form = TSInfoForm(request.POST, request.FILES)
+    user_auth = StorageList.objects.filter(user_id = userid, team_storage = ts_name).values("personal_auth")
 
-    # form 형식 유효성(validation) 확인
-    if form.is_valid():
-        # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
-        form.save()
-        # 저장 성공 시 'success' 리턴
-        return HttpResponse("success")
+    user_auth = user_auth[0]["personal_auth"]
+
+    # TSInfo 데이터베이스 변수 tsinfo에 저장
+    tsinfo = TSInfo.objects
+
+    # 파일명 변수 filename에 저장
+    filename = request.POST['filename']
+
+    # 공백을 _문자로 치환
+    temp = filename.replace(" ", "_")
+
+    # Team Storage에 해당 파일 존재 확인
+    if tsinfo.filter(file = dirpath + "/" + temp).exists() == True:
+
+        file_auth = tsinfo.filter(file = dirpath + "/" + temp).values("access_auth")
+
+        file_auth = file_auth[0]["access_auth"]
+
+        if user_auth <= file_auth:
+            # 중복 파일 이 존재한다면 DB값 삭제
+            tsinfo.filter(file = dirpath + "/" + temp).delete()
+
+            # 상위 폴더 이동
+            os.chdir("..")
+
+            # data 디렉토리로 이동
+            os.chdir("./data")
+
+            # 파일이면 해당 파일만 삭제
+            os.remove("./" + dirpath + "/" + temp)
+
+            # 웹 서버 경로로 이동
+            os.chdir(position)
+
+            # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
+            form = TSInfoForm(request.POST, request.FILES)
+
+            # form 형식 유효성(validation) 확인
+            if form.is_valid():
+                # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
+                form.save()
+                # 저장 성공 시 'success' 리턴
+                return HttpResponse("success")
+            else:
+                # validation(유효성) 오류 발생 시 해당 항목 console에 출력
+                print(form.errors)
+                
+                return HttpResponse("fail")
+
+        else:
+            # 유효성 검사 실패 시 'fail' 리턴
+            return HttpResponse("fail")
     else:
-        # validation(유효성) 오류 발생 시 해당 항목 console에 출력
-        print(form.errors)
-    
-    # 유효성 검사 실패 시 'fail' 리턴
-    return HttpResponse("fail")
+        # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
+        form = TSInfoForm(request.POST, request.FILES)
+
+        # form 형식 유효성(validation) 확인
+        if form.is_valid():
+            # form 형식에 이상이 없을 시 저장 및 데이터베이스 적용
+            form.save()
+            # 저장 성공 시 'success' 리턴
+            return HttpResponse("success")
+        else:
+            # validation(유효성) 오류 발생 시 해당 항목 console에 출력
+            print(form.errors)
+
+            return HttpResponse("fail")
+
+    return HttpResponse("success")
 
 # 파일 삭제 함수
 @csrf_exempt
@@ -429,3 +493,64 @@ def tsexit(request):
         storagelist.filter(user_id = user, team_storage = teamstorage).delete()
 
     return HttpResponse("success")
+
+
+@csrf_exempt
+def tsfilecheck(request):
+    # 세션에서 userid 호출
+    userid = request.session['userid']
+
+    # 세션 team storage 이름 호출
+    ts_name = request.session['ts_name']
+
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']    
+
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # POST 방식 데이터 수신
+    data = request.POST['filenames']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    filename = json.loads(data)
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+
+    file_name = [];
+
+    impossible = [];
+
+    user_auth = StorageList.objects.filter(user_id = userid, team_storage = ts_name).values("personal_auth")
+
+    user_auth = user_auth[0]["personal_auth"]
+
+    tsinfo = TSInfo.objects
+
+    # 파일 및 디렉토리 내부 압축
+    for i, temp in enumerate(filename['array']):
+        # 공백을 _문자로 치환
+        temp = temp.replace(" ", "_")
+
+        # 중복 파일 존재 확인
+        if tsinfo.filter(file = dirpath + "/" + temp).exists() == True:
+
+            file_auth = tsinfo.filter(file = dirpath + "/" + temp).values("access_auth")
+
+            file_auth = file_auth[0]["access_auth"]
+
+            if user_auth <= file_auth:
+                file_name.append(filename['array'][i])
+            else:
+                impossible.append(filename['array'][i])
+
+    result = { "orange" : file_name , "red" : impossible }
+
+    # 중복 파일 개수 리턴
+    return JsonResponse(result)

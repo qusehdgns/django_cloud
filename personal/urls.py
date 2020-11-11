@@ -29,4 +29,6 @@ urlpatterns = [
     path('personal_file_upload', views.personal_file_upload, name='personal_file_upload'),
     # Pesonal Storage 파일 삭제
     path('psdeletefile', views.psdeletefile, name="psdeletefile"),
+    # 파일 중복 확인 함수
+    path('psfilecheck', views.psfilecheck, name="psfilecheck"),
 ]

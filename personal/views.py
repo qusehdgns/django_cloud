@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 # 웹에 문자열 리턴
 from django.http import HttpResponse
+# Json 형식의 데이터 리턴
+from django.http import JsonResponse
 # Post 통신 시 필요한 암호화를 우회
 from django.views.decorators.csrf import csrf_exempt
 
@@ -172,6 +174,32 @@ def personal_file_upload(request):
     # Personal App에 models.py에 존재하는 데이터베이스 디렉토리 경로 설정 함수
     setdir(dirpath)
 
+    # PSInfo 데이터베이스 변수 psinfo에 저장
+    psinfo = PSInfo.objects
+
+    # 파일명 변수 filename에 저장
+    filename = request.POST['filename']
+
+    # 공백을 _문자로 치환
+    temp = filename.replace(" ", "_")
+
+    # Personal Storage에 해당 파일 존재 확인
+    if psinfo.filter(file = dirpath + "/" + temp).exists() == True:
+        # 중복 파일 이 존재한다면 DB값 삭제
+        psinfo.filter(file = dirpath + "/" + temp).delete()
+
+        # 상위 폴더 이동
+        os.chdir("..")
+
+        # data 디렉토리로 이동
+        os.chdir("./data")
+
+        # 파일이면 해당 파일만 삭제
+        os.remove("./" + dirpath + "/" + temp)
+
+        # 웹 서버 경로로 이동
+        os.chdir(position)
+
     # Post형식으로 넘어온 파일과 해당 정보들을 form에 지정한 형식에 저장하여 form 변수에 저장
     form = PSInfoForm(request.POST, request.FILES)
 
@@ -234,3 +262,50 @@ def psdeletefile(request):
 
     # 삭제 완료 의미 "success" 리턴
     return HttpResponse("success")
+
+
+@csrf_exempt
+def psfilecheck(request):
+    # 상위 디렉토리 경로 호출
+    dirpath = request.session['dirpath']    
+
+    # 상위 폴더 이동
+    os.chdir("..")
+
+    # data 디렉토리로 이동
+    os.chdir("./data")
+
+    # POST 방식 데이터 수신
+    data = request.POST['filenames']
+
+    # 수신된 문자열 형식 json을 dict 형식으로 변환
+    filename = json.loads(data)
+
+    # 세션에 dir 세션이 존재하는 지 확인
+    if request.session.has_key('dir'):
+        # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
+        dirpath = dirpath + "/" + request.session["dir"]
+
+    # 현재 경로로 이동
+    os.chdir("./" + dirpath)
+
+    # 중복 파일 이름 담을 list 생성
+    file_name = [];
+
+    # 파일 및 디렉토리 내부 압축
+    for i, temp in enumerate(filename['array']):
+        # 공백을 _문자로 치환
+        temp = temp.replace(" ", "_")
+
+        # 중복 파일 존재 확인
+        if os.path.exists(temp):
+            # 존재한다면 파일 카운트 1 증가
+            file_name.append(filename['array'][i])
+    
+    # 웹 서버 경로로 이동
+    os.chdir(position)
+
+    result = { "array" : file_name }
+
+    # 중복 파일 개수 리턴
+    return JsonResponse(result)

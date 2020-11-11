@@ -74,6 +74,9 @@ create_data_directory()
 # http://localhost:8000/
 # 초반 메인 Login 페이지 호출 및 로그인 수행 함수
 def login(request):
+    # 로그인 시에도 디렉토리 확인 및 생성
+    create_data_directory()
+
     # Post 형식 데이터가 들어오는지 확인
     if request.method == "POST":
         # Post 형식 데이터를 data 변수에 저장
@@ -353,6 +356,7 @@ def zipping(request):
     # zip 파일 생성
     zip_file = zipfile.ZipFile("./zip/" + userid + ".zip","w")
 
+    # 현재 경로로 이동
     os.chdir("./" + dirpath)
 
     # 파일 및 디렉토리 내부 압축
