@@ -1,0 +1,46 @@
+body{
+    background-color: #1d1919;
+}
+
+.navbar{
+    background: #1d1919;
+    color:#ffc107;
+    margin-left:400px;
+    margin-top:50px;
+}
+
+.directory-list{
+    margin-left:500px;
+    margin-right:200px;
+}
+
+.b1{
+    float:right;
+    margin-bottom:5px;
+    border-radius: 5px;
+    background-color: #1d1919;
+    color:#ffc107;
+    border:none;
+}
+
+.b2{
+    float:left;
+    margin-bottom:5px;
+    margin-right:15px;
+    border-radius: 5px;
+    background-color: #1d1919;
+    color:#ffc107;
+    border:none;
+}
+
+.b1:hover {
+
+    background: #1d1919; 
+  
+    color: #ffc107;
+  
+}
+
+.table{
+    color: #999;
+}
