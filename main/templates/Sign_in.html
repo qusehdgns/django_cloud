@@ -1,33 +1,39 @@
+{% load static %}
+<script src="{% static 'js/main/jquery.min.js' %}"></script>
+<script src="/static/js/main/popper.js"></script>
+<script src="{% static 'js/main/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main/main.js' %}"></script>
+
 <head>
     <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Sign in Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main/Sign_in.css' %}"/>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 
-<body>
+<body class="text-center">
     <div>
         <h1>Sign in</h1>
-        <form method="POST" action="{% url 'sign_in' %}" id="user_form">
+        <form class="form-login" method="POST" action="{% url 'sign_in' %}" id="user_form">
             {% csrf_token %}
-            ID :
-            <input id="userid" name="userid" type="text" onchange="change_val();" placeholder="ID">
-            <input type="button" value="ID Check" onclick="id_check();">
+            <div class="input-group">
+            <input class="form-control" autocomplete="off" id="userid" name="userid" type="text" onchange="change_val();" placeholder="ID"></input>         
+            <span class="input-group-btn">
+            <input class="form-control c" type="button" value="V" onclick="id_check();"></input>
+            </span>
+            </div>
             <br>
-            PW :
-            <input id="userpw" name="userpw" type="password" placeholder="Password">
+            <input class="form-control" autocomplete="off" id="userpw" name="userpw" type="password" placeholder="Password"></input>
             <br>
-            PW Again :
-            <input id="userpw_again" name="userpw_again" type="password" placeholder="Password Again">
+            <input class="form-control" autocomplete="off" id="userpw_again" name="userpw_again" type="password" placeholder="Password Again"></input>
             <br>
-            Name :
-            <input id="username" name="username" type="text" placeholder="Name">
+            <input class="form-control" autocomplete="off" id="username" name="username" type="text" placeholder="Name"></input>
             <br>
-            Phone :
-            <input id="userphone" name="userphone" type="text" maxlength="13" placeholder="Phone number">
+            <input class="form-control" autocomplete="off" id="userphone" name="userphone" type="text" maxlength="13" placeholder="Phone number"></input>
             <br>
-            <input type="button" value="Sign in" onclick="sign_in();">
-            <input type="button" value="Go to Login" onclick="location.href = '/';"
+            <input class="s btn btn-lg btn-primary btn-block" type="button" value="Sign in" onclick="sign_in();"></input>
         </form>
     </div>
 </body>

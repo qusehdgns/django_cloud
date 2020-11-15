@@ -1,42 +1,55 @@
 {% load static %}
+<script src="{% static 'js/main/jquery.min.js' %}"></script>
+<script src="/static/js/main/popper.js"></script>
+<script src="{% static 'js/main/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main/main.js' %}"></script>
 
 <head>
-    <meta name="viewport"
-        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>{% block title %}{% endblock %}</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <link rel= stylesheet href= //code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/personal/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team/style.css' %}">
 </head>
 
-<style>
-    #side_bar {
-        float: left;
-        background-color: gainsboro;
-        width: 15%;
-        height: 100%;
-    }
-</style>
-
 <body>
-    <div id="side_bar">
-        <div id="info" onclick="location.href='/profile';" style="cursor: hand;">
-            <img id="emo" src="">
-            <h3 id="userid"></h3>
-            <h3 id="username"></h3>
-            <h4><a href="{% url 'logout' %}">Logout</a></h4>
-        </div>
-        <p>
-        <h4 id="ps" style="cursor: hand;">Personal Storage</h4>
-        <h3><a id="ps_name" href="{% url 'personal_storage' %}"></a></h3>
-        <h4 id="ts_list" style="cursor: hand;">Team Storage</h4>
-        <div id="storagelist"></div>
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar">
+            <div class="p-4 pt-5">
+                <div>
+                    <img class="img logo rounded-circle mb-3" id = "emo" src=""></img>
+                    <span class="name" id="userid"></div></span>
+                        
+                    <h3  class="aa"><span onclick="location.href='/profile';">Mypage</span</h3>　|　
+                    <h3  class="aa1"><a style = "color: gray;" href="{% url 'logout' %}">Logout</a></h3>
+                </div>
+
+                <ul class="p-4 pt-5 list-unstyled components mb-5">
+                    <li>
+                        <a id = "ps_name" href="{% url 'personal_storage' %}"></a>	          
+                    </li>
+                    <li>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span id="ts_list" style="cursor:hand;">Team Storage</span></a>
+
+
+                        <ul class="collapse list-unstyled " id="pageSubmenu"></ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-    <div id="contents">
+
+    <div id="content">
         {% block content %}
         {% endblock %}
-    </div>
+    <div>
+    
 </body>
+
 
 <script>
     // 초기 사용자 id 및 이름 가져오기
@@ -45,17 +58,17 @@
         type: 'GET',
         success: function (result) {
             $('#emo').attr("src", "/static/img/" + result.user.useremo + ".jpg");
-            $('#userid').text(result.user.userid);
+            $('#userid').text(result.user.userid + "  (" + result.user.username +")");
             $('#username').text(result.user.username);
-            $('#ps_name').text(result.user.userid);
+            $('#ps_name').text(result.user.userid + "'s Storage");
 
             for (var i in result.storage) {
                 if (result.storage[i].master) {
-                    var temp = "<h3><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + " [" + result.storage[i].master + "]</a></h3>";
+                    var temp = "<li><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + " [" + result.storage[i].master + "]</a></li>";
                 } else {
-                    var temp = "<h3><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + "</a></h3>";
+                    var temp = "<li><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + "</a></li>";
                 }
-                $('#storagelist').append(temp);
+                $('#pageSubmenu').append(temp);
             }
         },
         error: function (request, status, error) {
