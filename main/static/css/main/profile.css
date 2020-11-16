@@ -1,13 +1,17 @@
-h1 .navbar{
-    background: #1d1919;
-    color:#ffc107;
-    margin-left:300px;
-    margin-top:100px;
+body{
+    background-color: #1d1919;
 }
 
-.directory-list{
+.navbar{
+    background: #1d1919;
+    color:#ffc107;
     margin-left:350px;
-    margin-right:100px;
+    margin-top:50px;
+}
+
+.directory-list1{
+    margin-left:350px;
+    margin-right:200px;
 }
 
 .b1{
@@ -31,20 +35,19 @@ h1 .navbar{
 
 .b1:hover {
 
-    background: #ffc107; 
+    background: #1d1919; 
   
-    color: #1d1919;
-  
-}
-
-.b2:hover {
-
-    background: #ffc107; 
-  
-    color: #1d1919;
+    color: #ffc107;
   
 }
 
 .table{
     color: #999;
+}
+
+.contentBox {
+    display: inline-block;
+    width: 200px;
+    border: 1px solid black;
+    margin: 20px;
 }

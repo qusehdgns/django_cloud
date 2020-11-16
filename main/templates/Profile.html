@@ -3,61 +3,46 @@
 {% block title %}Profile Page{% endblock %}
 {% block content %}
 <style>
-    .profile {
-        margin: auto;
-        width: 100%;
-        height: 40%;
-    }
 
-    .left-box {
-        float: left;
-        width: 30%;
-    }
-
-    .right-box {
-        float: right;
-        width: 50%;
-    }
 </style>
+    <h1 class="navbar">{{userid}}'s Profile</h1>
 
-<body>
-    <h1>{{userid}}'s Profile</h1>
-    <div class='profile'>
-        <div class='left-box'>
-            <div>
-                <img src="/static/img/{{useremo}}.jpg">
+    <div class='directory-list1'>
+        <div>
+            <div >
+                <img align="left" style="margin-right:50px;" src="/static/img/{{useremo}}.jpg">
             </div>
             <p></p>
             <input type="button" value="Select Emoticon" id="selectemo" onclick="select_emoticon();">
         </div>
-
-        <div id="value" class='right-box'>
+        <div id="value" style="display:inline;">
             <p>
-            <h4>아이디 : {{userid}}</h4>
+            <h4 style="color:#fff;">아이디 : {{userid}}</h4>
             </p>
             <p>
-            <h4>이름 : {{username}}</h4>
+            <h4 style="color:#fff;">이름 : {{username}}</h4>
             </p>
             <p>
-            <h4>전화번호 : {{userphone}}</h4>
+            <h4 style="color:#fff; margin-bottom:65px;">전화번호 : {{userphone}}</h4>
             </p>
-            <input type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
-            <input type="button" value="Change" id="change">
-            <input type="button" value="Delete User" onclick="delete_user();">
-        </div>
-        <div class='right-box' id="changevalue">
-            <p>
-            <h4>아이디 : {{userid}}</h4>
-            </p>
-            <p>이름 : <input type="text" value="{{username}}" id="name"></p>
-            <p>전화번호 : <input type="text" value="{{userphone}}" id="phone"></p>
-            <input type="button" value="확인" id="accept" onclick="change_profile();">
-            <input type="button" value="취소" id="cancel">
+            <input class="b2" type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
+            <input class="b2" type="button" value="Change" id="change">
+            <input class="b2" type="button" value="Delete User" onclick="delete_user();">
         </div>
     </div>
+    <div id="changevalue">
+        <p>
+        <h4>아이디 : {{userid}}</h4>
+        </p>
+        <p>이름 : <input type="text" value="{{username}}" id="name"></p>
+        <p>전화번호 : <input type="text" value="{{userphone}}" id="phone"></p>
+        <input type="button" value="확인" id="accept" onclick="change_profile();">
+        <input type="button" value="취소" id="cancel">
+    </div>
 
-    <div class="ts-master-list">
-        <h1>My Team Storage List</h1>
+
+    <div style="margin-top:300px; margin-left:350; ">
+        <h1 style="color:#ffc107; margin-bottom:50px;">My Team Storage List</h1>
         <table>
             <tbody>
                 {% if data %}
@@ -84,7 +69,6 @@
         <span><input type="radio" name="choose_emo" value="peach"><img src="/static/img/peach.jpg"></span>
         <span><input type="radio" name="choose_emo" value="rabbit"><img src="/static/img/rabbit.jpg"></span>
     </div>
-</body>
 
 <script>
     $('#changevalue').hide();

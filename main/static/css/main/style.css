@@ -55,7 +55,8 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #1d1919; }
+  background-color: #1d1919;
+}
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -8300,7 +8301,7 @@ h3.aa{
   font-size: 10px;
   margin-left:70px;
   background: transparent;
-  color: #f8b739;
+  color: #999;
   display:inline; cursor:pointer;
 }
 
