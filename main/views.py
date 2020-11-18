@@ -499,3 +499,10 @@ def changeemo(request):
     User.objects.filter(user_id = userid).update(user_emo = emo)
 
     return HttpResponse("이모티콘 변경이 완료되었습니다.")
+
+def setdirpath(request):
+    request.session['dirpath'] = request.GET['root']
+
+    print(request.session['dirpath'])
+
+    return HttpResponse("success")

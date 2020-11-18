@@ -102,8 +102,11 @@ def personal_storage(request):
     # 웹 서버 경로로 이동
     os.chdir(position)
 
+    # 사용자에게 보여줄 폴더 경로 문자열 변환 후 분할
+    show_root = dirpath.replace("personal/" + userid, "Home", 1).split("/")
+
     # Personal_Storage.html 반환 시 상위폴더 존재 여부, 사용자id, 사용자 저장공간 내부 파일 리스트 반환
-    return render(request, 'Personal_Storage.html', { 'folder' : pos ,'userid' : userid, 'data' : data_list })
+    return render(request, 'Personal_Storage.html', { 'folder' : pos ,'userid' : userid, 'data' : data_list, 'root' : enumerate(show_root), "index" : len(show_root)-1 })
 
 # Personal Storage 디렉토리 내부에 폴더 생성 시 실행 함수
 def psaddfolder(request):

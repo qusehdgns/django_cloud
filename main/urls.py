@@ -59,5 +59,7 @@ urlpatterns = [
     path('resetpw', views.resetpw, name="resetpw"),
     # 이모티콘 변경 함수
     path('changeemo', views.changeemo, name="changeemo"),
+    # dirpath 변경 함수
+    path('setdirpath', views.setdirpath, name="setdirpath"),
 ]
 

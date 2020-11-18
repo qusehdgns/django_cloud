@@ -5,24 +5,38 @@
 {% block content %}
 
 <div>
-<nav>
-<h1 class="navbar">{{userid}}'s Personal Storage</h1>
-</nav>
-    
+    <nav>
+        <h1 class="navbar">{{userid}}'s Personal Storage</h1>
+    </nav>
+    <div>
+        <h4 id="root" style="color: white;">
+            {% for i, name in root %}
+            {% if i != 0 %}
+            >
+            {% endif %}
+            {% if i != index %}
+            <span id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+            {% else %}
+            <span id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+            {% endif %}
+            {% endfor %}
+        </h4>
+    </div>
     <div id="list" class="directory-list" style="margin-left:400px; margin-right:100px;">
         {% if folder != "top" %}
-        <input type="button" value="상위 폴더로 이동" onclick="uptofolder();">
+        <input class="b2" type="button" value="상위 폴더로 이동" onclick="uptofolder();">
         {% endif %}
         <div>
-        <input class="b1" type="button" value="Add Folder" styleonclick="create_folder();">
-        <input class="b2" type="button" value="Delete" onclick="delete_files();">
-        <input class="b2" type="button" value="Upload" onclick="location.href='/personal/ps_file_upload?url='+location.href;">
-        <input class="b2" type="button" value="Download" onclick="download_files()">
+            <input class="b1" type="button" value="Add Folder" onclick="create_folder();">
+            <input class="b2" type="button" value="Delete" onclick="delete_files();">
+            <input class="b2" type="button" value="Upload"
+                onclick="location.href='/personal/ps_file_upload?url='+location.href;">
+            <input class="b2" type="button" value="Download" onclick="download_files()">
         </div>
         <table class="table">
             <thead>
-                <th><input type="checkbox" id="check_all" ></th>
-                <th scope="col">FILES</th>       
+                <th><input type="checkbox" id="check_all"></th>
+                <th scope="col">FILES</th>
                 <th scope="col">MEMO</th>
             </thead>
             <tbody id="tbody">
@@ -47,10 +61,10 @@
             </tbody>
         </table>
         <br />
-        
+
     </div>
     <div id="upload" class="button">
-        
+
     </div>
     <a id="file_download" href="" download hidden></a>
     <div id="folder_dialog" title="Invite User" style="display: none;">
@@ -240,5 +254,29 @@
             checkbox.prop("checked", false);
         }
     })
+
+    function moveroot(index) {
+        if (index == 0) {
+            location.href = "{% url 'personal_storage' %}";
+        } else {
+            var root = "personal/{{userid}}";
+            for (var i = 1; i < index; i++) {
+                root = root + "/" + $('#' + i).text();
+            }
+            $.ajax({
+                url: "{% url 'setdirpath' %}",
+                data: { "root": root },
+                type: "GET",
+                success: function (result) {
+                    if(result == "success"){
+                        location.href = "/personal/?dir=" + $('#' + index).text();
+                    }      
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
+        }
+    }
 </script>
 {% endblock %}
