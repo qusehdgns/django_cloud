@@ -21,6 +21,20 @@
 
 <body>
     <h1>{{name}} Team Storage</h1>
+    <div>
+        <h4 id="root" style="color: white;">
+            {% for i, name in root %}
+            {% if i != 0 %}
+            >
+            {% endif %}
+            {% if i != index %}
+            <span id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+            {% else %}
+            <span id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+            {% endif %}
+            {% endfor %}
+        </h4>
+    </div>
     <div id='noticelist' class="notice-list">
         {% if team_descript != "" %}
         <h3>Descript : {{team_descript}}</h3>
@@ -290,5 +304,29 @@
             checkbox.prop("checked", false);
         }
     })
+
+    function moveroot(index) {
+        if (index == 0) {
+            location.href = "{% url 'team_storage' %}";
+        } else {
+            var root = "team/{{name}}";
+            for (var i = 1; i < index; i++) {
+                root = root + "/" + $('#' + i).text();
+            }
+            $.ajax({
+                url: "{% url 'setdirpath' %}",
+                data: { "root": root },
+                type: "GET",
+                success: function (result) {
+                    if(result == "success"){
+                        location.href = "/team/?dir=" + $('#' + index).text();
+                    }      
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
+        }
+    }
 </script>
 {% endblock %}

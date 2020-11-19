@@ -152,10 +152,15 @@ def team_storage(request):
         notice_temp = { 'title' : temp['title'], 'input_time' : temp['input_time']}
         notice_data.append(notice_temp)
 
+    # 사용자에게 보여줄 폴더 경로 문자열 변환 후 분할
+    show_root = dirpath.replace("team/" + ts_name, "Home", 1).split("/")
+
+
     # Team_Storage.html 반환 시 상위폴더 존재 ㅣ여부, TeamStroage이름, TeamStorage 내부 파일 리스트, 사용자 권한, Team Storage 계급 반환
     return render(request, "Team_Storage.html",
         { 'folder' : pos, 'name' : ts_name, 'data' : data_list, "user_auth" : user_auth, "team_auth" : team_auth,
-        'team_descript' : team_descript, 'notice' : notice_data, "range" : range(1, team_auth+1) })
+        'team_descript' : team_descript, 'notice' : notice_data, "range" : range(1, team_auth+1),
+        'root' : enumerate(show_root), "index" : len(show_root)-1 })
 
 # Team Storage 디렉토리 내부에 폴더 생성 시 실행 함수
 def tsaddfolder(request):
