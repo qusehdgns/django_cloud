@@ -215,8 +215,10 @@ def tsmovefolder(request):
 # http://localhost:8000/team/team_storage_list
 def team_storage_list(request):
     # 세션에서 userid 호출
-    userid = request.session['userid']
-
+    try:
+        userid = request.session['userid']
+    except KeyError:
+        return render(request, "login.html")
     # 사용자가 사용하고 있는 TeamStorage 이름 호출
     # sql : select team_storage from storagelist where user_id = 변수userid;
     ts_result = StorageList.objects.filter(user_id = userid).values("team_storage")
