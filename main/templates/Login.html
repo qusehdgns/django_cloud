@@ -33,7 +33,13 @@
     </form>
 </body>
 <script>
+    window.onpageshow = function(event){
+        if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
+            location.reload();
+        }
+    }
     if ("{{result}}" == "fail") {
         alert("Login Fail");
     }
+    
 </script>

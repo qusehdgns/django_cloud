@@ -144,8 +144,11 @@ def index(request):
 # profile 페이지 실행 함수
 def profile(request):
     # 세션에서 userid 호출
-    userid = request.session['userid']
-
+    try:
+        userid = request.session['userid']
+    except KeyError:
+        return render(request, "login.html")
+        
     # User 테이블에서 Primary key가 userid인 레코드 호출
     # sql : select * from user where primary key = 변수userid;
     user_result = User.objects.get(pk = userid)

@@ -36,8 +36,10 @@ position = os.getcwd()
 # 개인 저장 공간 페이지 실행 함수
 def personal_storage(request):
     # 세션에서 userid 호출
-    userid = request.session['userid']
-    
+    try:
+        userid = request.session['userid']
+    except KeyError:
+        return render(request, "login.html")
     # GET 방식 통신인지 확인
     if request.GET:
         # GET 방식에서 전해져 온 선택 디렉토리(dir)를 dir 세션에 저장

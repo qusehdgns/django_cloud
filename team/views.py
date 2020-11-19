@@ -43,8 +43,10 @@ position = os.getcwd()
 # TeamStorage 페이지 호출 함수
 def team_storage(request):
     # 세션에서 userid 호출
-    userid = request.session['userid']
-
+    try:
+        userid = request.session['userid']
+    except KeyError:
+        return render(request, "login.html")
     # 세션 team storage 이름 호출
     ts_name = request.session['ts_name']
 
