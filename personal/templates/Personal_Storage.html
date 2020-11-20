@@ -4,25 +4,27 @@
 
 {% block content %}
 
-<div>
+<body class="p">
+<div class="directory-list">
     <nav>
-        <h1 class="navbar">{{userid}}'s Personal Storage</h1>
+        <h1 class="na">{{userid}}'s Personal Storage</h1>
     </nav>
     <div>
-        <h4 id="root" style="color: white;">
+        <h4 class="path" id="root">
+            Path :
             {% for i, name in root %}
             {% if i != 0 %}
             >
             {% endif %}
             {% if i != index %}
-            <span id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
             {% else %}
-            <span id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
             {% endif %}
             {% endfor %}
         </h4>
     </div>
-    <div id="list" class="directory-list" style="margin-left:400px; margin-right:100px;">
+    <div id="list"  style="margin-left:400px; margin-right:100px;">
         {% if folder != "top" %}
         <input class="b2" type="button" value="상위 폴더로 이동" onclick="uptofolder();">
         {% endif %}
@@ -34,7 +36,7 @@
             <input class="b2" type="button" value="Download" onclick="download_files()">
         </div>
         <table class="table">
-            <thead>
+            <thead style="position: relative;">
                 <th><input type="checkbox" id="check_all"></th>
                 <th scope="col">FILES</th>
                 <th scope="col">MEMO</th>
@@ -55,7 +57,7 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="*">저장된 정보가 없습니다.</td>
+                    <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
                 </tr>
                 {% endif %}
             </tbody>
@@ -77,6 +79,7 @@
         </table>
     </div>
 </div>
+</body>
 
 <script>
     window.onpageshow = function(event){

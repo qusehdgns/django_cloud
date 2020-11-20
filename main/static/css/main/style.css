@@ -56,6 +56,7 @@ body {
   color: #212529;
   text-align: left;
   background-color: #1d1919;
+  
 }
 
 [tabindex="-1"]:focus {
@@ -453,18 +454,7 @@ pre {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto; }
-  @media (min-width: 576px) {
-    .container {
-      max-width: 540px; } }
-  @media (min-width: 768px) {
-    .container {
-      max-width: 720px; } }
-  @media (min-width: 992px) {
-    .container {
-      max-width: 960px; } }
-  @media (min-width: 1200px) {
-    .container {
-      max-width: 1140px; } }
+  
 
 .container-fluid {
   width: 100%;
@@ -8225,11 +8215,14 @@ h1, h2, h3, h4, h5,
 #sidebar {
   min-width: 300px;
   max-width: 300px;
-  background: #1d1919;
+  background-color: #1d1919;
   color: #fff;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
-  transition: all 0.3s; }
+  transition: all 0.3s;
+  border: 0.1px solid black;
+  border-right:0.1px solid  rgba(255, 255, 255, 0.1);
+}
   #sidebar.active {
     margin-left: -300px; }
   #sidebar .logo {
@@ -8313,4 +8306,8 @@ h3.aa1{
 
 .name{
   margin-left:85px;
+}
+
+#content{
+  background-color: #1d1919;
 }

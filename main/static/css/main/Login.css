@@ -35,8 +35,8 @@ body {
   border-top-right-radius: 0;
   color: #ffc107;
   outline:0px;
-
 }
+
 .form-login input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
