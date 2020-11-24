@@ -3,39 +3,21 @@
 {% block title %}TS Notice Upload Page{% endblock %}
 
 {% block content %}
-<style>
-    .box {
-        width: 70%;
-    }
 
-    #title {
-        width: 70%;
-    }
-
-    #value {
-        width: 70%;
-        height: 50%;
-        resize: none;
-    }
-
-    .button {
-        float: right;
-    }
-</style>
-
-<body>
-    <h1>{{ts_name}} Notice Upload</h1>
-    <div class="box">
+<body class="p">
+<div class="directory-list">
+    <nav>
+        <h1 class="na">{{ts_name}} Notice Upload</h1>
+    </nav>
+    <div id="list"  style="margin-left:350px; margin-right:100px;">
         <form method="POST" action="{% url 'ts_notice_upload' %}" id="notice_form">
             {% csrf_token %}
-            <b>제 목 : </b>
-            <input type="text" id="title" name="title" placeholder="제목을 입력하세요.">
+            <input style="margin-top:30px; margin-bottom:30px;" class="form-control n_title" cols="30" type="text" id="title" name="title" autocomplete="off" placeholder="Title">
             <p />
-            <b>내 용 : </b><br />
-            <textarea id="value" name="value" placeholder="내용을 입력하세요."></textarea>
+            <textarea style="height:50%;" class="form-control n_title n_notice" id="value" name="value" placeholder="Notice"></textarea>
             <p />
             <div class="button">
-                <input type="button" value="Create Notice" onclick="create_notice();">
+                <input class="notice_btn btn-lg btn-primary btn-block" type="button" value="Create Notice" onclick="create_notice();">
             </div>
         </form>
     </div>

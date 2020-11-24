@@ -4,26 +4,40 @@
 
 {% block content %}
 
-<body>
-    <h1>TS File Upload</h1>
-    <p><input id='file' type='file' onchange="changetable();" multiple></p>
-    <div id="file_list">
-        <table>
-            <thead>
-                <th scope="col">NO</th>
-                <th scope="col">FILE NAME</th>
-                <th scope="col">ADD MEMO</th>
-                {% if team_auth != 1 %}
-                <th scope="col">AUTHORITY</th>
-                {% endif %}
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-        </table>
+<body class="p">
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">TS File Upload</h1>
+        </nav>
+
+        <div>
+            <div id="list"  style="margin-left:350px; margin-right:100px;">
+                <div style="margin-top:30px;">
+                    <div style="display:inline-block;" class="filebox">
+                        <label for="file">Upload</label>
+                        <input id='file' type='file' onchange="changetable();" multiple>
+                    </div>
+                    <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
+                    <input class="b2 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+                </div>
+
+            <div id="file_list">
+                <table class="table">
+                    <thead>
+                        <th scope="col">NO</th>
+                        <th scope="col">FILE NAME</th>
+                        <th scope="col">ADD MEMO</th>
+                        {% if team_auth != 1 %}
+                            <th scope="col">AUTHORITY</th>
+                        {% endif %}
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>    
+        </div>
     </div>
-    <p />
-    <input type="button" value="Upload Files" onclick="file_check();">
-    <input type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+
     <div id="filecolor_dialog" style="display: none;">
         <h1>파일 확인 중...</h1>
     </div>
@@ -33,6 +47,7 @@
     <div id="fileupload_dialog" style="display: none;">
         <h1>파일 업로드 중...</h1>
     </div>
+    
 </body>
 
 

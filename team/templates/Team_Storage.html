@@ -3,44 +3,38 @@
 {% block title %}Team Storage Page{% endblock %}
 
 {% block content %}
-<style>
-    .notice-list {
-        width: 100%;
-        height: 30%;
-    }
 
-    .directory-list {
-        width: 100%;
-        height: 50%;
-    }
-
-    .button {
-        float: right;
-    }
-</style>
-
-<body>
-    <h1>{{name}} Team Storage</h1>
+<body class="p">
+<div class="directory-list">
+    <nav>
+        <h1 class="na">{{name}} Team Storage</h1>
+    </nav>
     <div>
-        <h4 id="root" style="color: white;">
+        <h4 class="path" id="root" style="color: white;">
+            Path :
             {% for i, name in root %}
             {% if i != 0 %}
             >
             {% endif %}
             {% if i != index %}
-            <span id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
             {% else %}
-            <span id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
             {% endif %}
             {% endfor %}
         </h4>
     </div>
-    <div id='noticelist' class="notice-list">
+    <div id="list"  style="margin-left:350px; margin-right:100px;">
+
+        
+
+    <div id='noticelist'>
         {% if team_descript != "" %}
         <h3>Descript : {{team_descript}}</h3>
         {% endif %}
-        <table>
-            <thead>
+        <label class="label1" style="width:110px;">Notice</label>
+        <table style="border:2px solid #ffc107; margin-bottom:200px;" class="table">
+            <thead style="position: relative;">
                 <th scope="col">NOTICE</th>
                 <th scope="col">DATE</th>
             </thead>
@@ -56,18 +50,29 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="*">공지사항이 없습니다.</td>
+                    <td class="text-center" colspan="3">공지사항이 없습니다.</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
+    
     <div id="filelist" class="directory-list">
         {% if folder != "top" %}
-        <input type="button" value="상위 폴더로 이동" onclick="uptofolder();">
+            <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
         {% endif %}
-        <table>
-            <thead>
+
+        <div id="upload" class="button">
+            <input class="b1 fr" type="button" value="Add Folder" onclick="create_folder();">
+            {% if user_auth == 0 %}
+                <input class="b2 fr" type="button" value="Delete" onclick="delete_files();">
+            {% endif %}
+            <input class="b2 fr" type="button" value="Upload" onclick="location.href='/team/ts_file_upload?url='+location.href;">
+            <input class="b2 fr" type="button" value="Download" onclick="download_files()">
+        </div>
+        <label class="label1" style="width:110px;">File</label>
+        <table style="border:2px solid #ffc107;" class="table">
+            <thead style="position: relative;">
                 <th><input type="checkbox" id="check_all"></th>
                 <th scope="col">FILES</th>
                 <th scope="col">MEMO</th>
@@ -88,21 +93,16 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="*">저장된 정보가 없습니다.</td>
+                    <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
         <br />
-        <input type="button" value="Add Folder" onclick="create_folder();">
+        
     </div>
-    <div id="upload" class="button">
-        {% if user_auth == 0 %}
-        <input type="button" value="Delete" onclick="delete_files();">
-        {% endif %}
-        <input type="button" value="Upload" onclick="location.href='/team/ts_file_upload?url='+location.href;">
-        <input type="button" value="Download" onclick="download_files()">
     </div>
+    
     <a id="file_download" href="" download hidden></a>
     <div id="folder_dialog" title="Invite User" style="display: none;">
         <b>폴더 이름을 입력하세요.</b>
@@ -119,6 +119,7 @@
         {% endif %}
         <table id="folder_list">
         </table>
+    </div>
     </div>
 </body>
 <script>

@@ -1,0 +1,61 @@
+.filebox label{
+    color: #ffc107;
+    font-size: 16px;
+    background-color: #1d1919;
+    cursor: pointer;
+    border-radius: 5px;
+    border:none;
+    width: 70px;
+    height: 25px;
+    text-align: center;
+    float:left;
+}
+
+.filebox label:hover{
+    color: #1d1919;
+    font-size: 16px;
+    background-color: #ffc107;
+    cursor: pointer;
+    border-radius: 5px;
+    border:none;
+    
+}
+
+.filebox input[type="file"] {
+    float:left;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+}
+
+.add_memo{
+    background-color: #1d1919;
+    color:#ffc107;
+    border-width: 0 0 2px;
+    border-color: #ffc107;
+    outline:5px solid #1d1919;
+}
+
+.btn_del{
+    background-color: #1d1919;
+    color:#ffc107;
+    border:none;
+    border-radius: 5px;
+}
+
+.btn_del:hover{
+    background-color: #ffc107;
+    color:#1d1919;
+    border:none;
+    border-radius: 5px;
+}
+
+.PS_U tbody>tr {
+    counter-increment: aaa;
+  }
+  .PS_U tbody>tr>td:first-child:before {
+    content: counter(aaa) " ";
+  }

@@ -1,39 +1,46 @@
+{% load static %}
+<script src="{% static 'js/main/jquery.min.js' %}"></script>
+<script src="/static/js/main/popper.js"></script>
+<script src="{% static 'js/main/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main/main.js' %}"></script>
+
 <head>
     <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Find ID Reset PW Page</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link rel=stylesheet href=//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main/Find_ID_Reset_PW.css' %}"/>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
-<body>
+<body class="text-center">
+<form class="form">
     {% if check != "know" %}
-    <input type="button" value="Find ID" id="findid">
-    <input type="button" value="Reset PW" id="resetpw">
+    <input class="btn btn_id_active" type="button" value="Find ID" id="findid">
+    <input class="btn btn_pw" type="button" value="Reset PW" id="resetpw">
     {% endif %}
     <br>
     <div id="find_id">
-        <h3>Find ID</h3>
-        Name :
-        <input type="text" id="f_name" placeholder="Name">
+        <input class="form-control" type="text" id="f_name" placeholder="Name">
         <br>
-        Phone :
-        <input type="text" id="f_phone" placeholder="Phone" maxlength="13">
+        <input class="form-control" type="text" id="f_phone" placeholder="Phone" maxlength="13">
         <br>
-        <input type="button" id="f_submint" value="submit" onclick="find_id();">
-        <input type="button" value="Go to Login" onclick="location.href = '/'">
+        <div style="float:right;">
+        <input class="btn" type="button" id="f_submint" value="submit" onclick="find_id();">
+        <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+        </div>
     </div>
     <div id="reset_pw">
-        <h3>Reset PW</h3>
-        ID :
-        <input type="text" id="r_id" placeholder="ID">
+        <input class="form-control" type="text" id="r_id" placeholder="ID">
         <br>
-        Phone :
-        <input type="text" id="r_phone" placeholder="Phone" maxlength="13">
+        <input class="form-control" type="text" id="r_phone" placeholder="Phone" maxlength="13">
         <br>
-        <input type="button" id="r_submint" value="submit" onclick="checkuser();">
-        <input type="button" value="Go to Login" onclick="location.href = '/'">
+        <div style="float:right;">
+        <input class="btn" type="button" id="r_submint" value="submit" onclick="checkuser();">
+        <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+        </div>
     </div>
     <div id="findid_dialog" title="Your ID" style="display: none;">
         <h3 id="id_result"></h3>
@@ -45,6 +52,7 @@
         <b>비민번호 재입력</b>
         <input type="password" id="pw_again" placeholder="Password Again">
     </div>
+    </form>
 </body>
 
 <script>
@@ -59,6 +67,9 @@
         $('#find_id').show();
         $('#r_id').val("");
         $('#r_phone').val("");
+        $('#findid').attr('class','btn btn_id_active');
+        $('#resetpw').attr('class','btn btn_pw');
+        
     })
 
     $('#resetpw').click(function () {
@@ -66,6 +77,8 @@
         $('#reset_pw').show();
         $('#f_name').val("");
         $('#f_phone').val("");
+        $('#resetpw').attr('class','btn btn_pw_active');
+        $('#findid').attr('class','btn btn_id');
     })
 
     function find_id() {

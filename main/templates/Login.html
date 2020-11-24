@@ -15,7 +15,7 @@
 
 <body class="text-center">
     <form class="form-login" method="POST" action="{% url 'login' %}">
-        <h1 class="h3 mb-3 font-weight-normal">Cloud For Everyone</h1>
+        <h3 class="mb-3 font-weight-normal">Cloud For Everyone</h1>
         {% csrf_token %}
         <div>
             <input type="text" name="userid" class="form-control" autocomplete="off" placeholder="ID" required="required"

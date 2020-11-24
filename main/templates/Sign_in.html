@@ -19,10 +19,10 @@
         <form class="form-login" method="POST" action="{% url 'sign_in' %}" id="user_form">
             {% csrf_token %}
             <div class="input-group">
-            <input class="form-control" autocomplete="off" id="userid" name="userid" type="text" onchange="change_val();" placeholder="ID"></input>         
-            <span class="input-group-btn">
-            <input class="form-control c" type="button" value="V" onclick="id_check();"></input>
-            </span>
+                <input class="form-control" autocomplete="off" id="userid" name="userid" type="text" onchange="change_val();" placeholder="ID"></input>         
+                <span class="input-group-btn">
+                    <input class="form-control c" type="button" value="V" onclick="id_check();"></input>
+                </span>
             </div>
             <br>
             <input class="form-control" autocomplete="off" id="userpw" name="userpw" type="password" placeholder="Password"></input>

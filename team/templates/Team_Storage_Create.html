@@ -4,31 +4,39 @@
 
 {% block content %}
 
-<body>
-    <h1>Team Storage Create Page</h1>
-    <div>
-        <input type="text" placeholder="Team Storage Name" id="team_storage_name" onchange="change_val();">
-        <input type="button" value="Name Check" id="name_check" onclick="name_check();">
-    </div>
-    <div>
-        <input type="checkbox" id="use_authority"> 마스터 제외 하위 계급
-    </div>
-    <div>
-        <select disabled id="select_authority_level">
-            <option value="">권한선택</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-    </div>
-    <div>
-        <input type="checkbox" id="use_notice" value="Use_Notice"> Use Notice
-    </div>
-    <div>
-        <input type="text" placeholder="Description(Optional)" id="description" disabled />
-    </div>
-    <div>
-        <input type="button" value="Create" id="btn_create" onclick="create_ts();">
+<body class="p_t">
+    <nav>
+        <h1 class="na_t">Team Storage Create Page</h1>
+    </nav>
+
+    <div class="text-center form-login_t">
+        <div class="input-group">
+            <input class="form-control_t tname" type="text" placeholder="Team Storage Name" id="team_storage_name" onchange="change_val();">
+            <span class="input-group-btn tbtb">
+                <input class="form-control_t c" type="button" value="V" id="name_check" onclick="name_check();">
+            </span>
+        </div>
+        <div class="authority">
+            <input type="checkbox" id="use_authority">
+            <label for="use_authority">마스터 제외 하위 계급</label>
+
+            <select disabled id="select_authority_level">
+                <option value="">권한선택</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div class="use_n">
+            <input type="checkbox" id="use_notice" value="Use_Notice">
+            <label for="use_notice">Use Notice</label>
+        </div>
+        <div>
+            <input class="noti_no" type="text" placeholder="Description(Optional)" id="description" disabled />
+        </div>
+        <div>
+            <input class="s btn-lg btn-primary btn-block" type="button" value="Create" id="btn_create" onclick="create_ts();">
+        </div>
     </div>
 </body>
 
@@ -79,8 +87,10 @@
     $("#use_notice").change(function () {
         if ($("#use_notice").is(":checked")) {
             $("#description").removeAttr('disabled');
+            $("#description").attr('class','noti');
         } else {
             $("#description").attr("disabled", true);
+            $("#description").attr('class','noti_no');
         }
     });
 

@@ -4,11 +4,27 @@
 
 {% block content %}
 
-<body>
-    <h1>File Upload</h1>
-    <p><input id='file' type='file' onchange="changetable();" multiple></p>
-    <div>
-        <table>
+<body class="p">
+<div class="directory-list">
+    <nav>
+        <h1 class="na">File Upload</h1>
+    </nav>
+
+    <div id="list"  style="margin-left:350px; margin-right:100px;">
+        <div style="margin-top:30px;">
+            <div style="display:inline-block;" class="filebox">
+                <label for="file">Upload</label>
+                <input id='file' type='file' onchange="changetable();" multiple>
+            </div>
+            <div style="display:inline;">
+                <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
+                <input class="b1 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-left:350px; margin-right:100px;">
+        <table class="table PS_U">
             <thead>
                 <th scope="col">NO</th>
                 <th scope="col">FILE NAME</th>
@@ -18,9 +34,8 @@
             </tbody>
         </table>
     </div>
-    <p />
-    <input type="button" value="Upload Files" onclick="file_check();">
-    <input type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+    
+
     <div id="filecolor_dialog" style="display: none;">
         <h1>파일 확인 중...</h1>
     </div>
@@ -29,6 +44,7 @@
     </div>
     <div id="fileupload_dialog" style="display: none;">
         <h1>파일 업로드 중...</h1>
+    </div>
     </div>
 </body>
 
@@ -57,9 +73,9 @@
             var temp = file[i].name.replace(".", "").replaceAll(" ", "_");
 
             cell0.innerHTML = "<td></td>";
-            cell1.innerHTML = "<td><span id='" + temp + "' style=''>" + file[i].name + "</span></td>";
-            cell2.innerHTML = "<td><input type='text'></td>";
-            cell3.innerHTML = "<td><input type='button' onclick='deleteLine(this);' value = 'Delete'></td>";
+            cell1.innerHTML = "<td><span style='color:rgba(255,255,255,0.8);' id='" + temp + "' style=''>" + file[i].name + "</span></td>";
+            cell2.innerHTML = "<td><input class='add_memo' type='text'></td>";
+            cell3.innerHTML = "<td><input class='btn_del' type='button' onclick='deleteLine(this);' value = 'X''></td>";
         }
 
         var file = $('#file')[0].files;

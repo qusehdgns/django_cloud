@@ -1,0 +1,13 @@
+.label1{
+    font-size:30px;
+    width:90px;
+    height:50px;
+    color:#1d1919;
+    background-color:#ffc107;
+    border:none;
+    border-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+}
