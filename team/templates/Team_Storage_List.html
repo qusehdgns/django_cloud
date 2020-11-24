@@ -4,10 +4,14 @@
 
 {% block content %}
 
-<body>
-    <input type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
-    <p />
-    <h1>Team Storage List</h1>
+<body class="p">
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">Team Storage List</h1>
+        </nav>
+        <div id="list"  style="margin-left:350px; margin-right:100px;">
+    <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
+    <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
     {% if data %}
     <table>
         <thead>
@@ -32,10 +36,11 @@
             {% endfor %}
         </tbody>
     </table>
-    <input type="button" value="Exit Team Storage" onclick="exit_ts();">
+    
     {% else %}
     <h3>참여한 Team Storage가 없습니다</h3>
     {% endif %}
+</div>
 </body>
 
 
