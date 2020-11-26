@@ -54,14 +54,13 @@
             </div>
 
             <div class="notice-list">
-
                 <div class="button">
                     <input class="b1 fr" type="button" value="Create Notice"
                         onclick="location.href='/master/ts_notice_upload'">
                     <input class="b1 fr" type="button" value="Delete" onclick="delete_notice();">
                 </div>
                 <label class="label1" style="width:110px;">Notice</label>
-                <table style="border:2px solid #ffc107;" class="table">
+                <table style="border:2px solid #ffc107;" class="table" id="notice_show">
                     <thead>
                         <th><input type="checkbox" id="check_all"></th>
                         <th scope="col">NOTICE</th>
@@ -85,6 +84,9 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div style="float: top;">
+                    <ul class="pagination"></ul>
+                </div>
             </div>
 
 
@@ -108,6 +110,67 @@
 </body>
 
 <script>
+    function pagination() {
+        var req_num_row = 5;
+        var $tr = $('#notice_show tbody tr');
+        var total_num_row = $tr.length;
+        var num_pages = 0;
+        if (total_num_row % req_num_row == 0) {
+            num_pages = total_num_row / req_num_row;
+        }
+        if (total_num_row % req_num_row >= 1) {
+            num_pages = total_num_row / req_num_row;
+            num_pages++;
+            num_pages = Math.floor(num_pages++);
+        }
+
+
+        for (var i = 1; i <= num_pages; i++) {
+            $('.pagination').append("<li><a>" + i + "</a></li>&nbsp;&nbsp;&nbsp;");
+            $('.pagination li:nth-child(2)').addClass("active");
+            $('.pagination a').addClass("pagination-link");
+        }
+
+        $tr.each(function (i) {
+            $(this).hide();
+            if (i + 1 <= req_num_row) {
+                $tr.eq(i).show();
+            }
+        });
+
+        $('.pagination a').click('.pagination-link', function (e) {
+            e.preventDefault();
+            $tr.hide();
+            var page = jQuery(this).text();
+            var temp = page - 1;
+            var start = temp * req_num_row;
+            var current_link = temp;
+
+            $('.pagination li').removeClass("active");
+            $(this).parent().addClass("active");
+
+            for (var i = 0; i < req_num_row; i++) {
+                $tr.eq(start + i).show();
+            }
+
+            if (temp >= 1) {
+                $('.pagination li:first-child').removeClass("disabled");
+            }
+            else {
+                $('.pagination li:first-child').addClass("disabled");
+            }
+
+        });
+
+    }
+
+    $('document').ready(function () {
+        pagination();
+
+        $('.pagination li:first-child').addClass("disabled");
+
+    });
+
     $('#check_all').click(function () {
         var checkbox = $('input[name=check_notice]');
         if ($('#check_all').prop("checked")) {

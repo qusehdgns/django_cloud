@@ -33,28 +33,33 @@
                 <h3>Descript : {{team_descript}}</h3>
                 {% endif %}
                 <a class="label2" href="#" onclick="notice_show();" id="noticeCheck">Notice</a>
-                <table class="table" id="pageNotice" style="border:2px solid #ffc107; margin-bottom:200px;">
-                    <thead style="position: relative;">
-                        <th scope="col">NOTICE</th>
-                        <th scope="col">DATE</th>
-                    </thead>
-                    <tbody>
-                        {% if notice %}
-                        {% for list in notice %}
-                        <tr>
-                            <td><a href="#"
-                                    onclick="location.href='/team/team_notice?title={{list.title}}&url='+location.href;">{{list.title}}</a>
-                            </td>
-                            <td>{{list.input_time|date:"Y-m-d P"}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td class="text-center" colspan="2">공지사항이 없습니다.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+                <div id="pageNotice" style="height: 35%;">
+                    <table class="table" style="border:2px solid #ffc107; margin-bottom:200px;" id="notice_show">
+                        <thead style="position: relative;">
+                            <th scope="col">NOTICE</th>
+                            <th scope="col">DATE</th>
+                        </thead>
+                        <tbody>
+                            {% if notice %}
+                            {% for list in notice %}
+                            <tr>
+                                <td><a href="#"
+                                        onclick="location.href='/team/team_notice?title={{list.title}}&url='+location.href;">{{list.title}}</a>
+                                </td>
+                                <td>{{list.input_time|date:"Y-m-d P"}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td class="text-center" colspan="2">공지사항이 없습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div style="margin-top: -200px; float: top;">
+                        <ul class="pagination"></ul>
+                    </div>
+                </div>
             </div>
 
             <div id="filelist" class="directory-list">
@@ -72,35 +77,35 @@
                     <input class="b2 fr" type="button" value="Download" onclick="download_files()">
                 </div>
                 <label class="label1" style="width:110px;">File</label>
-                <table style="border:2px solid #ffc107;" class="table">
-                    <thead style="position: relative;">
-                        <th><input type="checkbox" id="check_all"></th>
-                        <th scope="col">FILES</th>
-                        <th scope="col">MEMO</th>
-                    </thead>
-                    <tbody id="tbody">
-                        {% if data %}
-                        {% for list in data %}
-                        <tr>
-                            <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                            <td>{% if "." in list.filename %}
-                                {{list.filename}}
-                                {% else %}
-                                <a href="/team/tsmovefolder?dir={{list.filename}}">{{list.filename}}</a>
-                                {% endif %}
-                            </td>
-                            <td>{{list.descript|default:""}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-                <br />
-
+                <div id="file_show" style="height: 30%; overflow: auto;">
+                    <table style="border:2px solid #ffc107;" class="table">
+                        <thead style="position: relative;">
+                            <th><input type="checkbox" id="check_all"></th>
+                            <th scope="col">FILES</th>
+                            <th scope="col">MEMO</th>
+                        </thead>
+                        <tbody id="tbody">
+                            {% if data %}
+                            {% for list in data %}
+                            <tr>
+                                <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
+                                <td>{% if "." in list.filename %}
+                                    {{list.filename}}
+                                    {% else %}
+                                    <a href="/team/tsmovefolder?dir={{list.filename}}">{{list.filename}}</a>
+                                    {% endif %}
+                                </td>
+                                <td>{{list.descript|default:""}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -124,12 +129,76 @@
     </div>
 </body>
 <script>
+    function pagination() {
+        var req_num_row = 5;
+        var $tr = $('#notice_show tbody tr');
+        var total_num_row = $tr.length;
+        var num_pages = 0;
+        if (total_num_row % req_num_row == 0) {
+            num_pages = total_num_row / req_num_row;
+        }
+        if (total_num_row % req_num_row >= 1) {
+            num_pages = total_num_row / req_num_row;
+            num_pages++;
+            num_pages = Math.floor(num_pages++);
+        }
+
+
+        for (var i = 1; i <= num_pages; i++) {
+            $('.pagination').append("<li><a>" + i + "</a></li>&nbsp;&nbsp;&nbsp;");
+            $('.pagination li:nth-child(2)').addClass("active");
+            $('.pagination a').addClass("pagination-link");
+        }
+
+        $tr.each(function (i) {
+            $(this).hide();
+            if (i + 1 <= req_num_row) {
+                $tr.eq(i).show();
+            }
+        });
+
+        $('.pagination a').click('.pagination-link', function (e) {
+            e.preventDefault();
+            $tr.hide();
+            var page = jQuery(this).text();
+            var temp = page - 1;
+            var start = temp * req_num_row;
+            var current_link = temp;
+
+            $('.pagination li').removeClass("active");
+            $(this).parent().addClass("active");
+
+            for (var i = 0; i < req_num_row; i++) {
+                $tr.eq(start + i).show();
+            }
+
+            if (temp >= 1) {
+                $('.pagination li:first-child').removeClass("disabled");
+            }
+            else {
+                $('.pagination li:first-child').addClass("disabled");
+            }
+
+        });
+
+    }
+
+    $('document').ready(function () {
+        pagination();
+
+        $('.pagination li:first-child').addClass("disabled");
+
+    });
+
     var check = "{{check}}";
 
     if (check == "hide") {
         $('#pageNotice').hide();
         $('#noticeCheck').css('border-bottom-left-radius', '5px');
         $('#noticeCheck').css('border-bottom-right-radius', '5px');
+        $('#pageNotice').css('height', '0%');
+        $('#file_show').css('height', '60%');
+
     }
 
     window.onpageshow = function (event) {
@@ -353,10 +422,14 @@
             check = "hide";
             $('#noticeCheck').css('border-bottom-left-radius', '5px');
             $('#noticeCheck').css('border-bottom-right-radius', '5px');
+            $('#pageNotice').css('height', '0%');
+            $('#file_show').css('height', '60%');
         } else {
             check = "show";
             $('#noticeCheck').css('border-bottom-left-radius', '0px');
             $('#noticeCheck').css('border-bottom-right-radius', '0px');
+            $('#pageNotice').css('height', '35%');
+            $('#file_show').css('height', '30%');
         }
         $.ajax({
             url: "{% url 'noticecheck' %}",
