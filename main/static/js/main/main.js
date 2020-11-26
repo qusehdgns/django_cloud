@@ -16,5 +16,3 @@
       $('#sidebar').toggleClass('active');
   });
 });
-
-})(jQuery);
