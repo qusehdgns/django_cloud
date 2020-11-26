@@ -1,29 +1,31 @@
 {% extends 'index.html' %}
 
-{% block title %}TS Notice Upload Page{% endblock %}
+{% block title %}TS Notice Update Page{% endblock %}
 
 {% block content %}
 
 <body class="p">
-<div class="directory-list">
-<nav>
-        <h1 class='na'>{{ts_name}} Notice Upload</h1>
-    </nav>
-    <div id="list"  style="margin-left:350px; margin-right:100px;">
-        <form method="POST" action="{% url 'ts_notice_update' %}" id="notice_form">
-            {% csrf_token %}
-            <div style="margin-top:30px; margin-bottom:30px;" class="n_update">
-            <span class="n_update_notice" style="inline;">{{data.title}}</span>
-            <input type="hidden" name="title" value="{{data.title}}">
-            </div>
-            <p />
-            <textarea style="height:50%;" class="form-control n_title n_notice" type="text" id="value" name="value">{{data.value}}</textarea>
-            <p />
-            <div class="button">
-                <input class="notice_btn btn-lg btn-primary btn-block" type="submit" value="Update Notice">
-            </div>
-        </form>
-    </div>
+    <div class="directory-list">
+        <nav>
+            <h1 class='na'>{{ts_name}} Notice Update</h1>
+        </nav>
+        <input style="display:flex;" class="b1 fl" type="button" value="←" onclick="location.href='/master';">
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+            <form method="POST" action="{% url 'ts_notice_update' %}" id="notice_form">
+                {% csrf_token %}
+                <div style="margin-top:30px; margin-bottom:30px;" class="n_update">
+                    <span class="n_update_notice">{{data.title}}</span>
+                    <input type="hidden" name="title" value="{{data.title}}">
+                </div>
+                <p />
+                <textarea style="height:50%;" class="form-control n_title n_notice" type="text" id="value"
+                    name="value">{{data.value}}</textarea>
+                <p />
+                <div class="button">
+                    <input class="notice_btn btn-lg btn-primary btn-block" type="submit" value="Update Notice">
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 {% endblock %}

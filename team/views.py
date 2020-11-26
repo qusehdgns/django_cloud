@@ -476,7 +476,7 @@ def team_notice(request):
     # 사용할 데이터 dict 형식으로 변환
     notice_data = { "title" : notice['title'], "value" : notice['value'], "author" : notice['author_id'], "time" : notice['input_time'].strftime('%Y-%m-%d %H:%M:%S')}
 
-    return render(request, "Team_Notice.html", { 'data' : notice_data, 'url' : url })
+    return render(request, "Team_Notice.html", { 'ts_name' : ts_name, 'data' : notice_data, 'url' : url })
 
 
 @csrf_exempt

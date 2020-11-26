@@ -9,22 +9,22 @@
         <nav>
             <h1 class="na">{{ts_name}} Master({{userid}})</h1>
         </nav>
-        
 
-        <div id="list"  style="margin-left:350px; margin-right:100px;">
-            
+
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+
 
             <div class="userlist">
-            <div style="margin-bottom:50px;">
-                <input class="b2 fr" type="button" value="Invite" onclick="invite_action();">
-                <input class="b2 fr" type="button" value="Ban" onclick="ban_action();">
-                {% if team_auth != 1 %}
+                <div style="margin-bottom:50px;">
+                    <input class="b2 fr" type="button" value="Invite" onclick="invite_action();">
+                    <input class="b2 fr" type="button" value="Ban" onclick="ban_action();">
+                    {% if team_auth != 1 %}
                     <input class="b2 fr" type="button" value="Change Auth" onclick="change_auth();">
-                {% endif %}
-                <input class="b2 fr" type="button" value="Give Master" onclick="give_master();">
-                <input class="b2 fr" type="button" value="Destory Team Storage" onclick="destroy_ts();">
-            </div>
-            <label class="label1">User</label>
+                    {% endif %}
+                    <input class="b2 fr" type="button" value="Give Master" onclick="give_master();">
+                    <input class="b2 fr" type="button" value="Destory Team Storage" onclick="destroy_ts();">
+                </div>
+                <label class="label1">User</label>
                 <table style="border:2px solid #ffc107; margin-bottom:200px; " class="table">
                     <thead>
                         <th></th>
@@ -35,11 +35,11 @@
                         {% if data %}
                         {% for list in data %}
                         {% if list.userid == userid %}
-                            <tr>
-                                <td></td>
-                                <td>{{list.userid}}</td>
-                                <td>{{list.auth}}</td>
-                            </tr>
+                        <tr>
+                            <td></td>
+                            <td>{{list.userid}}</td>
+                            <td>{{list.auth}}</td>
+                        </tr>
                         {% else %}
                         <tr>
                             <td><input type="radio" name="users" value="{{list.userid}}"></td>
@@ -53,44 +53,42 @@
                 </table>
             </div>
 
-            
+            <div class="notice-list">
+
+                <div class="button">
+                    <input class="b1 fr" type="button" value="Create Notice"
+                        onclick="location.href='/master/ts_notice_upload'">
+                    <input class="b1 fr" type="button" value="Delete" onclick="delete_notice();">
+                </div>
+                <label class="label1" style="width:110px;">Notice</label>
+                <table style="border:2px solid #ffc107;" class="table">
+                    <thead>
+                        <th><input type="checkbox" id="check_all"></th>
+                        <th scope="col">NOTICE</th>
+                        <th scope="col">DATE</th>
+                    </thead>
+                    <tbody>
+                        {% if notice %}
+                        {% for list in notice %}
+                        <tr>
+                            <td><input type="checkbox" name="check_notice" value="{{list.title}}"></td>
+                            <td><a href="#"
+                                    onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a>
+                            </td>
+                            <td>{{list.input_time|date:"Y-m-d P"}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="text-center" colspan="3">공지사항이 없습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
 
 
-    <div class="notice-list">
-    
-    <div class="button">
-        <input class="b1 fr" type="button" value="Create Notice" onclick="location.href='/master/ts_notice_upload'">
-        <input class="b1 fr" type="button" value="Delete" onclick="delete_notice();">
-    </div>
-    <label class="label1" style="width:110px;">Notice</label>
-        <table style="border:2px solid #ffc107;" class="table">
-            <thead>
-                <th><input type="checkbox" id="check_all"></th>
-                <th scope="col">NOTICE</th>
-                <th scope="col">DATE</th>
-            </thead>
-            <tbody>
-                {% if notice %}
-                {% for list in notice %}
-                <tr>
-                    <td><input type="checkbox" name="check_notice" value="{{list.title}}"></td>
-                    <td><a href="#"
-                            onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a>
-                    </td>
-                    <td>{{list.input_time|date:"Y-m-d P"}}</td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td class="text-center" colspan="3">공지사항이 없습니다.</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
-    
-    
-    </div>
+        </div>
     </div>
 
     <div id="invite_dialog" title="Invite User" style="display: none;">
@@ -336,19 +334,19 @@
         }
     }
 
-    function destroy_ts(){
-        if(confirm("정말 {{ts_name}} Team Storage를 삭제하시겠습니까?")){
+    function destroy_ts() {
+        if (confirm("정말 {{ts_name}} Team Storage를 삭제하시겠습니까?")) {
             $.ajax({
-                    url: "{% url 'destoryts' %}",
-                    type: "GET",
-                    success: function (result) {
-                        alert(result);
-                        location.href = "{% url 'profile' %}";
-                    },
-                    error: function (request, status, error) {
-                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                    }
-                })
+                url: "{% url 'destoryts' %}",
+                type: "GET",
+                success: function (result) {
+                    alert(result);
+                    location.href = "{% url 'profile' %}";
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            })
         }
     }
 </script>

@@ -145,7 +145,7 @@ def ts_notice_update(request):
         notice = temp
     
     # 기존 게시물 정보와 TS_Notice_Update.html 리턴
-    return render(request, "TS_Notice_Update.html", { 'data' : notice })
+    return render(request, "TS_Notice_Update.html", { 'data' : notice})
 
     # 파일 삭제 함수
 @csrf_exempt

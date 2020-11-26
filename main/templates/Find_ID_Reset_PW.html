@@ -11,52 +11,54 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link rel=stylesheet href=//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main/Find_ID_Reset_PW.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main/Find_ID_Reset_PW.css' %}" />
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body class="text-center">
-<form class="form">
-    {% if check != "know" %}
-    <input class="btn btn_id_active" type="button" value="Find ID" id="findid">
-    <input class="btn btn_pw" type="button" value="Reset PW" id="resetpw">
-    {% endif %}
-    <br>
-    <div id="find_id">
-        <input class="form-control" type="text" id="f_name" placeholder="Name">
+    <form class="form">
+        {% if check != "know" %}
+        <input class="btn btn_id_active" type="button" value="Find ID" id="findid">
+        <input class="btn btn_pw" type="button" value="Reset PW" id="resetpw">
+        {% else %}
+        <h1>Reset PW</h1>
+        {% endif %}
         <br>
-        <input class="form-control" type="text" id="f_phone" placeholder="Phone" maxlength="13">
-        <br>
-        <div style="float:right;">
-        <input class="btn" type="button" id="f_submint" value="submit" onclick="find_id();">
-        <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+        <div id="find_id">
+            <input class="form-control" type="text" id="f_name" placeholder="Name">
+            <br>
+            <input class="form-control" type="text" id="f_phone" placeholder="Phone" maxlength="13">
+            <br>
+            <div style="float:right;">
+                <input class="btn" type="button" id="f_submint" value="submit" onclick="find_id();">
+                <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+            </div>
         </div>
-    </div>
-    <div id="reset_pw">
-        <input class="form-control" type="text" id="r_id" placeholder="ID">
-        <br>
-        <input class="form-control" type="text" id="r_phone" placeholder="Phone" maxlength="13">
-        <br>
-        <div style="float:right;">
-        <input class="btn" type="button" id="r_submint" value="submit" onclick="checkuser();">
-        <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+        <div id="reset_pw">
+            <input class="form-control" type="text" id="r_id" placeholder="ID">
+            <br>
+            <input class="form-control" type="text" id="r_phone" placeholder="Phone" maxlength="13">
+            <br>
+            <div style="float:right;">
+                <input class="btn" type="button" id="r_submint" value="submit" onclick="checkuser();">
+                <input class="btn" type="button" value="Go to Login" onclick="location.href = '/'">
+            </div>
         </div>
-    </div>
-    <div id="findid_dialog" title="Your ID" style="display: none;">
-        <h3 id="id_result"></h3>
-    </div>
-    <div id="resetpw_dialog" title="Reset Password" style="display: none;">
-        <b>재설정 비민번호</b>
-        <input type="password" id="pw" placeholder="Password">
-        <p />
-        <b>비민번호 재입력</b>
-        <input type="password" id="pw_again" placeholder="Password Again">
-    </div>
+        <div id="findid_dialog" title="Your ID" style="display: none;">
+            <h3 id="id_result"></h3>
+        </div>
+        <div id="resetpw_dialog" title="Reset Password" style="display: none;">
+            <b>재설정 비민번호</b>
+            <input type="password" id="pw" placeholder="Password">
+            <p />
+            <b>비민번호 재입력</b>
+            <input type="password" id="pw_again" placeholder="Password Again">
+        </div>
     </form>
 </body>
 
 <script>
-    if("{{check}}" == "know"){
+    if ("{{check}}" == "know") {
         $('#find_id').hide();
     } else {
         $('#reset_pw').hide();
@@ -67,9 +69,9 @@
         $('#find_id').show();
         $('#r_id').val("");
         $('#r_phone').val("");
-        $('#findid').attr('class','btn btn_id_active');
-        $('#resetpw').attr('class','btn btn_pw');
-        
+        $('#findid').attr('class', 'btn btn_id_active');
+        $('#resetpw').attr('class', 'btn btn_pw');
+
     })
 
     $('#resetpw').click(function () {
@@ -77,8 +79,8 @@
         $('#reset_pw').show();
         $('#f_name').val("");
         $('#f_phone').val("");
-        $('#resetpw').attr('class','btn btn_pw_active');
-        $('#findid').attr('class','btn btn_id');
+        $('#resetpw').attr('class', 'btn btn_pw_active');
+        $('#findid').attr('class', 'btn btn_id');
     })
 
     function find_id() {
@@ -172,7 +174,7 @@
                         $.ajax({
                             url: "{% url 'resetpw' %}",
                             type: "GET",
-                            data: { "id" : id, "pw": pw },
+                            data: { "id": id, "pw": pw },
                             success: function () {
                                 alert("비밀번호가 재설정 되었습니다.");
                                 location.href = "{% url 'login' %}"

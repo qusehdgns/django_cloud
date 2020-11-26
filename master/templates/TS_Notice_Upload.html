@@ -5,34 +5,38 @@
 {% block content %}
 
 <body class="p">
-<div class="directory-list">
-    <nav>
-        <h1 class="na">{{ts_name}} Notice Upload</h1>
-    </nav>
-    <div id="list"  style="margin-left:350px; margin-right:100px;">
-        <form method="POST" action="{% url 'ts_notice_upload' %}" id="notice_form">
-            {% csrf_token %}
-            <input style="margin-top:30px; margin-bottom:30px;" class="form-control n_title" cols="30" type="text" id="title" name="title" autocomplete="off" placeholder="Title">
-            <p />
-            <textarea style="height:50%;" class="form-control n_title n_notice" id="value" name="value" placeholder="Notice"></textarea>
-            <p />
-            <div class="button">
-                <input class="notice_btn btn-lg btn-primary btn-block" type="button" value="Create Notice" onclick="create_notice();">
-            </div>
-        </form>
-    </div>
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">{{ts_name}} Notice Upload</h1>
+        </nav>
+        <input style="display:flex;" class="b1 fl" type="button" value="←" onclick="location.href='/master';">
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+            <form method="POST" action="{% url 'ts_notice_upload' %}" id="notice_form">
+                {% csrf_token %}
+                <input style="margin-top:30px; margin-bottom:30px;" class="form-control n_title" cols="30" type="text"
+                    id="title" name="title" autocomplete="off" placeholder="Title">
+                <p />
+                <textarea style="height:50%;" class="form-control n_title n_notice" id="value" name="value"
+                    placeholder="Notice"></textarea>
+                <p />
+                <div class="button">
+                    <input class="notice_btn btn-lg btn-primary btn-block" type="button" value="Create Notice"
+                        onclick="create_notice();">
+                </div>
+            </form>
+        </div>
 </body>
 
 <script>
-    function create_notice(){
+    function create_notice() {
         var title = $('#title').val();
 
         $.ajax({
-            url : "{% url 'notice_check' %}",
-            type : "GET",
-            data : { "title" : title },
-            success : function(result){
-                if(result == "true"){
+            url: "{% url 'notice_check' %}",
+            type: "GET",
+            data: { "title": title },
+            success: function (result) {
+                if (result == "true") {
                     form = document.getElementById('notice_form');
                     form.submit();
                 } else {
