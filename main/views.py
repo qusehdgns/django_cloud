@@ -87,6 +87,10 @@ def login(request):
             # 세션에 userid 담기
             request.session['userid'] = data['userid']
 
+            request.session['select'] = "none"
+
+            request.session['notice'] = 'show'
+
             # urls.py에 path 중 이름 personal_storage 호출
             return redirect('personal_storage')
         else:
@@ -135,7 +139,7 @@ def index(request):
         ts_data.append(data)
 
     # user_data, ts_data 통합
-    data_list = { "user" : user_data, "storage" : ts_data }
+    data_list = { "user" : user_data, "storage" : ts_data, "select" : request.session['select'] }
     
     # Json 형식으로 data 반환
     return JsonResponse(data_list)
@@ -509,3 +513,10 @@ def setdirpath(request):
     print(request.session['dirpath'])
 
     return HttpResponse("success")
+
+def selectindex(request):
+    request.session['select'] = request.GET['select']
+
+    request.session['notice'] = ""
+
+    return HttpResponse(request.session['select'])

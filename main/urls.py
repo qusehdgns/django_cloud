@@ -61,5 +61,7 @@ urlpatterns = [
     path('changeemo', views.changeemo, name="changeemo"),
     # dirpath 변경 함수
     path('setdirpath', views.setdirpath, name="setdirpath"),
+    # 선택 위치
+    path('selectindex', views.selectindex, name="selectindex"),
 ]
 

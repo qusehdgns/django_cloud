@@ -33,17 +33,21 @@
                     <img class="img logo rounded-circle mb-3" id="emo" src=""></img>
                     <span class="name" id="userid"></div></span>
 
-                <h3 class="aa"><span onclick="location.href='/profile';">Mypage</span< /h3>　|　
-                        <h3 class="aa1"><a style="color: gray;" href="{% url 'logout' %}">Logout</a></h3>
+                <h3 class="aa" onclick="select_else();"><span onclick="location.href='/profile';">Mypage</span></h3>
+                　|　
+                <h3 class="aa1" onclick="select_else();"><a style="color: gray;" href="{% url 'logout' %}">Logout</a>
+                </h3>
             </div>
 
             <ul class="p-4 pt-5 list-unstyled components mb-5">
-                <li>
+                <li id="ps" onclick='select_index(this);'>
                     <a id="ps_name" href="{% url 'personal_storage' %}"></a>
                 </li>
                 <li>
-                    <div style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                        <a style="display:inline-block; width:91%; border:none;" href="{% url 'team_storage_list' %}" class="dropdown-toggle">Team Storage </a>
+                    <div id="tsl" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"
+                        onclick='select_index(this);'>
+                        <a style="display:inline-block; width:91%; border:none;" href="{% url 'team_storage_list' %}"
+                            class="dropdown-toggle">Team Storage </a>
                         <a class="plus" style="display:inline; border:none; cursor:hand; margin-top:20px;" id="ts_list">
                             <svg style="margin-left:0px;" width="1em" height="1em" viewBox="0 0 16 16"
                                 class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -51,22 +55,20 @@
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                             </svg>
                         </a>
-
                     </div>
                     {% comment %} <span id="ts_list" style="cursor:hand;">Team Storage</span> {% endcomment %}
 
                     <ul class="list-unstyled" id="pageSubmenu"></ul>
                 </li>
             </ul>
-    </div>
-    </nav>
+
+        </nav>
     </div>
 
     <div id="content">
         {% block content %}
         {% endblock %}
-        <div>
-
+    </div>
 </body>
 
 
@@ -83,11 +85,15 @@
 
             for (var i in result.storage) {
                 if (result.storage[i].master) {
-                    var temp = "<li><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + " [" + result.storage[i].master + "]</a></li>";
+                    var temp = "<li id='" + i + "' onclick='select_index(this);'><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + " [" + result.storage[i].master + "]" + result.storage[i].storage_name + "</a></li>";
                 } else {
-                    var temp = "<li><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + "</a></li>";
+                    var temp = "<li id='" + i + "' onclick='select_index(this);'><a href='/movetots?name=" + result.storage[i].storage_name + "'>" + result.storage[i].storage_name + "</a></li>";
                 }
                 $('#pageSubmenu').append(temp);
+            }
+
+            if (result.select != "none") {
+                $('#' + result.select).children().eq(0).css('color', '#ffc107');
             }
         },
         error: function (request, status, error) {
@@ -104,4 +110,27 @@
     $('#ts_list').click(function () {
         location.href = "{% url 'team_storage_create' %}";
     });
+
+    function select_index(obj) {
+        var id = $(obj).attr('id');
+        $.ajax({
+            url: "{% url 'selectindex' %}",
+            type: "GET",
+            data: { "select": id },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        })
+    }
+
+    function select_else() {
+        $.ajax({
+            url: "{% url 'selectindex' %}",
+            type: "GET",
+            data: { "select": "none" },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        })
+    }
 </script>

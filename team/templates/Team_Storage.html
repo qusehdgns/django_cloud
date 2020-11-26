@@ -5,126 +5,135 @@
 {% block content %}
 
 <body class="p">
-<div class="directory-list">
-    <nav>
-        <h1 class="na">{{name}} Team Storage</h1>
-    </nav>
-    <div>
-        <h4 class="path" id="root" style="color: white;">
-            Path :
-            {% for i, name in root %}
-            {% if i != 0 %}
-            >
-            {% endif %}
-            {% if i != index %}
-            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
-            {% else %}
-            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
-            {% endif %}
-            {% endfor %}
-        </h4>
-    </div>
-    <div id="list"  style="margin-left:350px; margin-right:100px;">
-
-        
-
-    <div id='noticelist'>
-        {% if team_descript != "" %}
-        <h3>Descript : {{team_descript}}</h3>
-        {% endif %}
-        <a class="label2" href="#pageNotice" data-toggle="collapse" aria-expanded="false">Notice</a>
-        <table class="collapse list-unstyled table" id="pageNotice" style="border:2px solid #ffc107; margin-bottom:200px;" >
-            <thead style="position: relative;">
-                <th scope="col">NOTICE</th>
-                <th scope="col">DATE</th>
-            </thead>
-            <tbody>
-                {% if notice %}
-                {% for list in notice %}
-                <tr>
-                    <td><a href="#"
-                            onclick="location.href='/team/team_notice?title={{list.title}}&url='+location.href;">{{list.title}}</a>
-                    </td>
-                    <td>{{list.input_time|date:"Y-m-d P"}}</td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td class="text-center" colspan="2">공지사항이 없습니다.</td>
-                </tr>
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">{{name}} Team Storage</h1>
+        </nav>
+        <div>
+            <h4 class="path" id="root" style="color: white;">
+                Path :
+                {% for i, name in root %}
+                {% if i != 0 %}
+                >
                 {% endif %}
-            </tbody>
-        </table>
-    </div>
-    
-    <div id="filelist" class="directory-list">
-        {% if folder != "top" %}
-            <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
-        {% endif %}
-
-        <div id="upload" class="button">
-            <input class="b1 fr" type="button" value="Add Folder" onclick="create_folder();">
-            {% if user_auth == 0 %}
-                <input class="b2 fr" type="button" value="Delete" onclick="delete_files();">
-            {% endif %}
-            <input class="b2 fr" type="button" value="Upload" onclick="location.href='/team/ts_file_upload?url='+location.href;">
-            <input class="b2 fr" type="button" value="Download" onclick="download_files()">
+                {% if i != index %}
+                <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+                {% else %}
+                <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+                {% endif %}
+                {% endfor %}
+            </h4>
         </div>
-        <label class="label1" style="width:110px;">File</label>
-        <table style="border:2px solid #ffc107;" class="table">
-            <thead style="position: relative;">
-                <th><input type="checkbox" id="check_all"></th>
-                <th scope="col">FILES</th>
-                <th scope="col">MEMO</th>
-            </thead>
-            <tbody id="tbody">
-                {% if data %}
-                {% for list in data %}
-                <tr>
-                    <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                    <td>{% if "." in list.filename %}
-                        {{list.filename}}
-                        {% else %}
-                        <a href="/team/tsmovefolder?dir={{list.filename}}">{{list.filename}}</a>
-                        {% endif %}
-                    </td>
-                    <td>{{list.descript|default:""}}</td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
-                </tr>
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+
+
+
+            <div id='noticelist'>
+                {% if team_descript != "" %}
+                <h3>Descript : {{team_descript}}</h3>
                 {% endif %}
-            </tbody>
-        </table>
-        <br />
-        
-    </div>
-    </div>
-    
-    <a id="file_download" href="" download hidden></a>
-    <div id="folder_dialog" title="Invite User" style="display: none;">
-        <b>폴더 이름을 입력하세요.</b>
-        <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
-        <p />
-        <b>Descript</b>
-        <input type="text" id="descript" placeholder="Descript">
-        <p />
-        {% if team_auth != 1 %}
-        <b>권한을 선택해주세요.</b>
-        {% for temp in range %}
-        <span><input type="radio" name="select_auth" value="{{temp}}">{{temp}}</span>
-        {% endfor %}
-        {% endif %}
-        <table id="folder_list">
-        </table>
-    </div>
+                <a class="label2" href="#" onclick="notice_show();" id="noticeCheck">Notice</a>
+                <table class="table" id="pageNotice" style="border:2px solid #ffc107; margin-bottom:200px;">
+                    <thead style="position: relative;">
+                        <th scope="col">NOTICE</th>
+                        <th scope="col">DATE</th>
+                    </thead>
+                    <tbody>
+                        {% if notice %}
+                        {% for list in notice %}
+                        <tr>
+                            <td><a href="#"
+                                    onclick="location.href='/team/team_notice?title={{list.title}}&url='+location.href;">{{list.title}}</a>
+                            </td>
+                            <td>{{list.input_time|date:"Y-m-d P"}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="text-center" colspan="2">공지사항이 없습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="filelist" class="directory-list">
+                {% if folder != "top" %}
+                <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
+                {% endif %}
+
+                <div id="upload" class="button">
+                    <input class="b1 fr" type="button" value="Add Folder" onclick="create_folder();">
+                    {% if user_auth == 0 %}
+                    <input class="b2 fr" type="button" value="Delete" onclick="delete_files();">
+                    {% endif %}
+                    <input class="b2 fr" type="button" value="Upload"
+                        onclick="location.href='/team/ts_file_upload?url='+location.href;">
+                    <input class="b2 fr" type="button" value="Download" onclick="download_files()">
+                </div>
+                <label class="label1" style="width:110px;">File</label>
+                <table style="border:2px solid #ffc107;" class="table">
+                    <thead style="position: relative;">
+                        <th><input type="checkbox" id="check_all"></th>
+                        <th scope="col">FILES</th>
+                        <th scope="col">MEMO</th>
+                    </thead>
+                    <tbody id="tbody">
+                        {% if data %}
+                        {% for list in data %}
+                        <tr>
+                            <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
+                            <td>{% if "." in list.filename %}
+                                {{list.filename}}
+                                {% else %}
+                                <a href="/team/tsmovefolder?dir={{list.filename}}">{{list.filename}}</a>
+                                {% endif %}
+                            </td>
+                            <td>{{list.descript|default:""}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <br />
+
+            </div>
+        </div>
+
+        <a id="file_download" href="" download hidden></a>
+        <div id="folder_dialog" title="Invite User" style="display: none;">
+            <b>폴더 이름을 입력하세요.</b>
+            <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
+            <p />
+            <b>Descript</b>
+            <input type="text" id="descript" placeholder="Descript">
+            <p />
+            {% if team_auth != 1 %}
+            <b>권한을 선택해주세요.</b>
+            {% for temp in range %}
+            <span><input type="radio" name="select_auth" value="{{temp}}">{{temp}}</span>
+            {% endfor %}
+            {% endif %}
+            <table id="folder_list">
+            </table>
+        </div>
     </div>
 </body>
 <script>
-    window.onpageshow = function(event){
-        if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
+    var check = "{{check}}";
+
+    if (check == "hide") {
+        $('#pageNotice').hide();
+        $('#noticeCheck').css('border-bottom-left-radius', '5px');
+        $('#noticeCheck').css('border-bottom-right-radius', '5px');
+    }
+
+    window.onpageshow = function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
             location.href = "{% url 'team_storage' %}";
         }
     }
@@ -256,7 +265,9 @@
     function download_files() {
         var check_count = $("input:checkbox[name=check_files]:checked").length;
 
-        if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
+        if(check_count == 0){
+            alert("다운로드 파일을 선택해주세요.");
+        } else if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
             var file = $("input:checkbox[name=check_files]:checked").val();
 
             var a = $("#file_download");
@@ -324,15 +335,37 @@
                 data: { "root": root },
                 type: "GET",
                 success: function (result) {
-                    if(result == "success"){
+                    if (result == "success") {
                         location.href = "/team/?dir=" + $('#' + index).text();
-                    }      
+                    }
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
             })
         }
+    }
+
+
+    function notice_show() {
+        $('#pageNotice').toggle();
+        if (check == "show") {
+            check = "hide";
+            $('#noticeCheck').css('border-bottom-left-radius', '5px');
+            $('#noticeCheck').css('border-bottom-right-radius', '5px');
+        } else {
+            check = "show";
+            $('#noticeCheck').css('border-bottom-left-radius', '0px');
+            $('#noticeCheck').css('border-bottom-right-radius', '0px');
+        }
+        $.ajax({
+            url: "{% url 'noticecheck' %}",
+            data: { "check": check },
+            type: "GET",
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        })
     }
 </script>
 {% endblock %}

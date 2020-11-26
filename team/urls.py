@@ -43,4 +43,6 @@ urlpatterns = [
     path('tsexit', views.tsexit, name="tsexit"),
     # Team Storage 파일 중복 함수
     path('tsfilecheck', views.tsfilecheck, name="tsfilecheck"),
+    # Team Storage Notice 숨김 확인
+    path('noticecheck', views.noticecheck, name="noticecheck"),
 ]

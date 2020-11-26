@@ -5,89 +5,86 @@
 {% block content %}
 
 <body class="p">
-<div class="directory-list">
-    <nav>
-        <h1 class="na">{{userid}}'s Personal Storage</h1>
-    </nav>
-    <div>
-        <h4 class="path" id="root">
-            Path :
-            {% for i, name in root %}
-            {% if i != 0 %}
-            >
-            {% endif %}
-            {% if i != index %}
-            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
-            {% else %}
-            <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
-            {% endif %}
-            {% endfor %}
-        </h4>
-    </div>
-    <div id="list"  style="margin-left:350px; margin-right:100px;">
-
-        {% if folder != "top" %}
-            <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
-        {% endif %}
-
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">{{userid}}'s Personal Storage</h1>
+        </nav>
         <div>
-            <input class="b2 fr" type="button" value="Add Folder" onclick="create_folder();">
-            <input class="b1 fl" type="button" value="Delete" onclick="delete_files();">
-            <input class="b1 fl" type="button" value="Upload"
-                onclick="location.href='/personal/ps_file_upload?url='+location.href;">
-            <input class="b1 fl" type="button" value="Download" onclick="download_files()">
-        </div>
-
-        <table class="table">
-            <thead style="position: relative;">
-                <th><input type="checkbox" id="check_all"></th>
-                <th scope="col">FILES</th>
-                <th scope="col">MEMO</th>
-            </thead>
-            <tbody id="tbody">
-                {% if data %}
-                {% for list in data %}
-                <tr>
-                    <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                    <td>{% if "." in list.filename %}
-                        {{list.filename}}
-                        {% else %}
-                        <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
-                        {% endif %}
-                    </td>
-                    <td>{{list.descript|default:""}}</td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
-                </tr>
+            <h4 class="path" id="root">
+                Path :
+                {% for i, name in root %}
+                {% if i != 0 %}
+                >
                 {% endif %}
-            </tbody>
-        </table>
-        <br />
+                {% if i != index %}
+                <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="moveroot('{{i}}');">{{name}}</span>
+                {% else %}
+                <span class="pathC" id="{{i}}" style="cursor: hand;" onclick="location.reload();">{{name}}</span>
+                {% endif %}
+                {% endfor %}
+            </h4>
+        </div>
+        <div id="list" style="margin-left:350px; margin-right:100px;">
 
-    </div>
-    <div id="upload" class="button">
+            {% if folder != "top" %}
+            <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
+            {% endif %}
 
+            <div>
+                <input class="b2 fr" type="button" value="Add Folder" onclick="create_folder();">
+                <input class="b1 fl" type="button" value="Delete" onclick="delete_files();">
+                <input class="b1 fl" type="button" value="Upload"
+                    onclick="location.href='/personal/ps_file_upload?url='+location.href;">
+                <input class="b1 fl" type="button" value="Download" onclick="download_files()">
+            </div>
+
+            <table class="table">
+                <thead style="position: relative;">
+                    <th><input type="checkbox" id="check_all"></th>
+                    <th scope="col">FILES</th>
+                    <th scope="col">MEMO</th>
+                </thead>
+                <tbody id="tbody">
+                    {% if data %}
+                    {% for list in data %}
+                    <tr>
+                        <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
+                        <td>{% if "." in list.filename %}
+                            {{list.filename}}
+                            {% else %}
+                            <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
+                            {% endif %}
+                        </td>
+                        <td>{{list.descript|default:""}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <br />
+
+        </div>
+        <a id="file_download" href="" download hidden></a>
+        <div id="folder_dialog" title="Invite User" style="display: none;">
+            <b>폴더 이름을 입력하세요.</b>
+            <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
+            <p />
+            <b>Descript</b>
+            <input type="text" id="descript" placeholder="Descript">
+            <table id="folder_list">
+            </table>
+        </div>
     </div>
-    <a id="file_download" href="" download hidden></a>
-    <div id="folder_dialog" title="Invite User" style="display: none;">
-        <b>폴더 이름을 입력하세요.</b>
-        <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
-        <p />
-        <b>Descript</b>
-        <input type="text" id="descript" placeholder="Descript">
-        <table id="folder_list">
-        </table>
-    </div>
-</div>
 </body>
 
 <script>
-    window.onpageshow = function(event){
-        if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
-            location.href = "{% url 'personal_storage' %}";  
+    window.onpageshow = function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+            location.href = "{% url 'personal_storage' %}";
         }
     }
     function create_folder() {
@@ -211,7 +208,10 @@
     function download_files() {
         var check_count = $("input:checkbox[name=check_files]:checked").length;
 
-        if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
+        
+        if(check_count == 0){
+            alert("다운로드 파일을 선택해주세요.");
+        } else if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
             var file = $("input:checkbox[name=check_files]:checked").val();
 
             var a = $("#file_download");
@@ -279,9 +279,9 @@
                 data: { "root": root },
                 type: "GET",
                 success: function (result) {
-                    if(result == "success"){
+                    if (result == "success") {
                         location.href = "/personal/?dir=" + $('#' + index).text();
-                    }      
+                    }
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

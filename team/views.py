@@ -162,7 +162,7 @@ def team_storage(request):
     return render(request, "Team_Storage.html",
         { 'folder' : pos, 'name' : ts_name, 'data' : data_list, "user_auth" : user_auth, "team_auth" : team_auth,
         'team_descript' : team_descript, 'notice' : notice_data, "range" : range(1, team_auth+1),
-        'root' : enumerate(show_root), "index" : len(show_root)-1 })
+        'root' : enumerate(show_root), "index" : len(show_root)-1, "check" : request.session['notice'] })
 
 # Team Storage 디렉토리 내부에 폴더 생성 시 실행 함수
 def tsaddfolder(request):
@@ -563,3 +563,8 @@ def tsfilecheck(request):
 
     # 중복 파일 개수 리턴
     return JsonResponse(result)
+
+def noticecheck(request):
+    request.session['notice'] = request.GET['check']
+
+    return HttpResponse(request.session['notice'])
