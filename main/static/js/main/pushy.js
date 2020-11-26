@@ -39,7 +39,7 @@ $.fn.Pushy = function(options) {
 	// GLOBAL VARS
 	var pushy = $(this.menu), //menu css class
 		body = $('body'),
-		container = $('#'+this.container), //container css class
+		container = $('#'+this.content), //container css class
 		overlayPushy = $('#pushyOverlay'+ instanceNumber), //site overlay
 		push = $('.push'), //css class to add pushy capability
 		menuBtn = $('.'+this.button), //css classes to toggle the menu
@@ -48,7 +48,7 @@ $.fn.Pushy = function(options) {
 		pushClass = "push-push", //css class to add pushy capability
 		pushyClass = "pushy-" + this.menuPosition + " pushy-" + this.menuPosition + "-open", //menu position & menu open class
 		pushyActiveClass = "overlay-pushy overlay-active ", //css class to toggle site overlay
-		containerClass = "container-" + this.menuPosition + "-push" +  " " + this.containerCustomClass; //container open class
+		containerClass = "content-" + this.menuPosition + "-push" +  " " + this.containerCustomClass; //container open class
 
 	// DEFAULT CSS CLASSES
 	pushy.addClass('pushy pushy-' + this.menuPosition);

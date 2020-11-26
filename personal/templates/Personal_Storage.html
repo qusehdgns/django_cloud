@@ -8,7 +8,7 @@
     <div class="directory-list">
         <nav>
             <h1 style="inline-block;" class="na">
-                <button id="sidebarCollapse" class="testtest side-left-pushy-button"><img
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img
                         style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
                 <span>{{userid}}'s Personal Storage<span>
             </h1>
@@ -35,11 +35,10 @@
             {% endif %}
 
             <div style="height: 5%;">
-                <input class="b2 fr" type="button" value="Add Folder" onclick="create_folder();">
-                <input class="b1 fl" type="button" value="Delete" onclick="delete_files();">
-                <input class="b1 fl" type="button" value="Upload"
-                    onclick="location.href='/personal/ps_file_upload?url='+location.href;">
-                <input class="b1 fl" type="button" value="Download" onclick="download_files()">
+                <i style="color:#ffc107;" class="fr fa fa-plus-circle fa-2x" type="button" value="Add Folder" onclick="create_folder();"></i>
+                <i style="color:#ffc107;" class="fl fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
+                <i style="color:#ffc107;" class="fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"></i>
+                <i style="color:#ffc107;" class="fl fa fa-arrow-circle-down fa-2x" type="button" value="Download" onclick="download_files()"></i>
             </div>
 
             <div style="max-height: 70%; overflow: auto;">
@@ -90,8 +89,9 @@
         $('#sidebar').toggleClass('active');
 
     });
-    $('#sidebarCollapse').on('click', function () {
-        $('#root').toggleClass('active');
+    $('#sidebarCollapse1').on('click', function () {
+        $('#sidebar').toggleClass('active');
+
     });
 
     window.onpageshow = function (event) {

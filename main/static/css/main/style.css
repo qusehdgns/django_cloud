@@ -8311,3 +8311,23 @@ h3.aa1{
 #content{
   background-color: #1d1919;
 }
+
+.testtest1{
+  vertical-align: middle;
+  margin-left:230px;
+  margin-right:15px;
+  margin-top:-20px;
+  background-color:inherit;
+  border:none;
+  width:25px;
+  height:25px;
+  display:none;
+}
+
+
+@media (max-width: 991.98px) {
+
+  .testtest1{
+      display:initial;
+  }
+ }
