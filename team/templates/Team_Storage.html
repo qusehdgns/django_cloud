@@ -265,7 +265,7 @@
     function download_files() {
         var check_count = $("input:checkbox[name=check_files]:checked").length;
 
-        if(check_count == 0){
+        if (check_count == 0) {
             alert("다운로드 파일을 선택해주세요.");
         } else if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
             var file = $("input:checkbox[name=check_files]:checked").val();

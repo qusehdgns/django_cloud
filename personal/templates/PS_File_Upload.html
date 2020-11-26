@@ -5,46 +5,46 @@
 {% block content %}
 
 <body class="p">
-<div class="directory-list">
-    <nav>
-        <h1 class="na">File Upload</h1>
-    </nav>
+    <div class="directory-list">
+        <nav>
+            <h1 class="na">File Upload</h1>
+        </nav>
 
-    <div id="list"  style="margin-left:350px; margin-right:100px;">
-        <div style="margin-top:30px;">
-            <div style="display:inline-block;" class="filebox">
-                <label for="file">Upload</label>
-                <input id='file' type='file' onchange="changetable();" multiple>
-            </div>
-            <div style="display:inline;">
-                <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
-                <input class="b1 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+            <div style="margin-top:30px;">
+                <div style="display:inline-block;" class="filebox">
+                    <label for="file">Upload</label>
+                    <input id='file' type='file' onchange="changetable();" multiple>
+                </div>
+                <div style="display:inline;">
+                    <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
+                    <input class="b1 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div style="margin-left:350px; margin-right:100px;">
-        <table class="table PS_U">
-            <thead>
-                <th scope="col">NO</th>
-                <th scope="col">FILE NAME</th>
-                <th scope="col">ADD MEMO</th>
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-        </table>
-    </div>
-    
+        <div style="margin-left:350px; margin-right:100px;">
+            <table class="table PS_U">
+                <thead>
+                    <th scope="col">NO</th>
+                    <th scope="col">FILE NAME</th>
+                    <th scope="col">ADD MEMO</th>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </div>
 
-    <div id="filecolor_dialog" style="display: none;">
-        <h1>파일 확인 중...</h1>
-    </div>
-    <div id="filecheck_dialog" style="display: none;">
-        <h1>파일 중복 검사 중...</h1>
-    </div>
-    <div id="fileupload_dialog" style="display: none;">
-        <h1>파일 업로드 중...</h1>
-    </div>
+
+        <div id="filecolor_dialog" style="display: none;">
+            <h1>파일 확인 중...</h1>
+        </div>
+        <div id="filecheck_dialog" style="display: none;">
+            <h1>파일 중복 검사 중...</h1>
+        </div>
+        <div id="fileupload_dialog" style="display: none;">
+            <h1>파일 업로드 중...</h1>
+        </div>
     </div>
 </body>
 

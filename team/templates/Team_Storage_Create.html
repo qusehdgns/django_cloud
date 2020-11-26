@@ -11,7 +11,8 @@
 
     <div class="text-center form-login_t">
         <div class="input-group">
-            <input class="form-control_t tname" type="text" placeholder="Team Storage Name" id="team_storage_name" onchange="change_val();">
+            <input class="form-control_t tname" type="text" placeholder="Team Storage Name" id="team_storage_name"
+                onchange="change_val();">
             <span class="input-group-btn tbtb">
                 <input class="form-control_t c" type="button" value="V" id="name_check" onclick="name_check();">
             </span>
@@ -35,7 +36,8 @@
             <input class="noti_no" type="text" placeholder="Description(Optional)" id="description" disabled />
         </div>
         <div>
-            <input class="s btn-lg btn-primary btn-block" type="button" value="Create" id="btn_create" onclick="create_ts();">
+            <input class="s btn-lg btn-primary btn-block" type="button" value="Create" id="btn_create"
+                onclick="create_ts();">
         </div>
     </div>
 </body>
@@ -43,11 +45,11 @@
 <script>
     var checked = false;
 
-    function change_val(){
+    function change_val() {
         checked = false;
     }
 
-    function name_check(){
+    function name_check() {
         var ts_name = $('#team_storage_name').val();
 
         if (ts_name != "") {
@@ -87,10 +89,10 @@
     $("#use_notice").change(function () {
         if ($("#use_notice").is(":checked")) {
             $("#description").removeAttr('disabled');
-            $("#description").attr('class','noti');
+            $("#description").attr('class', 'noti');
         } else {
             $("#description").attr("disabled", true);
-            $("#description").attr('class','noti_no');
+            $("#description").attr('class', 'noti_no');
         }
     });
 
@@ -105,7 +107,7 @@
 
             if ($("#use_authority").is(":checked")) {
                 ts_auth = $('#select_authority_level option:selected').val();
-                if(ts_auth == ""){
+                if (ts_auth == "") {
                     alert("권한을 선택해주세요.");
                     $('#select_authority_level').focus();
                     return;
@@ -119,7 +121,7 @@
 
             if (confirm("팀 스토리지 이름 : " + ts_name
                 + "\n하위 계급 단계 : " + show_auth + "\n스토리지 설명 : " + show_descript)) {
-                var data = { "ts_name" : ts_name, "ts_auth" : ts_auth, "ts_descript" : ts_descript }
+                var data = { "ts_name": ts_name, "ts_auth": ts_auth, "ts_descript": ts_descript }
                 $.ajax({
                     url: "{% url 'createteamstorage' %}",
                     type: "GET",
@@ -139,4 +141,4 @@
     }
 
 </script>
-{% endblock %}  
+{% endblock %}

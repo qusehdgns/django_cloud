@@ -9,44 +9,46 @@
         <nav>
             <h1 class="na">Team Storage List</h1>
         </nav>
-        <div id="list"  style="margin-left:350px; margin-right:100px;">
-    <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage" onclick="location.href='/team/team_storage_create'">
-    <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
-    {% if data %}
-    <table>
-        <thead>
-            <th><input type="checkbox" id="check_all" onclick="check_all();"></th>
-            <th><b>Storage</b></th>
-        </thead>
-        <tbody>
-            {% for list in data %}
-            <tr>
-                {% if list.master %}
-                <td></td>
-                <td>
-                    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}} [{{list.master}}]</a></h3>
-                </td>
-                {% else %}
-                <td><input type='checkbox' name='ts_check' value='{{list.storage_name}}'></td>
-                <td>
-                    <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    {% else %}
-    <h3>참여한 Team Storage가 없습니다</h3>
-    {% endif %}
-</div>
+        <div id="list" style="margin-left:350px; margin-right:100px;">
+            <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage"
+                onclick="location.href='/team/team_storage_create'">
+            <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
+            {% if data %}
+            <table>
+                <thead>
+                    <th><input type="checkbox" id="check_all" onclick="check_all();"></th>
+                    <th><b>Storage</b></th>
+                </thead>
+                <tbody>
+                    {% for list in data %}
+                    <tr>
+                        {% if list.master %}
+                        <td></td>
+                        <td>
+                            <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}
+                                    [{{list.master}}]</a></h3>
+                        </td>
+                        {% else %}
+                        <td><input type='checkbox' name='ts_check' value='{{list.storage_name}}'></td>
+                        <td>
+                            <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+            <h3>참여한 Team Storage가 없습니다</h3>
+            {% endif %}
+        </div>
 </body>
 
 
 <script>
-    window.onpageshow = function(event){
-        if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
+    window.onpageshow = function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
             location.href = "{% url 'team_storage' %}";
         }
     }

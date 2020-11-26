@@ -8,9 +8,10 @@
     <div class="directory-list">
         <nav>
             <h1 style="inline-block;" class="na">
-            <button id="sidebarCollapse" class="testtest side-left-pushy-button"><img style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
-            <span>{{userid}}'s Personal Storage<span>
-        </h1>
+                <button id="sidebarCollapse" class="testtest side-left-pushy-button"><img
+                        style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>{{userid}}'s Personal Storage<span>
+            </h1>
         </nav>
         <div>
             <h4 class="path" id="root">
@@ -85,14 +86,14 @@
 </body>
 
 <script>
-$('#sidebarCollapse').on('click', function () {
-      $('#sidebar').toggleClass('active');
-      
-  });
-  $('#sidebarCollapse').on('click', function () {
-      $('#root').toggleClass('active');
-  });
-  
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+
+    });
+    $('#sidebarCollapse').on('click', function () {
+        $('#root').toggleClass('active');
+    });
+
     window.onpageshow = function (event) {
         if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
             location.href = "{% url 'personal_storage' %}";
@@ -219,8 +220,8 @@ $('#sidebarCollapse').on('click', function () {
     function download_files() {
         var check_count = $("input:checkbox[name=check_files]:checked").length;
 
-        
-        if(check_count == 0){
+
+        if (check_count == 0) {
             alert("다운로드 파일을 선택해주세요.");
         } else if (check_count == 1 && $("input:checkbox[name=check_files]:checked").val().indexOf(".") != -1) {
             var file = $("input:checkbox[name=check_files]:checked").val();
