@@ -19,7 +19,7 @@
             <table class="table">
                 <thead>
                     <th class="storageAll"><input type="checkbox" id="check_all" onclick="check_all();">
-                    <label for="check_all">　　Storage</label></th>
+                        <label for="check_all">　　Storage</label></th>
                 </thead>
                 <tbody>
                     {% for list in data %}
@@ -67,33 +67,38 @@
 
     function exit_ts() {
         var ts_array = new Array();
+        var check_count = $("input:checkbox[name=ts_check]:checked").length;
 
-        // check 항목 받아옴
-        $("input:checkbox[name=ts_check]:checked").each(function () {
-            ts_array.push($(this).val());
-        })
+        if (check_count == 0) {
+            alert("탈퇴할 팀스토리지를 선택해주세요.");
+        } else {
+            // check 항목 받아옴
+            $("input:checkbox[name=ts_check]:checked").each(function () {
+                ts_array.push($(this).val());
+            })
 
-        var formData = new FormData();
+            var formData = new FormData();
 
-        var array = JSON.stringify({ 'array': ts_array })
+            var array = JSON.stringify({ 'array': ts_array })
 
-        formData.append('tsname', array);
+            formData.append('tsname', array);
 
-        if (confirm("정말 탈퇴하시겠습니까?")) {
-            $.ajax({
-                url: "{% url 'tsexit' %}",
-                data: formData,  //위에서 선언한 fromdata
-                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
-                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
-                type: 'POST',
-                success: function (result) {
-                    alert("탈퇴가 완료되었습니다.");
-                    location.reload();
-                },
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                }
-            });
+            if (confirm("정말 탈퇴하시겠습니까?")) {
+                $.ajax({
+                    url: "{% url 'tsexit' %}",
+                    data: formData,  //위에서 선언한 fromdata
+                    processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                    contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                    type: 'POST',
+                    success: function (result) {
+                        alert("탈퇴가 완료되었습니다.");
+                        location.reload();
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                });
+            }
         }
     }
 </script>
