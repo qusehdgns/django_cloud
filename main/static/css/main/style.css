@@ -8312,6 +8312,11 @@ h3.aa1{
   background-color: #1d1919;
 }
 
+.icons{
+  color:#ffc107;
+  background:linear-gradient( to bottom, #1d1919, #1d1919 );
+}
+
 .testtest1{
   vertical-align: middle;
   margin-left:230px;
@@ -8325,9 +8330,14 @@ h3.aa1{
 }
 
 
-@media (max-width: 991.98px) {
+@media (min-width: 320px) and (max-width: 480px) {
 
   .testtest1{
       display:initial;
   }
+  .icons{
+    color:#ffc107;
+    background:linear-gradient( to bottom, #1d1919, #1d1919 );
+  }
+  
  }

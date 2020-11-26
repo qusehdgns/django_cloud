@@ -14,9 +14,8 @@
 </head>
 
 <body class="text-center">
-    <div>
-        <h1>Sign in</h1>
-        <form class="form-login" method="POST" action="{% url 'sign_in' %}" id="user_form">
+    <form class="form-login" method="POST" action="{% url 'sign_in' %}" id="user_form">
+        <h3 style="color:#ffc107;" class="mb-3 font-weight-normal">Sign in</h3>
             {% csrf_token %}
             <div class="input-group">
                 <input class="form-control" autocomplete="off" id="userid" name="userid" type="text"
@@ -40,8 +39,7 @@
             <br>
             <input class="s btn btn-lg btn-primary btn-block" type="button" value="Sign in"
                 onclick="sign_in();"></input>
-        </form>
-    </div>
+    </form>
 </body>
 
 <script>

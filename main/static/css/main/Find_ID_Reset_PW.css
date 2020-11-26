@@ -9,24 +9,23 @@ body{
 }
 
 .form{
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
     
 }
 
 .form-control {
-    box-sizing: border-box;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #1d1919;
-    border-width: 0 0 2px;
-    outline:2px solid #ffc107;
-  }
-
-.form-control:focus {
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #1d1919;
+  border-width: 0 0 2px;
+  outline:2px solid #ffc107;
+}
+  .form-control:focus {
     z-index: 2;
     border-color: #ffc107;
     outline:5px solid #1d1919;
@@ -34,28 +33,26 @@ body{
   }
   
 #find_id input[type="text"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    color: #ffc107;
-    outline:0px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  color: #ffc107;
+  outline:0px;
 }
 
-#find_id input[type="text"]:focus{
+  #find_id input[type="text"]:focus{
     z-index: 2;
     border-color: #ffc107;
     outline:5px solid #1d1919;
     background-color: #1d1919;
   }
 
-  #find_id input[type="button"] {
-    background-color: #1d1919;
-    border:none;
-    color:#ffc107;
-  }
+#find_id input[type="button"] {
+  background-color: #1d1919;
+  border:none;
+  color:#ffc107;
+}
 
-  
-  
   #find_id input[type="button"]:hover {
     background-color: #ffc107;
     border:none;
@@ -70,18 +67,18 @@ body{
     outline:0px;
 }
 
-#reset_pw input[type="text"]:focus{
+  #reset_pw input[type="text"]:focus{
     z-index: 2;
     border-color: #ffc107;
     outline:5px solid #1d1919;
     background-color: #1d1919;
   }
 
-  #reset_pw input[type="button"] {
-    background-color: #1d1919;
-    border:none;
-    color:#ffc107;
-  }
+#reset_pw input[type="button"] {
+  background-color: #1d1919;
+  border:none;
+  color:#ffc107;
+}
 
   #reset_pw input[type="button"]:hover {
     background-color: #ffc107;
@@ -90,58 +87,108 @@ body{
   }
 
 .title{
-    color:#ffc107;
-    float:center;
+  color:#ffc107;
+  float:center;
 }
 
 .btn_id{
-    background-color: #1d1919;
-    border:none;
-    color:#ffc107;
-    font-size:30px;
-    padding-left:19px;
-    padding-right:19px;
-    margin-bottom:30px;
+  background-color: #1d1919;
+  border:none;
+  color:#ffc107;
+  font-size:30px;
+  padding-left:19px;
+  padding-right:19px;
+  margin-bottom:30px;
 }
+
+  .btn_id:hover{
+    background-color: #ffc107;
+    border:none;
+    color:#1d1919;
+  }
 
 .btn_id_active{
-    background-color: #ffc107;
-    border:none;
-    color:#1d1919;
-    font-size:30px;
-    padding-left:19px;
-    padding-right:19px;
-    margin-bottom:30px;
-}
-
-.btn_id:hover{
-    background-color: #ffc107;
-    border:none;
-    color:#1d1919;
+  background-color: #ffc107;
+  border:none;
+  color:#1d1919;
+  font-size:30px;
+  padding-left:19px;
+  padding-right:19px;
+  margin-bottom:30px;
 }
 
 .btn_pw{
+  background-color: #1d1919;
+  border:none;
+  color:#ffc107;
+  font-size:30px;
+  padding-left:19px;
+  padding-right:19px;
+  margin-bottom:30px;
+}
+
+  .btn_pw:hover{
+    background-color: #ffc107;
+    border:none;
+    color:#1d1919;
+  }
+
+.btn_pw_active{
+  background-color: #ffc107;
+  border:none;
+  color:#1d1919;
+  font-size:30px;
+  padding-left:19px;
+  padding-right:19px;
+  margin-bottom:30px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .btn_id{
     background-color: #1d1919;
     border:none;
     color:#ffc107;
-    font-size:30px;
+    font-size:25px;
     padding-left:19px;
     padding-right:19px;
     margin-bottom:30px;
-}
+  }
 
-.btn_pw:hover{
+    .btn_id:hover{
+      background-color: #ffc107;
+      border:none;
+      color:#1d1919;
+    }
+
+  .btn_id_active{
     background-color: #ffc107;
     border:none;
     color:#1d1919;
-}
+    font-size:25px;
+    margin-bottom:30px;
+  }
 
-.btn_pw_active{
-    background-color: #ffc107;
+  .btn_pw{
+    background-color: #1d1919;
     border:none;
-    color:#1d1919;
-    font-size:30px;
+    color:#ffc107;
+    font-size:25px;
     padding-left:19px;
     padding-right:19px;
     margin-bottom:30px;
+  }
+
+    .btn_pw:hover{
+      background-color: #ffc107;
+      border:none;
+      color:#1d1919;
+  }
+
+  .btn_pw_active{
+    background-color: #ffc107;
+    border:none;
+    color:#1d1919;
+    font-size:25px;
+    margin-bottom:30px;
+  }
 }
