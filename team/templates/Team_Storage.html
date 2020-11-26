@@ -32,8 +32,8 @@
         {% if team_descript != "" %}
         <h3>Descript : {{team_descript}}</h3>
         {% endif %}
-        <label class="label1" style="width:110px;">Notice</label>
-        <table style="border:2px solid #ffc107; margin-bottom:200px;" class="table">
+        <a class="label2" href="#pageNotice" data-toggle="collapse" aria-expanded="false">Notice</a>
+        <table class="collapse list-unstyled table" id="pageNotice" style="border:2px solid #ffc107; margin-bottom:200px;" >
             <thead style="position: relative;">
                 <th scope="col">NOTICE</th>
                 <th scope="col">DATE</th>
@@ -50,7 +50,7 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td class="text-center" colspan="3">공지사항이 없습니다.</td>
+                    <td class="text-center" colspan="2">공지사항이 없습니다.</td>
                 </tr>
                 {% endif %}
             </tbody>

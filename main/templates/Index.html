@@ -24,7 +24,7 @@
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
-<body>
+<body id="aabb">
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="p-4 pt-5">
@@ -42,7 +42,7 @@
                     </li>
                     <li>
                         <div style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                            <a style="display:inline-block; width:91%; border:none;" href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Team Storage  </a>
+                            <a style="display:inline-block; width:91%; border:none;" aria-expanded="false">Team Storage</a>
                             <a class="plus" style="display:inline; border:none; cursor:hand; margin-top:20px;" id="ts_list">
                                 <svg style="margin-left:0px;"width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
@@ -50,9 +50,7 @@
                             </a>
                             
                         </div>
-                        {% comment %} <span id="ts_list" style="cursor:hand;">Team Storage</span> {% endcomment %}
-
-                        <ul class="collapse list-unstyled " id="pageSubmenu"></ul>
+                        <ul class="list-unstyled" id="pageSubmenu"></ul>
                     </li>
                 </ul>
             </div>
