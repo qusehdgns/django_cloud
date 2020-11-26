@@ -19,15 +19,17 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/personal/PS_File_Upload.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/team/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/team/Team_Storage_Create.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team/Team_Storage_List.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/master/TS_Master.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/master/TS_Notice_Upload.css' %}">
     <link rel=stylesheet href=//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/main/pushy.js"></script>
 </head>
 
 <body id="aabb">
     <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar">
+        <nav id="sidebar" class="pushy pushy-left">
             <div class="p-4 pt-5">
                 <div>
                     <img class="img logo rounded-circle mb-3" id="emo" src=""></img>
@@ -44,10 +46,8 @@
                     <a id="ps_name" href="{% url 'personal_storage' %}"></a>
                 </li>
                 <li>
-                    <div id="tsl" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"
-                        onclick='select_index(this);'>
-                        <a style="display:inline-block; width:91%; border:none;" href="{% url 'team_storage_list' %}"
-                            class="dropdown-toggle">Team Storage </a>
+                    <div id="tsl" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);" onclick='select_index(this);'>
+                        <a style="display:inline-block; width:91%; border:none;" href="{% url 'team_storage_list' %}">Team Storage </a>
                         <a class="plus" style="display:inline; border:none; cursor:hand; margin-top:20px;" id="ts_list">
                             <svg style="margin-left:0px;" width="1em" height="1em" viewBox="0 0 16 16"
                                 class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

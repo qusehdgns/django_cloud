@@ -4,10 +4,13 @@
 
 {% block content %}
 
-<body class="p">
+<body class="p" id="p">
     <div class="directory-list">
         <nav>
-            <h1 class="na">{{userid}}'s Personal Storage</h1>
+            <h1 style="inline-block;" class="na">
+            <button id="sidebarCollapse" class="testtest side-left-pushy-button"><img style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
+            <span>{{userid}}'s Personal Storage<span>
+        </h1>
         </nav>
         <div>
             <h4 class="path" id="root">
@@ -82,6 +85,14 @@
 </body>
 
 <script>
+$('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+      
+  });
+  $('#sidebarCollapse').on('click', function () {
+      $('#root').toggleClass('active');
+  });
+  
     window.onpageshow = function (event) {
         if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
             location.href = "{% url 'personal_storage' %}";
