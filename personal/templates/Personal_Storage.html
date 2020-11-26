@@ -4,12 +4,42 @@
 
 {% block content %}
 
+<style>
+    .modal-content {
+        background-color: aqua;
+    }
+
+    .modal-header {
+        background-color: red;
+    }
+
+    .modal-title {
+        background-color: yellow;
+    }
+
+    .close {
+        background-color: orange;
+    }
+
+    .modal-body {
+        color: #ffc107;
+    }
+
+    .modal-footer {
+        background-color: blue;
+    }
+
+    .buttons {
+        background-color : pink;
+    }
+</style>
+
 <body class="p" id="p">
     <div class="directory-list">
         <nav>
             <h1 style="inline-block;" class="na">
-                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img
-                        style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
                 <span>{{userid}}'s Personal Storage<span>
             </h1>
         </nav>
@@ -35,10 +65,13 @@
             {% endif %}
 
             <div style="height: 5%;">
-                <i style="color:#ffc107;" class="fr fa fa-plus-circle fa-2x" type="button" value="Add Folder" onclick="create_folder();"></i>
-                <i style="color:#ffc107;" class="fl fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
+                <i style="color:#ffc107;" class="fr fa fa-plus-circle fa-2x" type="button" value="Add Folder"
+                    onclick="create_folder();"></i>
+                <i style="color:#ffc107;" class="fl fa fa-times-circle fa-2x" type="button" value="Delete"
+                    onclick="delete_files();"></i>
                 <i style="color:#ffc107;" class="fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"></i>
-                <i style="color:#ffc107;" class="fl fa fa-arrow-circle-down fa-2x" type="button" value="Download" onclick="download_files()"></i>
+                <i style="color:#ffc107;" class="fl fa fa-arrow-circle-down fa-2x" type="button" value="Download"
+                    onclick="download_files()"></i>
             </div>
 
             <div style="max-height: 70%; overflow: auto;">
@@ -102,31 +135,43 @@
     function create_folder() {
         find_folder();
         $('#folder_dialog').dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             buttons: {
-                "Add folder": function () {
-                    var folder = $('#folder').val();
-                    if (folder != "") {
-                        if ($('input[value="' + folder + '"]').length == 0) {
-                            var descript = $('#descript').val();
-                            var data = { "folder_name": folder, "descript": descript };
-                            $.ajax({
-                                url: "{% url 'psaddfolder' %}",
-                                type: 'GET',
-                                data: data,
-                                success: function (result) {
-                                    alert(result);
-                                    location.reload();
-                                },
-                                error: function (request, status, error) {
-                                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                                }
-                            });
+                Addfolder: {
+                    class : "buttons",
+                    text : "Add Folder",
+                    click : function() {
+                        var folder = $('#folder').val();
+                        if (folder != "") {
+                            if ($('input[value="' + folder + '"]').length == 0) {
+                                var descript = $('#descript').val();
+                                var data = { "folder_name": folder, "descript": descript };
+                                $.ajax({
+                                    url: "{% url 'psaddfolder' %}",
+                                    type: 'GET',
+                                    data: data,
+                                    success: function (result) {
+                                        alert(result);
+                                        location.reload();
+                                    },
+                                    error: function (request, status, error) {
+                                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                    }
+                                });
+                            } else {
+                                alert("동일한 이름의 폴더가 있습니다.")
+                            }
                         } else {
-                            alert("동일한 이름의 폴더가 있습니다.")
+                            alert("폴더명을 적어주세요.");
                         }
-                    } else {
-                        alert("폴더명을 적어주세요.");
                     }
                 },
                 "close": function () {
