@@ -34,7 +34,7 @@
             <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
             {% endif %}
 
-            <div>
+            <div style="height: 5%;">
                 <input class="b2 fr" type="button" value="Add Folder" onclick="create_folder();">
                 <input class="b1 fl" type="button" value="Delete" onclick="delete_files();">
                 <input class="b1 fl" type="button" value="Upload"
@@ -42,35 +42,35 @@
                 <input class="b1 fl" type="button" value="Download" onclick="download_files()">
             </div>
 
-            <table class="table">
-                <thead style="position: relative;">
-                    <th><input type="checkbox" id="check_all"></th>
-                    <th scope="col">FILES</th>
-                    <th scope="col">MEMO</th>
-                </thead>
-                <tbody id="tbody">
-                    {% if data %}
-                    {% for list in data %}
-                    <tr>
-                        <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                        <td>{% if "." in list.filename %}
-                            {{list.filename}}
-                            {% else %}
-                            <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
-                            {% endif %}
-                        </td>
-                        <td>{{list.descript|default:""}}</td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-            <br />
-
+            <div style="max-height: 70%; overflow: auto;">
+                <table class="table">
+                    <thead style="position: relative;">
+                        <th><input type="checkbox" id="check_all"></th>
+                        <th scope="col">FILES</th>
+                        <th scope="col">MEMO</th>
+                    </thead>
+                    <tbody id="tbody">
+                        {% if data %}
+                        {% for list in data %}
+                        <tr>
+                            <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
+                            <td>{% if "." in list.filename %}
+                                {{list.filename}}
+                                {% else %}
+                                <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
+                                {% endif %}
+                            </td>
+                            <td>{{list.descript|default:""}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="text-center" colspan="3">저장된 정보가 없습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         <a id="file_download" href="" download hidden></a>
         <div id="folder_dialog" title="Invite User" style="display: none;">
