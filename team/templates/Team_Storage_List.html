@@ -14,10 +14,10 @@
                 onclick="location.href='/team/team_storage_create'">
             <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
             {% if data %}
-            <table>
+            <table class="table">
                 <thead>
-                    <th><input type="checkbox" id="check_all" onclick="check_all();"></th>
-                    <th><b>Storage</b></th>
+                    <th class="storageAll"><input type="checkbox" id="check_all" onclick="check_all();">
+                    <label for="check_all">　　Storage</label></th>
                 </thead>
                 <tbody>
                     {% for list in data %}
@@ -40,7 +40,7 @@
             </table>
 
             {% else %}
-            <h3>참여한 Team Storage가 없습니다</h3>
+            <h4 class="text-center" style="color:#ffc107;">참여한 Team Storage가 없습니다</h4>
             {% endif %}
         </div>
 </body>
