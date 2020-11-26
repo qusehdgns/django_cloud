@@ -81,7 +81,14 @@
 
 
 <script>
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
 
+    });
+    $('#sidebarCollapse1').on('click', function () {
+        $('#sidebar').toggleClass('active');
+
+    });
     // 초기 사용자 id 및 이름 가져오기
     $.ajax({
         url: "{% url 'index' %}",

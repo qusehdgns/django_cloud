@@ -30,7 +30,7 @@
     }
 
     .buttons {
-        background-color : pink;
+        background-color: pink;
     }
 </style>
 
@@ -65,10 +65,12 @@
             {% endif %}
 
             <div style="height: 5%;">
-                <i class="icons fr fa fa-plus-circle fa-2x" type="button" value="Add Folder" onclick="create_folder();"></i>
+                <i class="icons fr fa fa-plus-circle fa-2x" type="button" value="Add Folder"
+                    onclick="create_folder();"></i>
                 <i class="icons fl fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
                 <i class="icons fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"></i>
-                <i class="icons fl fa fa-arrow-circle-down fa-2x" type="button" value="Download" onclick="download_files()"></i>
+                <i class="icons fl fa fa-arrow-circle-down fa-2x" type="button" value="Download"
+                    onclick="download_files()"></i>
             </div>
 
             <div style="max-height: 70%; overflow: auto;">
@@ -115,14 +117,7 @@
 </body>
 
 <script>
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-
-    });
-    $('#sidebarCollapse1').on('click', function () {
-        $('#sidebar').toggleClass('active');
-
-    });
+    
 
     window.onpageshow = function (event) {
         if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
@@ -143,9 +138,9 @@
             modal: true,
             buttons: {
                 Addfolder: {
-                    class : "buttons",
-                    text : "Add Folder",
-                    click : function() {
+                    class: "buttons",
+                    text: "Add Folder",
+                    click: function () {
                         var folder = $('#folder').val();
                         if (folder != "") {
                             if ($('input[value="' + folder + '"]').length == 0) {
@@ -171,9 +166,13 @@
                         }
                     }
                 },
-                "close": function () {
-                    $('#folder').val("");
-                    $(this).dialog('close');
+                temp: {
+                    class: "buttons",
+                    text: "close",
+                    click: function () {
+                        $('#folder').val("");
+                        $(this).dialog('close');
+                    }
                 }
             },
             close: function () {

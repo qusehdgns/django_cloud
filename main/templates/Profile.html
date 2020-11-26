@@ -5,14 +5,20 @@
 
 <body class="p">
     <div class="directory-list">
-        <h1 class="na">{{userid}}'s Profile</h1>
-        <div style="height:40%;">
-            <div class='directory-list1' style="padding-top:30px;">
+        <nav>
+            <h1 style="inline-block;" class="na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span class="m_na">{{userid}}'s Profile<span>
+            </h1>
+        </nav>
+        <div class="pf_box">
+            <div class='directory-list1 pf_po' >
                 <div style="float:left;">
-                    <div>
-                        <img class="img logo rounded-circle mb-3" style="margin-right:50px;"
+                    <div>                
+                        <img class="img logo rounded-circle mb-3 m_pf_logo"
                             src="/static/img/{{useremo}}.jpg">
-                        <input style="margin:0 16%; display:block;" class="bb" type="button" value="Select Emoticon"
+                        <input class="pf_button pf_select m_pf_select" type="button" value="Select Emoticon"
                             id="selectemo" onclick="select_emoticon();">
                     </div>
                     <p></p>
@@ -21,34 +27,38 @@
             </div>
             <div id="value">
                 <p>
-                <h4 style="color:#fff;">아이디 : {{userid}}</h4>
+                <h4 class="pf_h4 m_pf_h4 m_pf_id" >　아이디 : {{userid}}</h4>
                 </p>
                 <p>
-                <h4 style="color:#fff;">이름 : {{username}}</h4>
+                <h4 class="pf_h4 m_pf_h4">　　이름 : {{username}}</h4>
                 </p>
                 <p>
-                <h4 style="color:#fff; margin-bottom:65px;">전화번호 : {{userphone}}</h4>
+                <h4 class="pf_h4 m_pf_h4">전화번호 : {{userphone}}</h4>
                 </p>
-                <input class="b2" type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
-                <input class="b2" type="button" value="Change" id="change">
-                <input class="b2" type="button" value="Delete User" onclick="delete_user();">
+                <div >
+                <input class="pf_button m_pf_reset" type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
+                <input class="pf_button" type="button" value="Change" id="change">
+                <input class="pf_button" type="button" value="Delete User" onclick="delete_user();">
+                </div>
             </div>
             <div id="changevalue">
                 <p>
-                <h4 style="color:#fff;">아이디 : {{userid}}</h4>
+                <h4 class="pf_h4 pf_ch_id1 m_pf_h4 m_pf_id">　아이디 : {{userid}}</h4>
                 </p>
-                <p class="form-login">　　이름 : <input class="form-login1" type="text" value="{{username}}" id="name"></p>
-                <p class="form-login"> 전화번호 : <input class="form-login1" type="text" value="{{userphone}}" id="phone">
+                <p class="pf_h4 pf_ch_id m_pf_h4 pf_form-login">　　이름 : <input class="pf_form-login1 pf_text m_pf_text" type="text" value="{{username}}" id="name"></p>
+                <p class="pf_h4 pf_ch_phone m_pf_h4 pf_form-login"> 전화번호 : <input class="pf_form-login1 pf_text m_pf_text m_pf_phone" type="text" value="{{userphone}}" id="phone">
                 </p>
-                <input style="margin-left:222px;" class="b2" type="button" value="확인" id="accept"
+                <div>
+                <input style=" margin-top:0px;" class="pf_button m_pf_button" type="button" value="확인" id="accept"
                     onclick="change_profile();">
-                <input class="b2" type="button" value="취소" id="cancel">
+                <input class="pf_button" type="button" value="취소" id="cancel">
+                </div>
             </div>
         </div>
 
-        <div style="margin-top:100px; margin-left:350; ">
-            <h1 style="color:#ffc107; margin-bottom:50px;">My Team Storage List</h1>
-            <table>
+        <div style="margin-top:120px; margin-left:350; ">
+            <h1 class="m_na"style="color:#ffc107; margin-bottom:10px;">My Team Storage List</h1>
+            <table class="table">
                 <tbody>
                     {% if data %}
                     {% for list in data %}
