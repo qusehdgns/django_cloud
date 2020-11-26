@@ -10,9 +10,11 @@
             <h1 class="na">Team Storage List</h1>
         </nav>
         <div id="list" style="margin-left:350px; margin-right:100px;">
-            <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage"
-                onclick="location.href='/team/team_storage_create'">
-            <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
+            <div>
+                <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage"
+                    onclick="location.href='/team/team_storage_create'">
+                <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
+            </div>
             {% if data %}
             <table class="table">
                 <thead>
@@ -40,7 +42,9 @@
             </table>
 
             {% else %}
-            <h4 class="text-center" style="color:#ffc107;">참여한 Team Storage가 없습니다</h4>
+            <div style="position:absolute;">
+                <h4 class="text-center" style="color:#ffc107;">참여한 Team Storage가 없습니다</h4>
+            </div>
             {% endif %}
         </div>
 </body>
