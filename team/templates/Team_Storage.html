@@ -3,6 +3,11 @@
 {% block title %}Team Storage Page{% endblock %}
 
 {% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team/TS_Modal.css' %}">
+</head>
 
 <body class="p">
     <div class="directory-list">
@@ -110,17 +115,15 @@
         </div>
 
         <a id="file_download" href="" download hidden></a>
-        <div id="folder_dialog" title="Invite User" style="display: none;">
-            <b>폴더 이름을 입력하세요.</b>
-            <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
+        <div id="folder_dialog" title="Add Folder" style="display: none;">
+            <input style="margin-left:50px; margin-top:20px; margin-bottom:20px;" type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
             <p />
-            <b>Descript</b>
-            <input type="text" id="descript" placeholder="Descript">
+            <input style="margin-left:50px;" type="text" id="descript" placeholder="Descript">
             <p />
             {% if team_auth != 1 %}
-            <b>권한을 선택해주세요.</b>
+            <b>　　권한을 선택해주세요.　</b>
             {% for temp in range %}
-            <span><input type="radio" name="select_auth" value="{{temp}}">{{temp}}</span>
+            <span><input type="radio" name="select_auth" value="{{temp}}">{{temp}}　</span>
             {% endfor %}
             {% endif %}
             <table id="folder_list">
@@ -210,9 +213,20 @@
         find_folder();
         $("input:radio[name ='select_auth']:input[value='{{team_auth}}']").prop("checked", true);
         $('#folder_dialog').dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             buttons: {
-                "Add folder": function () {
+                Addfolder: {
+                    class: "buttons",
+                    text: "Add Folder",
+                click: function () {
                     var folder = $('#folder').val();
                     var auth;
                     if (folder != "") {
@@ -242,8 +256,13 @@
                     } else {
                         alert("폴더명을 적어주세요.");
                     }
+                }
+                }
                 },
-                "close": function () {
+                Close: {
+                    class: "buttons",
+                    text: "close",
+                click: function () {
                     $('#folder').val("");
                     $(this).dialog('close');
                 }

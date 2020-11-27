@@ -3,6 +3,11 @@
 {% block title %}TS File Upload Page{% endblock %}
 
 {% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team/TS_Upload_Modal.css' %}">
+</head>
 
 <body class="p">
     <div class="directory-list">
@@ -39,13 +44,13 @@
         </div>
 
         <div id="filecolor_dialog" style="display: none;">
-            <h1>파일 확인 중...</h1>
+            <h1 style="color:#ffc107;">파일 확인 중...</h1>
         </div>
         <div id="filecheck_dialog" style="display: none;">
-            <h1>파일 중복 검사 중...</h1>
+            <h1 style="color:#ffc107;">파일 중복 검사 중...</h1>
         </div>
         <div id="fileupload_dialog" style="display: none;">
-            <h1>파일 업로드 중...</h1>
+            <h1 style="color:#ffc107;">파일 업로드 중...</h1>
         </div>
 
 </body>
@@ -112,6 +117,14 @@
         var filenames = new Array();
 
         $("#filecolor_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,
@@ -158,6 +171,14 @@
         var filenames = new Array();
 
         $("#filecheck_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,
@@ -224,6 +245,14 @@
         var f_count = 0;
 
         $("#fileupload_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,

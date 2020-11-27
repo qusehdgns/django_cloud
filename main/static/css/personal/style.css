@@ -156,21 +156,6 @@
     height:25px;
     display:none;
   }
-  
-  #root{
-    color: #999; }
-    #root:active {
-      color: #ffc107; }
-  @media (max-width: 991.98px) {
-        #root{
-          color: #999; }
-          #root:active {
-            color: #ffc107; } 
-
-    .testtest{
-        display:initial;
-    }
-   }
 
    .pushy-left{
     left:200px;
@@ -195,4 +180,56 @@
   box-shadow: inset -10px 0 6px -9px rgba(0, 0, 0, .7);
   overflow: auto;
   -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
+}
+
+.ps_list{
+  margin-left:350px;
+  margin-right:100px;
+}
+.icons1{
+  font-size:100px;
+  background-color: #ffc107;
+  border: 2px solid #ffc107;
+}
+.icons1:hover{
+  color:#ffc107;
+  background:linear-gradient( to bottom, #1d1919, #1d1919 );
+}
+.ps_fileUpload_btn{
+  margin-left:350px;
+  margin-right:100px;
+}
+
+.ps_fileUpload_table{
+  margin-left:350px;
+  margin-right:100px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .testtest{
+    display:initial;
+}
+.path{
+  font-size: 15px;
+}
+
+.pathC{
+  font-size: 15px;
+}
+
+.ps_list{
+  margin-left:320px;
+  margin-right:20px;
+}
+
+.ps_fileUpload_btn{
+  margin-left:320px;
+  margin-right:20px;
+}
+
+.ps_fileUpload_table{
+  margin-left:320px;
+  margin-right:20px;
+}
+
 }

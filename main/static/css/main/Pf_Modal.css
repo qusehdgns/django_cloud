@@ -1,0 +1,51 @@
+.modal-content {
+    background-color:#1d1919;
+    
+}
+
+.modal-header {
+    background-color:#1d1919;
+}
+
+.modal-title {
+    background-color: #1d1919;
+    color:#ffc107;
+}
+
+.modal-body {
+    color: #ffc107;
+    height:1000px;
+}
+
+.modal-footer {
+    background-color: #1d1919;
+}
+
+.buttons {
+    background-color: #1d1919;
+    color:#ffc107;
+    border:none;
+}
+.buttons:hover {
+    background-color: #ffc107;
+    color:#1d1919;
+    border:none;
+}
+
+input[type="password"]{
+    background-color: #1d1919;
+    color:#ffc107;
+    border-width: 0 0 2px;
+    outline:2px solid #ffc107;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  outline:0px;
+}
+
+input[type="password"]:focus{
+    z-index: 2;
+  border-color: #ffc107;
+  outline:5px solid #1d1919;
+}

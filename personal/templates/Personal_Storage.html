@@ -3,41 +3,16 @@
 {% block title %}Personal Storage Page{% endblock %}
 
 {% block content %}
+{% load static %}
 
-<style>
-    .modal-content {
-        background-color: aqua;
-    }
-
-    .modal-header {
-        background-color: red;
-    }
-
-    .modal-title {
-        background-color: yellow;
-    }
-
-    .close {
-        background-color: orange;
-    }
-
-    .modal-body {
-        color: #ffc107;
-    }
-
-    .modal-footer {
-        background-color: blue;
-    }
-
-    .buttons {
-        background-color: pink;
-    }
-</style>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/personal/PS_Modal.css' %}">
+</head>
 
 <body class="p" id="p">
     <div class="directory-list">
         <nav>
-            <h1 style="inline-block;" class="na">
+            <h1 class="na m_na">
                 <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
                         src="/static/img/iconmonstr-menu-1-240.png"></button>
                 <span>{{userid}}'s Personal Storage<span>
@@ -58,17 +33,17 @@
                 {% endfor %}
             </h4>
         </div>
-        <div id="list" style="margin-left:350px; margin-right:100px;">
+        <div id="list" class="ps_list">
 
             {% if folder != "top" %}
-            <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
+            <i class="icons fl fa fa-arrow-circle-left fa-2x" type="button" value="←" onclick="uptofolder();"></i>
             {% endif %}
 
-            <div style="height: 5%;">
-                <i class="icons fr fa fa-plus-circle fa-2x" type="button" value="Add Folder"
-                    onclick="create_folder();"></i>
+            <div class="icons" style="height: 5%;">
+                <i class="icons fr fa fa-plus-circle fa-2x" type="button" onclick="create_folder();"></i>
                 <i class="icons fl fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
-                <i class="icons fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"></i>
+                <i class="icons fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"
+                    onclick="location.href='/personal/ps_file_upload?url='+location.href;"></i>
                 <i class="icons fl fa fa-arrow-circle-down fa-2x" type="button" value="Download"
                     onclick="download_files()"></i>
             </div>
@@ -104,20 +79,22 @@
             </div>
         </div>
         <a id="file_download" href="" download hidden></a>
-        <div id="folder_dialog" title="Invite User" style="display: none;">
-            <b>폴더 이름을 입력하세요.</b>
-            <input type="text" id="folder" placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
+        <div id="folder_dialog" title="Add Folder"" style=" display: none;">
+            <input style="margin-left:50px; margin-top:20px; margin-bottom:20px;" type="text" id="folder"
+                placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
             <p />
-            <b>Descript</b>
-            <input type="text" id="descript" placeholder="Descript">
-            <table id="folder_list">
-            </table>
+            <input style="margin-left:50px; margin-bottom:30px;" type="text" id="descript" placeholder="Descript">
+            <div style="overflow: auto;">
+                <span style="font-weight: bold;">Folders</span>
+                <table class="table" id="folder_list">
+                </table>
+            </div>
         </div>
     </div>
 </body>
 
 <script>
-    
+
 
     window.onpageshow = function (event) {
         if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
@@ -166,7 +143,7 @@
                         }
                     }
                 },
-                temp: {
+                Close: {
                     class: "buttons",
                     text: "close",
                     click: function () {
@@ -195,7 +172,7 @@
                     var table = document.all["folder_list"].insertRow();
                     var cell = table.insertCell();
 
-                    cell.innerHTML = "<td><span onclick='change_folder(this);' style='cursor:hand'><input type='hidden' value='" + result.folderlist[i] + "'>" + result.folderlist[i] + "</span></td>";
+                    cell.innerHTML = "<td><span onclick='change_folder(this);' style='color:rgba(255,255,255,0.8); cursor:hand;'><input type='hidden' value='" + result.folderlist[i] + "'>" + result.folderlist[i] + "</span></td>";
                 }
             },
             error: function (request, status, error) {

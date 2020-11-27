@@ -45,6 +45,10 @@ body{
   margin-right:15px;
 }
 
+.m_pf_button{
+  margin-left:220px;
+}
+
 .pf_box{
   margin-left:350px;
   width:700px;
@@ -140,7 +144,7 @@ body{
     margin-top:-20px;
   }
   .m_pf_h4{
-    font-size:17px;
+    font-size:13px;
     margin-bottom:-20px;
     margin-left:10px;
   }
@@ -191,14 +195,10 @@ body{
   }
   .m_pf_reset{
     margin-left:-70px;
-    margin-top:47px;
+    margin-top:67px;
   }
-
-
   .pf_form-login input[type="text"] {
     margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
     color: #ffc107;
     outline:0px;
     width:25%;
@@ -207,18 +207,15 @@ body{
   }
   .pf_form-login{
     color:(255,255,255,0.8);
-    font-size:17px;
-    margin-left:-2px;
-    margin-right:-220px;
+    font-size:13px;
+    margin-left:0px;
+    margin-right:-200px;
   }
   .pf_form-login1 {
-    box-sizing: border-box;
     height:10%;
-    font-size: 15px;
+    font-size: 12px;
     background-color: #1d1919;
-    border-width: 0 0 2px;
-    outline:2px solid #ffc107;  
-    color:(255,255,255,0.8);
+    
   }
   
   .pf_ch_id1{
@@ -232,5 +229,17 @@ body{
     margin-left:-20px;
     margin-top:10px;
     margin-bottom:-45px;
+  }
+  .m_pf_div{
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+  }
+  .m_pf_phone{
+    display: flex;
+    height:10%;
+    margin-left:220px;
+    margin-top:-20px;
   }
 }

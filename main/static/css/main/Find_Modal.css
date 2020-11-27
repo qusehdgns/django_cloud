@@ -1,0 +1,39 @@
+.modal-content {
+    background-color:#1d1919;
+    
+    
+}
+
+.modal-header {
+    background-color:#1d1919;
+}
+
+.modal-title {
+    background-color: #1d1919;
+    color:#ffc107;
+}
+
+.modal-body {
+    color: #ffc107;
+    height:1000px;
+}
+
+.modal-footer {
+    background-color: #1d1919;
+}
+
+.buttons {
+    background-color: #1d1919;
+    color:#ffc107;
+    border:none;
+}
+.buttons:hover {
+    background-color: #ffc107;
+    color:#1d1919;
+    border:none;
+}
+
+
+.modal.modal-center {
+    text-align: center;
+  }

@@ -8310,11 +8310,12 @@ h3.aa1{
 
 #content{
   background-color: #1d1919;
+
 }
 
 .icons{
   color:#ffc107;
-  background:linear-gradient( to bottom, #1d1919, #1d1919 );
+  -webkit-appearance:none;
 }
 
 .testtest1{

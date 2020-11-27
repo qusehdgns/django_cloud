@@ -3,27 +3,37 @@
 {% block title %}PS File Upload Page{% endblock %}
 
 {% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/personal/PS_Modal.css' %}">
+</head>
 
 <body class="p">
     <div class="directory-list">
         <nav>
-            <h1 class="na">File Upload</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>File Upload<span>
+            </h1>
         </nav>
 
-        <div id="list" style="margin-left:350px; margin-right:100px;">
+        <div id="list" class="ps_fileUpload_btn">
             <div style="margin-top:30px;">
+                <i class="icons fl fa fa-arrow-circle-left fa-2x" type="button" value="Go to Back"
+                    onclick="location.href = '{{url}}';"></i>
                 <div style="display:inline-block;" class="filebox">
-                    <label for="file">Upload</label>
+                    <label style="font-size:14px; background-color: #1d1919" for="file"><i
+                            class="icons fl fa fa-arrow-circle-up fa-2x"></i></label>
                     <input id='file' type='file' onchange="changetable();" multiple>
                 </div>
-                <div style="display:inline;">
-                    <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
-                    <input class="b1 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
-                </div>
+                <i class="icons fr fa fa-check-circle fa-2x" type="button" value="Upload Files"
+                    onclick="file_check();"></i>
             </div>
         </div>
 
-        <div style="margin-left:350px; margin-right:100px;">
+        <div class="ps_fileUpload_table" style="overflow: auto;">
             <table class="table PS_U">
                 <thead>
                     <th scope="col">NO</th>
@@ -37,18 +47,19 @@
 
 
         <div id="filecolor_dialog" style="display: none;">
-            <h1>파일 확인 중...</h1>
+            <h1 style="color:#ffc107;">파일 확인 중...</h1>
         </div>
         <div id="filecheck_dialog" style="display: none;">
-            <h1>파일 중복 검사 중...</h1>
+            <h1 style="color:#ffc107;">파일 중복 검사 중...</h1>
         </div>
         <div id="fileupload_dialog" style="display: none;">
-            <h1>파일 업로드 중...</h1>
+            <h1 style="color:#ffc107;">파일 업로드 중...</h1>
         </div>
     </div>
 </body>
 
 <script>
+
     function deleteLine(obj) {
         var tr = $(obj).parent().parent();
         var index = $(obj).parent().parent().parent().children().index(tr);
@@ -89,8 +100,15 @@
         var filenameform = new FormData();
 
         var filenames = new Array();
-
         $("#filecolor_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,
@@ -98,6 +116,7 @@
                 $(".ui-dialog-titlebar-close", $(this).parent()).hide();
             }
         });
+
 
         for (var i in files) {
             filenames.push(files[i].name);
@@ -134,6 +153,14 @@
         var filenames = new Array();
 
         $("#filecheck_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,
@@ -182,6 +209,14 @@
         var f_count = 0;
 
         $("#fileupload_dialog").dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             width: 'auto',
             closeOnEscape: false,

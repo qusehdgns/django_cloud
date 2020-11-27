@@ -2,92 +2,103 @@
 
 {% block title %}Profile Page{% endblock %}
 {% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main/Pf_Modal.css' %}">
+</head>
 
 <body class="p">
-    <div class="directory-list">
-        <nav>
-            <h1 style="inline-block;" class="na">
-                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
-                        src="/static/img/iconmonstr-menu-1-240.png"></button>
-                <span class="m_na">{{userid}}'s Profile<span>
-            </h1>
-        </nav>
-        <div class="pf_box">
-            <div class='directory-list1 pf_po' >
-                <div style="float:left;">
-                    <div>                
-                        <img class="img logo rounded-circle mb-3 m_pf_logo"
-                            src="/static/img/{{useremo}}.jpg">
-                        <input class="pf_button pf_select m_pf_select" type="button" value="Select Emoticon"
-                            id="selectemo" onclick="select_emoticon();">
+    <div class="m_pf_div">
+        <div class="directory-list">
+            <nav>
+                <h1 style="inline-block;" class="na">
+                    <button id="sidebarCollapse" class="testtest menu-pushy-button"><img
+                            style="width:25px; height:25px;" src="/static/img/iconmonstr-menu-1-240.png"></button>
+                    <span class="m_na">{{userid}}'s Profile<span>
+                </h1>
+            </nav>
+            <div class="pf_box">
+                <div class='directory-list1 pf_po'>
+                    <div style="float:left;">
+                        <div>
+                            <img class="img logo rounded-circle mb-3 m_pf_logo" src="/static/img/{{useremo}}.jpg">
+                            <input class="pf_button pf_select m_pf_select" type="button" value="Select Emoticon"
+                                id="selectemo" onclick="select_emoticon();">
+                        </div>
+                        <p></p>
+
                     </div>
-                    <p></p>
+                </div>
+                <div id="value">
+                    <p>
+                    <h4 class="pf_h4 m_pf_h4 m_pf_id">　아이디 : {{userid}}</h4>
+                    </p>
+                    <p>
+                    <h4 class="pf_h4 m_pf_h4">　　이름 : {{username}}</h4>
+                    </p>
+                    <p>
+                    <h4 class="pf_h4 m_pf_h4">전화번호 : {{userphone}}</h4>
+                    </p>
+                    <div>
+                        <input class="pf_button m_pf_reset" type="button" value="Reset PW"
+                            onclick="location.href='/movetoresetpw'">
+                        <input class="pf_button" type="button" value="Change" id="change">
+                        <input class="pf_button" type="button" value="Delete User" onclick="delete_user();">
+                    </div>
+                </div>
+                <div id="changevalue">
+                    <p>
+                    <h4 class="pf_h4 pf_ch_id1 m_pf_h4 m_pf_id">　아이디 : {{userid}}</h4>
+                    </p>
+                    <p class="pf_h4 pf_ch_id m_pf_h4 pf_form-login">　　이름 : <input
+                            class="pf_form-login1 pf_text m_pf_text" type="text" value="{{username}}" id="name"></p>
+                    <p class="pf_h4 pf_ch_phone m_pf_h4 pf_form-login"> 전화번호 : <input style="width:32%;"
+                            class="pf_form-login1 pf_text m_pf_text m_pf_phone" type="text" value="{{userphone}}"
+                            id="phone">
+                    </p>
+                    <div>
+                        <input style=" margin-top:0px;" class="pf_button m_pf_button" type="button" value="확인"
+                            id="accept" onclick="change_profile();">
+                        <input class="pf_button" type="button" value="취소" id="cancel">
+                    </div>
+                </div>
+            </div>
 
-                </div>
+            <div style="margin-top:120px; margin-left:350; ">
+                <h1 class="m_na" style="color:#ffc107; margin-bottom:10px;">My Team Storage List</h1>
+                <table class="table">
+                    <tbody>
+                        {% if data %}
+                        {% for list in data %}
+                        <tr>
+                            <td>
+                                <h3><a href="/movetotsmaster?ts_name={{list}}">{{list}}</a></h3>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td>{{userid}}님이 만든 Team Storage가 없습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
-            <div id="value">
-                <p>
-                <h4 class="pf_h4 m_pf_h4 m_pf_id" >　아이디 : {{userid}}</h4>
-                </p>
-                <p>
-                <h4 class="pf_h4 m_pf_h4">　　이름 : {{username}}</h4>
-                </p>
-                <p>
-                <h4 class="pf_h4 m_pf_h4">전화번호 : {{userphone}}</h4>
-                </p>
-                <div >
-                <input class="pf_button m_pf_reset" type="button" value="Reset PW" onclick="location.href='/movetoresetpw'">
-                <input class="pf_button" type="button" value="Change" id="change">
-                <input class="pf_button" type="button" value="Delete User" onclick="delete_user();">
-                </div>
+            <div class="modal-center" id="emo_dialog" title="Change Emoticon" style="display: none;">
+                <span><input type="radio" name="choose_emo" value="dog"><img src="/static/img/dog.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="cat"><img src="/static/img/cat.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="bear"><img src="/static/img/bear.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="peach"><img src="/static/img/peach.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="rabbit"><img src="/static/img/rabbit.jpg"></span>
             </div>
-            <div id="changevalue">
-                <p>
-                <h4 class="pf_h4 pf_ch_id1 m_pf_h4 m_pf_id">　아이디 : {{userid}}</h4>
-                </p>
-                <p class="pf_h4 pf_ch_id m_pf_h4 pf_form-login">　　이름 : <input class="pf_form-login1 pf_text m_pf_text" type="text" value="{{username}}" id="name"></p>
-                <p class="pf_h4 pf_ch_phone m_pf_h4 pf_form-login"> 전화번호 : <input class="pf_form-login1 pf_text m_pf_text m_pf_phone" type="text" value="{{userphone}}" id="phone">
-                </p>
-                <div>
-                <input style=" margin-top:0px;" class="pf_button m_pf_button" type="button" value="확인" id="accept"
-                    onclick="change_profile();">
-                <input class="pf_button" type="button" value="취소" id="cancel">
-                </div>
-            </div>
-        </div>
-
-        <div style="margin-top:120px; margin-left:350; ">
-            <h1 class="m_na"style="color:#ffc107; margin-bottom:10px;">My Team Storage List</h1>
-            <table class="table">
-                <tbody>
-                    {% if data %}
-                    {% for list in data %}
-                    <tr>
-                        <td>
-                            <h3><a href="/movetotsmaster?ts_name={{list}}">{{list}}</a></h3>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td>{{userid}}님이 만든 Team Storage가 없습니다.</td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-        <div id="emo_dialog" title="Change Emoticon" style="display: none;">
-            <h4>Select Emoticon</h4>
-            <span><input type="radio" name="choose_emo" value="dog"><img src="/static/img/dog.jpg"></span>
-            <span><input type="radio" name="choose_emo" value="cat"><img src="/static/img/cat.jpg"></span>
-            <span><input type="radio" name="choose_emo" value="bear"><img src="/static/img/bear.jpg"></span>
-            <span><input type="radio" name="choose_emo" value="peach"><img src="/static/img/peach.jpg"></span>
-            <span><input type="radio" name="choose_emo" value="rabbit"><img src="/static/img/rabbit.jpg"></span>
         </div>
     </div>
 </body>
 
 <script>
+    $(".m_pf_div").css('height', window.innerHeight);
+
     window.onpageshow = function (event) {
         if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
             location.href = "{% url 'profile' %}";
@@ -160,32 +171,49 @@
     function select_emoticon() {
         $("input:radio[name ='choose_emo']:input[value='{{useremo}}']").prop("checked", true);
         $('#emo_dialog').dialog({
-            width: 'auto',
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
+            width: '50%',
             modal: true,
             buttons: {
-                "Change": function () {
-                    var emo = $('input[name="choose_emo"]:checked').val();
+                Change: {
+                    class: "buttons",
+                    text: "change",
+                    click: function () {
+                        var emo = $('input[name="choose_emo"]:checked').val();
 
-                    if (emo == "{{useremo}}") {
-                        alert("현재와 동일한 이모티콘입니다.");
-                    } else {
-                        $.ajax({
-                            url: "{% url 'changeemo' %}",
-                            type: "GET",
-                            data: { "emo": emo },
-                            success: function (result) {
-                                alert(result);
-                                location.reload();
-                            },
-                            error: function (request, status, error) {
-                                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                            }
-                        })
+                        if (emo == "{{useremo}}") {
+                            alert("현재와 동일한 이모티콘입니다.");
+                        } else {
+                            $.ajax({
+                                url: "{% url 'changeemo' %}",
+                                type: "GET",
+                                data: { "emo": emo },
+                                success: function (result) {
+                                    alert(result);
+                                    location.reload();
+                                },
+                                error: function (request, status, error) {
+                                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                }
+                            })
+                        }
                     }
                 },
-                "close": function () {
-                    $(this).dialog('close');
+                Close:{
+                    class:"buttons",
+                    text:"close",
+                    click: function () {
+                        $(this).dialog('close');
+                    }
                 }
+                
             }
         })
     }
