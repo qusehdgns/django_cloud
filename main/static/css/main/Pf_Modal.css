@@ -31,7 +31,9 @@
     color:#1d1919;
     border:none;
 }
-
+.pf_img{
+    width:15%;
+}
 input[type="password"]{
     background-color: #1d1919;
     color:#ffc107;

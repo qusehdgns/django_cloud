@@ -7,45 +7,88 @@
 <body class="p">
     <div class="directory-list">
         <nav>
-            <h1 class="na">Team Storage List</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>Team Storage List<span>
+            </h1>
         </nav>
-        <div id="list" style="margin-left:350px; margin-right:100px;">
-            <div>
-                <input class="b1 fr" type="button" id="create_ts" value="Create Team Storage"
-                    onclick="location.href='/team/team_storage_create'">
-                <input class="b1 fr" type="button" value="Exit Team Storage" onclick="exit_ts();">
-            </div>
-            {% if data %}
-            <table class="table">
-                <thead>
-                    <th class="storageAll"><input type="checkbox" id="check_all" onclick="check_all();">
-                        <label for="check_all">　　Storage</label></th>
-                </thead>
-                <tbody>
-                    {% for list in data %}
-                    <tr>
-                        {% if list.master %}
-                        <td></td>
-                        <td>
-                            <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}
-                                    [{{list.master}}]</a></h3>
-                        </td>
-                        {% else %}
-                        <td><input type='checkbox' name='ts_check' value='{{list.storage_name}}'></td>
-                        <td>
-                            <h3><a href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
 
-            {% else %}
-            <div style="position:absolute;">
-                <h4 class="text-center" style="color:#ffc107;">참여한 Team Storage가 없습니다</h4>
+        <div id="list" style="margin-left:320px; margin-right:20px;">
+            <div>
+                <div class="TS_list_btn" style="margin-top:30px; ">
+                    <i style="margin-right:10px;" class="icons fr fa fa-plus-circle fa-2x" type="button" id="create_ts"
+                        value="Create Team Storage" onclick="location.href='/team/team_storage_create'"></i>
+                </div>
+                {% if data %}
+                <div style="overflow: auto;">
+                    <table class="table TS_list_table">
+                        <thead style="position: relative; text-align:left;">
+                            <th>master</th>
+                            <th>Team Storage Name</th>
+                        </thead>
+                        <tbody>
+                            {% for list in data %}
+                            <tr>
+                                {% if list.master %}
+                                <td>
+                                    <h3 class="m_TS_list_h" style="color:#ffc107;">[{{list.master}}]</h3>
+                                </td>
+                                <td>
+                                    <h3><a class="m_TS_list_h" style=" float:left;"
+                                            href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}
+                                        </a></h3>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div>
+                        <h4 class="text-center" style="font-size:20px; color:#ffc107;">Master Team Storage가 없습니다</h4>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
+
+            <div style="margin-top:100px;">
+                <div class="TS_list_btn" style="margin-top:30px; ">
+                    <i class="icons fr fa fa-times-circle fa-2x" type="button" value="Exit Team Storage"
+                        onclick="exit_ts();"></i>
+                </div>
+                {% if data %}
+                <div style="overflow: auto;">
+                    <table class="table TS_list_table">
+                        <thead style="position: relative; text-align:left;">
+                            <th><input type="checkbox" id="check_all" onclick="check_all();">
+                                Storage</th>
+                            <th>Team Storage Name</th>
+                        </thead>
+                        <tbody>
+                            {% for list in data %}
+                            <tr>
+                                {% if list.master %}
+                                {% else %}
+                                <td><input type='checkbox' name='ts_check' value='{{list.storage_name}}'></td>
+                                <td>
+                                    <h3><a class="m_TS_list_h"
+                                            href='/movetots?name={{list.storage_name}}'>{{list.storage_name}}</a></h3>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div>
+                    <h4 class="text-center TS_not" style="font-size:20px; color:#ffc107;">참여한 Team Storage가 없습니다</h4>
+                </div>
+                {% endif %}
+            </div>
+
+
         </div>
 </body>
 

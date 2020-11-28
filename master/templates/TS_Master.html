@@ -3,26 +3,42 @@
 {% block title %}TS Master Page{% endblock %}
 
 {% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team/TS_Modal.css' %}">
+</head>
 
 <body class="p">
     <div class="directory-list">
         <nav>
-            <h1 class="na">{{ts_name}} Master({{userid}})</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>{{ts_name}} Master({{userid}})<span>
+            </h1>
         </nav>
 
+        <div id="list" style="margin-left:320px; margin-right:20px;">
 
-        <div id="list" style="margin-left:350px; margin-right:100px;">
 
-
-            <div class="userlist">
+            <div class="userlist m_user_list">
                 <div style="margin-bottom:50px;">
-                    <input class="b2 fr" type="button" value="Invite" onclick="invite_action();">
-                    <input class="b2 fr" type="button" value="Ban" onclick="ban_action();">
+                    <i class="icons fr fa fa-user-circle-o fa-2x" type="button" value="Invite"
+                        onclick="invite_action();"></i>
+
+                    <i class="icons mm fr fa fa-eye-slash fa-2x" type="button" value="Ban" onclick="ban_action();"></i>
+
                     {% if team_auth != 1 %}
-                    <input class="b2 fr" type="button" value="Change Auth" onclick="change_auth();">
+                    <i class="icons mm fr fa fa-refresh fa-2x" type="button" value="Change Auth"
+                        onclick="change_auth();"></i>
+
                     {% endif %}
-                    <input class="b2 fr" type="button" value="Give Master" onclick="give_master();">
-                    <input class="b2 fr" type="button" value="Destory Team Storage" onclick="destroy_ts();">
+
+                    <i class="icons mm fr fa fa-handshake-o fa-2x" type="button" value="Give Master"
+                        onclick="give_master();"></i>
+                    <i class="icons mm fr fa fa-window-close fa-2x" type="button" value="Destory Team Storage"
+                        onclick="destroy_ts();"></i>
                 </div>
                 <label class="label1">User</label>
                 <table style="border:2px solid #ffc107; margin-bottom:200px; " class="table">
@@ -53,16 +69,18 @@
                 </table>
             </div>
 
-            <div class="notice-list">
+            <div class="notice-list m_notice">
                 <div class="button">
-                    <input class="b1 fr" type="button" value="Create Notice"
-                        onclick="location.href='/master/ts_notice_upload'">
-                    <input class="b1 fr" type="button" value="Delete" onclick="delete_notice();">
+                    <i class="icons fr fa fa-file-o fa-2x" type="button" value="Create Notice"
+                        onclick="location.href='/master/ts_notice_upload'"></i>
+
+                    <i class="icons mm fr fa fa-times-circle fa-2x" type="button" value="Delete"
+                        onclick="delete_notice();"></i>
                 </div>
                 <label class="label1" style="width:110px;">Notice</label>
                 <table style="border:2px solid #ffc107;" class="table" id="notice_show">
                     <thead>
-                        <th><input type="checkbox" id="check_all"></th>
+                        <th><input type="checkbox" id="check_all" </th>
                         <th scope="col">NOTICE</th>
                         <th scope="col">DATE</th>
                     </thead>
@@ -70,7 +88,7 @@
                         {% if notice %}
                         {% for list in notice %}
                         <tr>
-                            <td><input type="checkbox" name="check_notice" value="{{list.title}}"></td>
+                            <th><input type="checkbox" name="check_notice" value="{{list.title}}"></th>
                             <td><a href="#"
                                     onclick="location.href='/master/ts_notice_update?title={{list.title}}';">{{list.title}}</a>
                             </td>
@@ -94,17 +112,22 @@
     </div>
 
     <div id="invite_dialog" title="Invite User" style="display: none;">
-        <b>초대할 사용자 아이디를 입력하세요.</b>
-        <input type="text" id="user" placeholder="User ID" onkeyup="find_user();" autocomplete="off">
-        <table id="user_list">
-        </table>
+        <input style="margin-bottom:30px;" class="ps_modal_folderN" type="text" id="user" placeholder="User ID"
+            onkeyup="find_user();" autocomplete="off">
+        <div style="overflow: auto;">
+            <span style="font-weight: bold;">Folders</span>
+            <table class="table" id="user_list">
+            </table>
+        </div>
     </div>
     <div id="auth_dialog" title="Change Authority" style="display: none;">
+        <b>　　　　　Select Authority : </b>
         <b id="select_user"></b>
-        <b>의 권한을 선택해주세요.</b>
+
         <p />
         {% for temp in range %}
-        <span><input type="radio" name="auth" value="{{temp}}">{{temp}}</span>
+        <span><input style="margin-top:20px; margin-left:23px;" type="radio" name="auth"
+                value="{{temp}}">　{{temp}}</span>
         {% endfor %}
     </div>
 </body>
@@ -215,29 +238,45 @@
     function invite_action() {
         find_user();
         $('#invite_dialog').dialog({
+            classes: {
+                "ui-dialog": "modal-content",
+                "ui-dialog-titlebar": "modal-header",
+                "ui-dialog-title": "modal-title",
+                "ui-dialog-titlebar-close": "close",
+                "ui-dialog-content": "modal-body",
+                "ui-dialog-buttonpane": "modal-footer"
+            },
             modal: true,
             buttons: {
-                "invite": function () {
-                    $.ajax({
-                        url: "{% url 'invite' %}",
-                        type: "GET",
-                        data: { "userid": $('#user').val() },
-                        success: function (result) {
-                            if (result == "success") {
-                                alert("초대 완료되었습니다.");
-                                location.reload();
-                            } else {
-                                alert("이미 초대되어있습니다.");
+                Invite: {
+                    class: "buttons",
+                    text: "Invite",
+                    click: function () {
+                        $.ajax({
+                            url: "{% url 'invite' %}",
+                            type: "GET",
+                            data: { "userid": $('#user').val() },
+                            success: function (result) {
+                                if (result == "success") {
+                                    alert("초대 완료되었습니다.");
+                                    location.reload();
+                                } else {
+                                    alert("이미 초대되어있습니다.");
+                                }
+                            },
+                            error: function (request, status, error) {
+                                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                             }
-                        },
-                        error: function (request, status, error) {
-                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                        }
-                    })
+                        })
+                    }
                 },
-                "close": function () {
-                    $('#user').val("");
-                    $(this).dialog('close');
+                Close: {
+                    class: "buttons",
+                    text: "Close",
+                    click: function () {
+                        $('#user').val("");
+                        $(this).dialog('close');
+                    }
                 }
             },
             close: function () {
@@ -260,7 +299,7 @@
                     var table = document.all["user_list"].insertRow();
                     var cell = table.insertCell();
 
-                    cell.innerHTML = "<td><span onclick='change_user(this);' style='cursor:hand'>" + result.userlist[i] + "</span></td>";
+                    cell.innerHTML = "<td><span onclick='change_user(this);' style='color:rgba(255,255,255,0.8);cursor:hand;'>" + result.userlist[i] + "</span></td>";
                 }
             },
             error: function (request, status, error) {
@@ -331,34 +370,50 @@
             $('#select_user').text(user);
 
             $('#auth_dialog').dialog({
+                classes: {
+                    "ui-dialog": "modal-content",
+                    "ui-dialog-titlebar": "modal-header",
+                    "ui-dialog-title": "modal-title",
+                    "ui-dialog-titlebar-close": "close",
+                    "ui-dialog-content": "modal-body",
+                    "ui-dialog-buttonpane": "modal-footer"
+                },
                 modal: true,
                 buttons: {
-                    "change": function () {
-                        var auth = $('input[name="auth"]:checked').val();
+                    Change: {
+                        class: "buttons",
+                        text: "Change",
+                        click: function () {
+                            var auth = $('input[name="auth"]:checked').val();
 
-                        if (auth != undefined) {
-                            var personal_auth = $('#' + user).val();
-                            if (auth != personal_auth) {
-                                $.ajax({
-                                    url: "{% url 'change_auth' %}",
-                                    type: "GET",
-                                    data: { "user": user, "auth": auth },
-                                    success: function (result) {
-                                        alert(result);
-                                        location.reload();
-                                    },
-                                    error: function (request, status, error) {
-                                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                                    }
-                                })
+                            if (auth != undefined) {
+                                var personal_auth = $('#' + user).val();
+                                if (auth != personal_auth) {
+                                    $.ajax({
+                                        url: "{% url 'change_auth' %}",
+                                        type: "GET",
+                                        data: { "user": user, "auth": auth },
+                                        success: function (result) {
+                                            alert(result);
+                                            location.reload();
+                                        },
+                                        error: function (request, status, error) {
+                                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                                        }
+                                    })
+                                } else {
+                                    alert("현재 상태와 동일한 권한입니다.");
+                                }
                             } else {
-                                alert("현재 상태와 동일한 권한입니다.");
+                                alert("권한을 선택해주세요.");
                             }
-                        } else {
-                            alert("권한을 선택해주세요.");
                         }
-                    },
-                    "close": function () {
+                    }
+                },
+                Close: {
+                    class: "buttons",
+                    text: "Close",
+                    click: function () {
                         $(this).dialog('close');
                         $('input[name="auth"]:checked').prop('checked', false);
                         $('input[name="auth"]:checked').data('storedValue', false);

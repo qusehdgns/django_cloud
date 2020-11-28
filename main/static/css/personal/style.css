@@ -183,8 +183,8 @@
 }
 
 .ps_list{
-  margin-left:350px;
-  margin-right:100px;
+  margin-left:320px;
+  margin-right:20px;
 }
 .icons1{
   font-size:100px;
@@ -205,31 +205,46 @@
   margin-right:100px;
 }
 
+.ps_modal_folderN{
+  margin-left:50px;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+.ps_modal_des{
+  margin-left:50px;
+  margin-bottom:30px;
+}
+
 @media (min-width: 320px) and (max-width: 480px) {
   .testtest{
     display:initial;
-}
-.path{
-  font-size: 15px;
-}
+  }
 
-.pathC{
-  font-size: 15px;
-}
+  .path{
+    font-size: 15px;
+  }
 
-.ps_list{
-  margin-left:320px;
-  margin-right:20px;
-}
+  .pathC{
+    font-size: 15px;
+  }
 
-.ps_fileUpload_btn{
-  margin-left:320px;
-  margin-right:20px;
-}
+  .ps_list{
+    margin-left:320px;
+    margin-right:20px;
+  }
 
-.ps_fileUpload_table{
-  margin-left:320px;
-  margin-right:20px;
-}
+  .ps_fileUpload_btn{
+    margin-left:320px;
+    margin-right:20px;
+  }
 
+  .ps_fileUpload_table{
+    margin-left:320px;
+    margin-right:20px;
+  }
+  .ps_modal_folderN{
+    margin-bottom:100px;
+  }
+  
 }

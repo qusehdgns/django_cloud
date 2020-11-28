@@ -40,7 +40,7 @@
             {% endif %}
 
             <div class="icons" style="height: 5%;">
-                <i class="icons fr fa fa-plus-circle fa-2x" type="button" onclick="create_folder();"></i>
+                <i  class=" icons fr fa fa-plus-circle fa-2x" type="button" onclick="create_folder();"></i>
                 <i class="icons fl fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
                 <i class="icons fl fa fa-arrow-circle-up fa-2x" type="button" value="Upload"
                     onclick="location.href='/personal/ps_file_upload?url='+location.href;"></i>
@@ -51,7 +51,7 @@
             <div style="max-height: 70%; overflow: auto;">
                 <table class="table">
                     <thead style="position: relative;">
-                        <th><input type="checkbox" id="check_all"></th>
+                        <th ><input type="checkbox" id="check_all"></label></th>
                         <th scope="col">FILES</th>
                         <th scope="col">MEMO</th>
                     </thead>
@@ -59,14 +59,14 @@
                         {% if data %}
                         {% for list in data %}
                         <tr>
-                            <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                            <td>{% if "." in list.filename %}
+                            <td><input type='checkbox' name='check_files' id="check_files" value='{{list.filename}}'></td>
+                            <td style="color:#fff;">{% if "." in list.filename %}
                                 {{list.filename}}
                                 {% else %}
-                                <a href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
+                                <a  href="/personal/psmovefolder?dir={{list.filename}}">{{list.filename}}</a>
                                 {% endif %}
                             </td>
-                            <td>{{list.descript|default:""}}</td>
+                            <td style="color:#fff;">{{list.descript|default:""}}</td>
                         </tr>
                         {% endfor %}
                         {% else %}
@@ -80,10 +80,10 @@
         </div>
         <a id="file_download" href="" download hidden></a>
         <div id="folder_dialog" title="Add Folder"" style=" display: none;">
-            <input style="margin-left:50px; margin-top:20px; margin-bottom:20px;" type="text" id="folder"
+            <input class="ps_modal_folderN" type="text" id="folder"
                 placeholder="Folder Name" onkeyup="find_folder();" autocomplete="off">
             <p />
-            <input style="margin-left:50px; margin-bottom:30px;" type="text" id="descript" placeholder="Descript">
+            <input class="ps_modal_des" type="text" id="descript" placeholder="Descript">
             <div style="overflow: auto;">
                 <span style="font-weight: bold;">Folders</span>
                 <table class="table" id="folder_list">

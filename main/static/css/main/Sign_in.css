@@ -20,7 +20,7 @@ h3{
   font-size: 15px;
   background-color: #1d1919;
   border-width: 0 0 2px;
-  outline:2px solid #ffc107;
+  outline:none;
 
 }
 .form-login .form-control:focus {

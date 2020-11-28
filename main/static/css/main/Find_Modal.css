@@ -37,3 +37,21 @@
 .modal.modal-center {
     text-align: center;
   }
+
+.pw_reset{
+    background-color: #1d1919;
+    color:#ffc107;
+    border-width: 0 0 2px;
+    outline:2px solid #ffc107;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    outline:0px;
+}
+
+.pw_reset:focus{
+    z-index: 2;
+    border-color: #ffc107;
+    outline:5px solid #1d1919;
+}

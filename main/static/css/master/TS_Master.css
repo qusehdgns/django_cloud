@@ -27,3 +27,39 @@
     text-align: center;
     display: inline-block;
 }
+.radio_btn input[type=radio] {
+    display: none;
+}
+
+.radio_btn input[type=radio] + label{
+    cursor: pointer;
+}
+
+.radio_btn input[type=radio] + label:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    margin-right:10px;
+    background-color: #1d1919;
+    border:1px solid #ffc107;
+    border-radius: 5px;
+    display: -ms-flexbox;
+    display: inline-flex;
+    position:fixed;
+
+}
+
+.radio_btn input[type=radio]:checked + label:before{
+    content: "\2714"; 
+    font-size: 12px; 
+    font-weight:600; 
+    color: #1d1919;  
+    background:#ffc107;
+    
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+.m_user_list{
+    margin-bottom:-50px;
+}
+}

@@ -11,11 +11,16 @@
 
 <body class="p">
     <div class="directory-list">
-        <nav>
-            <h1 class="na">{{name}} Team Storage</h1>
+    <nav>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>{{name}} Team Storage<span>
+            </h1>
         </nav>
+
         <div>
-            <h4 class="path" id="root" style="color: white;">
+            <h4 class="path" id="root">
                 Path :
                 {% for i, name in root %}
                 {% if i != 0 %}
@@ -29,11 +34,11 @@
                 {% endfor %}
             </h4>
         </div>
-        <div id="list" style="margin-left:350px; margin-right:100px;">
+        <div id="list" class="TS">
 
 
 
-            <div id='noticelist'>
+            <div style="margin-bottom:-50px;" id='noticelist'>
                 {% if team_descript != "" %}
                 <h3>Descript : {{team_descript}}</h3>
                 {% endif %}
@@ -67,19 +72,23 @@
                 </div>
             </div>
 
-            <div id="filelist" class="directory-list">
+            <div id="filelist">
                 {% if folder != "top" %}
                 <input class="b2 fl" type="button" value="←" onclick="uptofolder();">
                 {% endif %}
 
                 <div id="upload" class="button">
-                    <input class="b1 fr" type="button" value="Add Folder" onclick="create_folder();">
+
+                    <i  class="icons mm fr fa fa-plus-circle fa-2x" type="button" value="Add Folder" onclick="create_folder();"></i>
                     {% if user_auth == 0 %}
-                    <input class="b2 fr" type="button" value="Delete" onclick="delete_files();">
+                    <i class="icons mm fr fa fa-times-circle fa-2x" type="button" value="Delete" onclick="delete_files();"></i>
                     {% endif %}
-                    <input class="b2 fr" type="button" value="Upload"
-                        onclick="location.href='/team/ts_file_upload?url='+location.href;">
-                    <input class="b2 fr" type="button" value="Download" onclick="download_files()">
+
+                    <i class="icons mm fr fa fa-arrow-circle-up fa-2x" type="button" value="Upload"
+                    onclick="location.href='/team/ts_file_upload?url='+location.href;"></i>
+
+                    <i class="icons  mm fr fa fa-arrow-circle-down fa-2x" type="button" value="Download"
+                    onclick="download_files()"></i>
                 </div>
                 <label class="label1" style="width:110px;">File</label>
                 <div id="file_show" style="height: 30%; overflow: auto;">
@@ -94,13 +103,13 @@
                             {% for list in data %}
                             <tr>
                                 <td><input type='checkbox' name='check_files' value='{{list.filename}}'></td>
-                                <td>{% if "." in list.filename %}
+                                <td style="color:#fff;">{% if "." in list.filename %}
                                     {{list.filename}}
                                     {% else %}
                                     <a href="/team/tsmovefolder?dir={{list.filename}}">{{list.filename}}</a>
                                     {% endif %}
                                 </td>
-                                <td>{{list.descript|default:""}}</td>
+                                <td style="color:#fff;">{{list.descript|default:""}}</td>
                             </tr>
                             {% endfor %}
                             {% else %}

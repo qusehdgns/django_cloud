@@ -7,10 +7,14 @@
 <body class="p">
     <div class="directory-list">
         <nav>
-            <h1 class="na">{{ts_name}} Notice Upload</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>{{ts_name}} Notice Upload<span>
+            </h1>
         </nav>
         <input style="display:flex;" class="b1 fl" type="button" value="←" onclick="location.href='/master';">
-        <div id="list" style="margin-left:350px; margin-right:100px;">
+        <div id="list" style="margin-left:320px; margin-right:20px;">
             <form method="POST" action="{% url 'ts_notice_upload' %}" id="notice_form">
                 {% csrf_token %}
                 <input style="margin-top:30px; margin-bottom:30px;" class="form-control n_title" cols="30" type="text"

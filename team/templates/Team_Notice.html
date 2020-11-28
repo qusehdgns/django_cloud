@@ -5,17 +5,22 @@
 {% block content %}
 
 <body class="p">
-    <div class="directory-list">
+    <div class="directory-list" >
         <nav>
-            <h1 class="na">{{ts_name}} Notice</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>{{ts_name}} Notice<span>
+            </h1>
         </nav>
-        <input style="display:flex;" class="b1 fl" type="button" value="←" onclick="location.href='{{url}}'">
-        <div id="list" style="margin-left:350px; margin-right:100px;">
+        
+        <div id="list" style="margin-left:320px; margin-right:20px;">
+        <input class="b1 fl T_notice_back" type="button" value="←" onclick="location.href='{{url}}'">
             <h3>
                 <pre
-                    style="margin-top:30px; margin-bottom:30px; color:#ffc107; font-size:13px">WRITER : {{data.author}}   DATE : {{data.time}}</pre>
+                    class="writer" style=" margin-top:30px; margin-bottom:30px; color:#ffc107; font-size:13px">WRITER : {{data.author}}   DATE : {{data.time}}</pre>
             </h3>
-            <p class="form-control n_title">{{data.title}}</p>
+            <p style="margin-top:50px;" class="form-control n_title">{{data.title}}</p>
             <p class="form-control n_title n_notice">{{data.value}}</p>
 
 

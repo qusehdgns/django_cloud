@@ -36,9 +36,9 @@
             </div>
         </div>
         <div id="reset_pw">
-            <input class="form-control" type="text" id="r_id" placeholder="ID">
+            <input class="form-control" type="text" id="r_id" placeholder="ID" autocomplete="off">
             <br>
-            <input class="form-control" type="text" id="r_phone" placeholder="Phone" maxlength="13">
+            <input class="form-control" type="text" id="r_phone" placeholder="Phone" maxlength="13" autocomplete="off">
             <br>
             <div style="float:right;">
                 <input class="btn" type="button" id="r_submint" value="submit" onclick="checkuser();">
@@ -49,9 +49,9 @@
             <h3 id="id_result"></h3>
         </div>
         <div id="resetpw_dialog" title="Reset Password" style="display: none;">
-            <input style="margin-top:20px;" type="password" id="pw" placeholder="Password">
+            <input class="pw_reset" style=" margin-top:20px;" type="password" id="pw" placeholder="Password">
             <p />
-            <input style="margin-top:20px;" type="password" id="pw_again" placeholder="Password Again">
+            <input class="pw_reset" style="margin-top:20px;" type="password" id="pw_again" placeholder="Password Again">
         </div>
     </form>
 </body>

@@ -19,7 +19,7 @@
             </h1>
         </nav>
 
-        <div id="list" class="ps_fileUpload_btn">
+        <div id="list" style="margin-left:320px; margin-right:20px;">
             <div style="margin-top:30px;">
                 <i class="icons fl fa fa-arrow-circle-left fa-2x" type="button" value="Go to Back"
                     onclick="location.href = '{{url}}';"></i>
@@ -31,18 +31,19 @@
                 <i class="icons fr fa fa-check-circle fa-2x" type="button" value="Upload Files"
                     onclick="file_check();"></i>
             </div>
-        </div>
 
-        <div class="ps_fileUpload_table" style="overflow: auto;">
-            <table class="table PS_U">
-                <thead>
-                    <th scope="col">NO</th>
-                    <th scope="col">FILE NAME</th>
-                    <th scope="col">ADD MEMO</th>
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
+
+            <div id="file_list" style="overflow: auto;">
+                <table class="table PS_U">
+                    <thead>
+                        <th scope="col">NO</th>
+                        <th scope="col">FILE NAME</th>
+                        <th scope="col">ADD MEMO</th>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 

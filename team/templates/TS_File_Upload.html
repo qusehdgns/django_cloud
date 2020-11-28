@@ -11,23 +11,36 @@
 
 <body class="p">
     <div class="directory-list">
+
         <nav>
-            <h1 class="na">TS File Upload</h1>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span>TS File Upload<span>
+            </h1>
         </nav>
 
+
         <div>
-            <div id="list" style="margin-left:350px; margin-right:100px;">
+            <div id="list" style="margin-left:320px; margin-right:20px;">
                 <div style="margin-top:30px;">
+
+                    <i class="icons fl fa fa-arrow-circle-left fa-2x" type="button" value="Go to Back"
+                        onclick="location.href = '{{url}}';"></i>
+
                     <div style="display:inline-block;" class="filebox">
-                        <label for="file">Upload</label>
+                        <label style="font-size:14px; background-color: #1d1919" for="file"><i
+                                class="icons fl fa fa-arrow-circle-up fa-2x"></i></label>
                         <input id='file' type='file' onchange="changetable();" multiple>
                     </div>
-                    <input class="b2 fr" type="button" value="Upload Files" onclick="file_check();">
-                    <input class="b2 fr" type="button" value="Go to Back" onclick="location.href = '{{url}}';">
+
+                    <i class="icons fr fa fa-check-circle fa-2x" type="button" value="Upload Files"
+                        onclick="file_check();"></i>
+
                 </div>
 
-                <div id="file_list">
-                    <table class="table PS_U">
+                <div id="file_list" style="overflow: auto;">
+                    <table class='table PS_U'>
                         <thead>
                             <th scope="col">NO</th>
                             <th scope="col">FILE NAME</th>
@@ -101,7 +114,7 @@
 
             var cell = tbody.insertCell()
 
-            cell.innerHTML = "<td><input class='btn_del' type='button' onclick='deleteLine(this);' value = 'Delete'></td>";
+            cell.innerHTML = "<td><input class='btn_del' type='button' onclick='deleteLine(this);' value = 'X'></td>";
         }
 
         var file = $('#file')[0].files;

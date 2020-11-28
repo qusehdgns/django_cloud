@@ -9,7 +9,7 @@
 </head>
 
 <body class="p">
-    <div class="m_pf_div">
+    <div style="width:100%" class="m_pf_div">
         <div class="directory-list">
             <nav>
                 <h1 style="inline-block;" class="na">
@@ -23,9 +23,10 @@
                     <div style="float:left;">
                         <div>
                             <img class="img logo rounded-circle mb-3 m_pf_logo" src="/static/img/{{useremo}}.jpg">
-                            <input class="pf_button pf_select m_pf_select" type="button" value="Select Emoticon"
-                                id="selectemo" onclick="select_emoticon();">
+                            
                         </div>
+                        <input class="pf_button pf_select m_pf_select" type="button" value="Select Emoticon"
+                                id="selectemo" onclick="select_emoticon();">
                         <p></p>
 
                     </div>
@@ -41,10 +42,10 @@
                     <h4 class="pf_h4 m_pf_h4">전화번호 : {{userphone}}</h4>
                     </p>
                     <div>
-                        <input class="pf_button m_pf_reset" type="button" value="Reset PW"
+                        <input class="pf_button  m_pf_reset" type="button" value="Reset PW"
                             onclick="location.href='/movetoresetpw'">
-                        <input class="pf_button" type="button" value="Change" id="change">
-                        <input class="pf_button" type="button" value="Delete User" onclick="delete_user();">
+                        <input class="pf_button " type="button" value="Change" id="change">
+                        <input class="pf_button " type="button" value="Delete User" onclick="delete_user();">
                     </div>
                 </div>
                 <div id="changevalue">
@@ -57,8 +58,8 @@
                             class="pf_form-login1 pf_text m_pf_text m_pf_phone" type="text" value="{{userphone}}"
                             id="phone">
                     </p>
-                    <div>
-                        <input style=" margin-top:0px;" class="pf_button m_pf_button" type="button" value="확인"
+                    <div class="p_btns">
+                        <input  class="pf_button pf_ok" type="button" value="확인"
                             id="accept" onclick="change_profile();">
                         <input class="pf_button" type="button" value="취소" id="cancel">
                     </div>
@@ -85,12 +86,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-center" id="emo_dialog" title="Change Emoticon" style="display: none;">
-                <span><input type="radio" name="choose_emo" value="dog"><img src="/static/img/dog.jpg"></span>
-                <span><input type="radio" name="choose_emo" value="cat"><img src="/static/img/cat.jpg"></span>
-                <span><input type="radio" name="choose_emo" value="bear"><img src="/static/img/bear.jpg"></span>
-                <span><input type="radio" name="choose_emo" value="peach"><img src="/static/img/peach.jpg"></span>
-                <span><input type="radio" name="choose_emo" value="rabbit"><img src="/static/img/rabbit.jpg"></span>
+            <div   id="emo_dialog" title="Change Emoticon" style="display: none;">
+                <span><input type="radio" name="choose_emo" value="dog">　<img style="width:40%" class="pf_img" src="/static/img/dog.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="cat"><img style="width:40%"class="pf_img" src="/static/img/cat.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="bear">　<img style="width:40%"class="pf_img" src="/static/img/bear.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="peach"><img style="width:40%"class="pf_img" src="/static/img/peach.jpg"></span>
+                <span><input type="radio" name="choose_emo" value="rabbit">　<img style="width:40%"class="pf_img" src="/static/img/rabbit.jpg"></span>
             </div>
         </div>
     </div>
@@ -179,7 +180,6 @@
                 "ui-dialog-content": "modal-body",
                 "ui-dialog-buttonpane": "modal-footer"
             },
-            width: '50%',
             modal: true,
             buttons: {
                 Change: {

@@ -4,12 +4,17 @@
 
 {% block content %}
 
-<body class="p_t">
-    <nav>
-        <h1 class="na_t">Team Storage Create Page</h1>
-    </nav>
+<body class="p_t m_body">
+        <nav>
+            <h1 class="na m_na">
+                <button id="sidebarCollapse" class="testtest menu-pushy-button"><img style="width:25px; height:25px;"
+                        src="/static/img/iconmonstr-menu-1-240.png"></button>
+                <span class="m_TS_create">Team Storage Create Page<span>
+            </h1>
+        </nav>
 
-    <div class="text-center form-login_t">
+
+    <div class="text-center form-login_t TS_create">
         <div class="input-group">
             <input class="form-control_t tname" type="text" placeholder="Team Storage Name" id="team_storage_name"
                 onchange="change_val();">

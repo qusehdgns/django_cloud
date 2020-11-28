@@ -31,7 +31,7 @@ body{
   background-color:#1d1919;
   color:#ffc107;
   border:none;
-  margin-top:50px;
+  margin-top:0px;
   margin-right:15px;
 }
 
@@ -45,13 +45,9 @@ body{
   margin-right:15px;
 }
 
-.m_pf_button{
-  margin-left:220px;
-}
-
 .pf_box{
   margin-left:350px;
-  width:700px;
+  width:750px;
   height:30%;
   border:3px solid #ffc107;
   border-radius:15px;
@@ -130,10 +126,72 @@ body{
   }
   .pf_select{
     margin:20 10%;
-    display:block;
+    display:inline;
   }
-  
+  .m_pf_reset{
+    margin-left:280px;
+  }
+
+  .p_btns{
+    margin-left:500px;
+    margin-top:35px;
+  }
+ 
+  @media (min-width: 481px){
+    .pf_button{
+      font-size:20px;
+      background-color:#1d1919;
+      color:#ffc107;
+      border:none;
+      margin-top:0px;
+      margin-right:0px;
+    }
+    
+    .pf_button:hover{
+      font-size:20px;
+      background-color:#ffc107;
+      color:#1d1919;
+      border:none;
+      border-radius: 5px;
+      margin-bottom:5px;
+      margin-right:15px;
+    }
+    .pf_box{
+      margin-left:320px;
+      width:685px;
+      height:30%;
+      border:3px solid #ffc107;
+      border-radius:15px;
+      margin-top:40px;
+    }
+
+    .m_pf_reset{
+      margin-left:260px;
+    }
+    .pf_ok{
+      margin-left:-10px;
+    }
+
+    .pf_ch_phone{
+      color:rgba(255,255,255,0.8);
+      display:inline;
+      font-size:25px;
+      margin-left:0px;
+    }
+    .pf_select{
+      margin:20 10%;
+      display:inline;
+      margin-left:15px;
+    }
+  }
   @media (min-width: 320px) and (max-width: 480px) {
+    .p_btns{
+      margin-left:250px;
+      margin-top:50px;
+    }
+    .pf_ok{
+      margin-left:0px;
+    }
   .m_na{
     font-size:30px;
   }
@@ -145,7 +203,7 @@ body{
   }
   .m_pf_h4{
     font-size:13px;
-    margin-bottom:-20px;
+    margin-bottom:-5px;
     margin-left:10px;
   }
   .m_pf_id{
@@ -181,7 +239,7 @@ body{
     background-color:#1d1919;
     color:#ffc107;
     border:none;
-    margin-top:-100px;
+    margin-top:-70px;
     margin-right:0px;
     margin-left:0px;
   }
@@ -195,7 +253,7 @@ body{
   }
   .m_pf_reset{
     margin-left:-70px;
-    margin-top:67px;
+    margin-top:15px;
   }
   .pf_form-login input[type="text"] {
     margin-bottom: 10px;
@@ -227,7 +285,7 @@ body{
   }
   .m_pf_select{
     margin-left:-20px;
-    margin-top:10px;
+    margin-top:0px;
     margin-bottom:-45px;
   }
   .m_pf_div{
@@ -241,5 +299,6 @@ body{
     height:10%;
     margin-left:220px;
     margin-top:-20px;
+    width:35%;
   }
 }
