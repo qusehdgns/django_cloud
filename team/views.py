@@ -90,6 +90,12 @@ def team_storage(request):
     # 폴더 내부 정보를 담을 list 선언
     data_list = []
 
+    # folder 리스트
+    folder_list = []
+
+    # file 리스트
+    files_list = []
+
     # TSInfo 데이터베이스를 호출해서 tsinfo 변수에 저장
     tsinfo = TSInfo.objects
 
@@ -112,7 +118,7 @@ def team_storage(request):
     # __startswith 문자열 시작부분 검색 기능
     if tsinfo.filter(file__startswith = dirpath).exists() == True:
         # 내부에 파일이 있을 경우 해당 경로 내부 파일들 정보를 psinfo 변수에 저장 
-        tsinfo = tsinfo.filter(file__startswith = dirpath)
+        tsinfo = tsinfo.filter(file__startswith = dirpath).order_by('filename')
 
         # Team Storage 사용 계급이 0일 경우
         if team_auth == 1:
@@ -123,8 +129,11 @@ def team_storage(request):
                 # data 변수에 dict 형식으로 파일 이름과 불러온 주석 및 메모를 저장
                 data = { "filename" : temp, "descript" : data_temp[0]["descript"] }
 
-                # data_list 변수(list)에 추가
-                data_list.append(data)
+                if '.' in temp:
+                    files_list.append(data)
+
+                else:
+                    folder_list.append(data)
         else:
             # 사용자 내부 디렉토리 목록을 각각 불러와서 temp 변수에 저장
             for temp in file_list:
@@ -137,9 +146,16 @@ def team_storage(request):
                     # data 변수에 dict 형식으로 파일 이름과 불러온 주석 및 메모를 저장
                     data = { "filename" : temp, "descript" : data_temp[0]["descript"] }
 
-                    # data_list 변수(list)에 추가
-                    data_list.append(data)
+                    if '.' in temp:
+                        files_list.append(data)
+
+                    else:
+                        folder_list.append(data)
             
+    data_list.extend(folder_list)
+
+    data_list.extend(files_list)
+    
     # 웹 서버 경로로 이동
     os.chdir(position) 
 
@@ -226,6 +242,8 @@ def team_storage_list(request):
     # list 선언 ( 배열 )
     ts_data = []
 
+    ms_data = []
+
     # TeamStorage 데이터베이스 teamstorage 변수에 저장
     teamstorage = TeamStorage.objects;
 
@@ -235,15 +253,23 @@ def team_storage_list(request):
         if teamstorage.filter(storage_name = temp['team_storage'], master_id = userid).exists() == True:
             data = { "storage_name" : temp['team_storage'], "master" : "Master" }
 
+            ms_data.append(data)
+
         # 검색한 Team Storage가 본인이 만든 것이 아닐 경우
         else:
             # Team Storage 이름만 추가
             data = { "storage_name" : temp['team_storage'] }
 
-        ts_data.append(data)
+            ts_data.append(data)
+
+    data = []
+    
+    data.extend(ms_data)
+
+    data.extend(ts_data)
 
     # Team_Storage_List.html 반환 시 사용자가 접속한 TeamStorage 리스트 반환
-    return render(request, "Team_Storage_List.html", { "data" : ts_data })
+    return render(request, "Team_Storage_List.html", { "data" : data, "ts_data" : ts_data, "ms_data" : ms_data })
 
 # http://localhost:8000/team/team_storage_create
 # TeamStorage 생성 페이지 호출 함수

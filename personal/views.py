@@ -81,6 +81,12 @@ def personal_storage(request):
     # 폴더 내부 정보를 담을 list 선언
     data_list = []
 
+    # folder 리스트
+    folder_list = []
+
+    # file 리스트
+    files_list = []
+
     # PSInfo 데이터베이스를 호출해서 psinfo 변수에 저장
     psinfo = PSInfo.objects
 
@@ -88,18 +94,26 @@ def personal_storage(request):
     # __startswith 문자열 시작부분 검색 기능
     if psinfo.filter(file__startswith = dirpath).exists() == True:
         # 내부에 파일이 있을 경우 해당 경로 내부 파일들 정보를 psinfo 변수에 저장 
-        psinfo = psinfo.filter(file__startswith = dirpath)
+        psinfo = psinfo.filter(file__startswith = dirpath).order_by('filename')
 
         # 사용자 내부 디렉토리 목록을 각각 불러와서 temp 변수에 저장
         for temp in file_list:
+
             # 내부 정보 데이터베이스에서 파일의 경로를 검색하여 주석 및 메모 레코드를 호출
             descript = psinfo.filter(file = dirpath + "/" + temp).values("descript", 'file')
 
             # data 변수에 dict 형식으로 파일 이름과 불러온 주석 및 메모를 저장
             data = { "filename" : temp, "descript" : descript[0]["descript"], "file" : descript[0]['file'] }
 
-            # data_list 변수(list)에 추가
-            data_list.append(data)
+            if '.' in temp:
+                files_list.append(data)
+
+            else:
+                folder_list.append(data)
+    
+    data_list.extend(folder_list)
+
+    data_list.extend(files_list)
             
     # 웹 서버 경로로 이동
     os.chdir(position)

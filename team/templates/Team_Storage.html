@@ -38,7 +38,7 @@
 
 
 
-            <div style="margin-bottom:-50px;" id='noticelist'>
+            <div id='noticelist'>
                 {% if team_descript != "" %}
                 <h3>Descript : {{team_descript}}</h3>
                 {% endif %}
@@ -210,7 +210,6 @@
         $('#noticeCheck').css('border-bottom-right-radius', '5px');
         $('#pageNotice').css('height', '0%');
         $('#file_show').css('height', '60%');
-
     }
 
     window.onpageshow = function (event) {

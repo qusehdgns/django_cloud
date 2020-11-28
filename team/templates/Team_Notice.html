@@ -21,7 +21,10 @@
                     class="writer" style=" margin-top:30px; margin-bottom:30px; color:#ffc107; font-size:13px">WRITER : {{data.author}}   DATE : {{data.time}}</pre>
             </h3>
             <p style="margin-top:50px;" class="form-control n_title">{{data.title}}</p>
-            <p class="form-control n_title n_notice">{{data.value}}</p>
+            <div style="overflow: auto; height: auto; max-height: 70%;" class="form-control n_title n_notice">
+                <pre><span class="n_title">{{data.value}}</span></pre>
+            </div>
+            
 
 
         </div>

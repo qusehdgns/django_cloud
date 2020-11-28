@@ -284,6 +284,10 @@
             } else {
                 ts_auth = $('#select_auth').val();
             }
+
+            if(descript == undefined){
+                descript = "";
+            }
             var formData = new FormData();
             formData.append("filename", files[i].name);
             formData.append("file", files[i]);
