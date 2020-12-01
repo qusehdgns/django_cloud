@@ -315,8 +315,6 @@ def download(request):
     # 상위 디렉토리 경로 호출
     dirpath = request.session['dirpath']
 
-    print("test");
-
     # 세션에 dir 세션이 존재하는 지 확인
     if request.session.has_key('dir'):
         # 세션에 dir이 존재할 시 dirpath 세션에 dir 세션을 통합하여 저장
