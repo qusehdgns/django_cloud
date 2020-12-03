@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'master',
     'personal',
     'team',
+    'api_gate',
 ]
 
 MIDDLEWARE = [
