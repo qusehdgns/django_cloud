@@ -94,6 +94,8 @@
 
         files = Array.prototype.slice.call(file);
 
+        $('#file').val("");
+
         file_color();
     }
 
@@ -133,7 +135,6 @@
             processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
             contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
             type: 'POST',
-            async: false,   // 순차적 진행
             success: function (result) {
                 $('#filecolor_dialog').dialog('close');
                 for (var i in result.array) {
@@ -206,63 +207,67 @@
     }
 
     function file_upload() {
-        var s_count = 0;
-        var f_count = 0;
+        if (files == "" || files == undefined) {
+            alert("파일을 선택해주세요.");
+        } else {
+            var s_count = 0;
+            var f_count = 0;
 
-        $("#fileupload_dialog").dialog({
-            classes: {
-                "ui-dialog": "modal-content",
-                "ui-dialog-titlebar": "modal-header",
-                "ui-dialog-title": "modal-title",
-                "ui-dialog-titlebar-close": "close",
-                "ui-dialog-content": "modal-body",
-                "ui-dialog-buttonpane": "modal-footer"
-            },
-            modal: true,
-            width: 'auto',
-            closeOnEscape: false,
-            open: function (event, ui) {
-                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-            }
-        });
-
-        for (var i in files) {
-            var temp = files[i].name.replace(".", "").replaceAll(" ", "_");
-
-            var descript = $('#' + temp).parent().parent().children().eq(2).children().val();
-
-            if(descript == undefined){
-                descript = "";
-            }
-
-            var formData = new FormData();
-            formData.append("filename", files[i].name)
-            formData.append("file", files[i]);
-            formData.append("descript", descript)
-
-            $.ajax({
-                url: "{% url 'personal_file_upload' %}",
-                data: formData,  //위에서 선언한 fromdata
-                processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
-                contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
-                type: 'POST',
-                async: false,   // 순차적 진행
-                success: function (result) {
-                    if (result == "success") {
-                        s_count++;
-                    } else {
-                        f_count++;
-                    }
+            $("#fileupload_dialog").dialog({
+                classes: {
+                    "ui-dialog": "modal-content",
+                    "ui-dialog-titlebar": "modal-header",
+                    "ui-dialog-title": "modal-title",
+                    "ui-dialog-titlebar-close": "close",
+                    "ui-dialog-content": "modal-body",
+                    "ui-dialog-buttonpane": "modal-footer"
                 },
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                modal: true,
+                width: 'auto',
+                closeOnEscape: false,
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close", $(this).parent()).hide();
                 }
             });
-        }
 
-        $('#fileupload_dialog').dialog('close');
-        alert(s_count + "개의 파일 업로드 성공\n" + f_count + "개의 파일 업로드 실패");
-        location.href = "{{url}}";
+            for (var i in files) {
+                var temp = files[i].name.replace(".", "").replaceAll(" ", "_");
+
+                var descript = $('#' + temp).parent().parent().children().eq(2).children().val();
+
+                if (descript == undefined) {
+                    descript = "";
+                }
+
+                var formData = new FormData();
+                formData.append("filename", files[i].name)
+                formData.append("file", files[i]);
+                formData.append("descript", descript)
+
+                $.ajax({
+                    url: "{% url 'personal_file_upload' %}",
+                    data: formData,  //위에서 선언한 fromdata
+                    processData: false,  // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자...
+                    contentType: false,  // 해당 타입을 true로 하면 일반 text로 구분되어 진다.
+                    type: 'POST',
+                    async: false,   // 순차적 진행
+                    success: function (result) {
+                        if (result == "success") {
+                            s_count++;
+                        } else {
+                            f_count++;
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                });
+            }
+
+            $('#fileupload_dialog').dialog('close');
+            alert(s_count + "개의 파일 업로드 성공\n" + f_count + "개의 파일 업로드 실패");
+            location.href = "{{url}}";
+        }
     }
 </script>
 {% endblock %}
