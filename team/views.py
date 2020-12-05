@@ -117,7 +117,7 @@ def team_storage(request):
     # tsinfo 정보 중 해당 파일 경로 내부에 파일이 있는지 확인
     # __startswith 문자열 시작부분 검색 기능
     if tsinfo.filter(file__startswith = dirpath).exists() == True:
-        # 내부에 파일이 있을 경우 해당 경로 내부 파일들 정보를 psinfo 변수에 저장 
+        # 내부에 파일이 있을 경우 해당 경로 내부 파일들 정보를 tsinfo 변수에 저장 
         tsinfo = tsinfo.filter(file__startswith = dirpath).order_by('filename')
 
         # Team Storage 사용 계급이 0일 경우

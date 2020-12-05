@@ -41,7 +41,7 @@ def api_idcheck(request):
     return HttpResponse("success")
 
 def api_signin(request):
-    data = request.GET;
+    data = request.GET
 
     User.objects.create(user_id = data['userid'], user_pw = data['userpw'], user_name = data['username'], user_phone = data['userphone'])
 
