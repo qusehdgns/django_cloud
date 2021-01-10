@@ -80,7 +80,7 @@ def login(request):
     # Post 형식 데이터가 들어오는지 확인
     if request.method == "POST":
         # Post 형식 데이터를 data 변수에 저장
-        data = request.POST;
+        data = request.POST
 
         # User 테이블에 사용자 id, pw 탐색
         if User.objects.filter(user_id = data['userid'], user_pw = data['userpw']).exists() == True :
